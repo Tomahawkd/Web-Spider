@@ -11,26 +11,38 @@ import org.jsoup.select.Elements;
 public class SpiderRun {
 	private Document doc = null;
 	private boolean urlValidate;
-	private String currentURL;
+	private String currentUrl;
 	private String hostFilter;
 	private SpiderIndex result;
 	private boolean suspendFlag;
 	
 	public static void main(String[] args){
-		SpiderRun spr = new SpiderRun("https", "www.baidu.com", 443);
-		spr.start();
+		SpiderRun spr;
+		try {
+			spr = new SpiderRun();
+			spr.start("https", "www.baidu.com", 443);
+		} catch (nullHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public SpiderRun(String protocol, String host, int port){
+	public SpiderRun() {
 		suspendFlag = false;
-		currentURL = protocol + "://" + host + ":" +port + "/";
+	}
+	
+	public void start(String protocol, String host, int port) throws nullHostException {
+		if (host.equals("")) throw new nullHostException();
+		suspendFlag = false;
+		currentUrl = protocol + "://" + host + ":" +port + "/";
 		hostFilter = protocol + "://" + host;
 		result = new SpiderIndex(hostFilter);
-		result.addNewUrl(currentURL);
-		
+		result.addNewUrl(currentUrl);
+		getHerfHTML();
 	}
 	
-	public void start(){
+	public void resume() {
+		suspendFlag = false;
 		getHerfHTML();
 	}
 	
@@ -54,15 +66,15 @@ public class SpiderRun {
 	private void getHerfHTML(){
 		
 		if (!suspendFlag) {
-			connect(currentURL);
+			connect(currentUrl);
 			if (urlValidate) {
 				Elements media = doc.select("[src]");
 				for (Element src : media) {
 					if (src.attr("abs:src").contains(hostFilter)) {
 //						System.out.println(src.attr("abs:src"));
-						currentURL = src.attr("abs:src");
-						if (!currentURL.equals("") && !result.compareExistUrl(currentURL)) {
-							result.addNewUrl(currentURL);
+						currentUrl = src.attr("abs:src");
+						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
+							result.addNewUrl(currentUrl);
 							urlValidate = false;
 //							System.out.printf("currentURL=%s\n", currentURL);
 							getHerfHTML();
@@ -74,9 +86,9 @@ public class SpiderRun {
 				for (Element link : imports) {
 					if (link.attr("abs:href").contains(hostFilter)) {
 //						System.out.println(link.attr("abs:href"));
-						currentURL = link.attr("abs:href");
-						if (!currentURL.equals("") && !result.compareExistUrl(currentURL)) {
-							result.addNewUrl(currentURL);
+						currentUrl = link.attr("abs:href");
+						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
+							result.addNewUrl(currentUrl);
 							urlValidate = false;
 //							System.out.printf("currentURL=%s\n", currentURL);
 							getHerfHTML();

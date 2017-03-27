@@ -3,6 +3,9 @@ package Interface;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import data.Option;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -11,18 +14,15 @@ import java.awt.event.ActionEvent;
 
 public class OptionNewHeader extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField Content;
 	private JLabel lblTip;
 
-	/**
+	/*
 	 * Create the frame.
 	 */
-	public OptionNewHeader() {
+	public OptionNewHeader(Option optionData) {
 		setBounds(100, 100, 450, 150);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -43,7 +43,7 @@ public class OptionNewHeader extends JFrame {
 				if(!Content.getText().equals("") && Content.getText().contains(":")){
 					lblTip.setVisible(false);
 					String newHeader = Content.getText();
-					mainWindow.addHttpHeader(newHeader);
+					optionData.newHeaderElement(newHeader);
 					dispose();
 				} else {
 					lblTip.setVisible(true);

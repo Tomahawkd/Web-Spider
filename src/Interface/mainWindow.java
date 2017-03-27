@@ -3,6 +3,8 @@ package Interface;
 import decode.Decoder;
 import proxy.ServerSocketListener;
 import spider.SpiderRun;
+import spider.nullHostException;
+import data.Option;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -27,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.ListModel;
 import javax.swing.table.TableColumn;
+
 import javax.swing.JTextArea;
 import javax.swing.JTable;
 import java.awt.Label;
@@ -45,7 +48,7 @@ import java.awt.Choice;
 
 public class mainWindow {
 
-	/**
+	/*
 	 * Global element in order to transfer data throw different tab pane
 	 */
 	private JFrame frmWebSpider;
@@ -53,8 +56,9 @@ public class mainWindow {
 	private JTextField textField_Port_Spider;
 	private JTextField textField_Port_Option;
 	private ArrayList<String> httpRequest;
+	private Option optionData = new Option();
 
-	/**
+	/*
 	 * Launch the application.
 	 */
 	
@@ -71,49 +75,23 @@ public class mainWindow {
 		});
 	}
 
-	/**
+	/*
 	 * Create the application.
 	 */
+	
 	public mainWindow() {
 		initialize();
 	}
-	
-	/**
-	 *  Global Settings Data & Option Data need to be saved
-	 */
-	private static DefaultListModel<String> httpSettings = new DefaultListModel<String>();
-	private static int port_Option = 8080;
-	private static int port_Spider = 80;
-	private static String site_Spider = "";
-	private static String protocol_Spider = "http";
-	
-	// Http Header Settings
-	static String[] getHttpHeader() {
-		String[] headerSettings = new String[httpSettings.size()];
-		for(int i = 0; i < httpSettings.size(); i++) {
-			headerSettings[i] = httpSettings.getElementAt(i);
-		}
-		return headerSettings;
-	}
-	static String gerHttpHeaderAtIndex(int index) {
-		return httpSettings.get(index);
-	}
-	static void addHttpHeader(String newHeader) {
-		httpSettings.addElement(newHeader);
-	}
-	static void editHttpHeader(int index, String header) {
-		httpSettings.set(index, header);
-	}
-	
 
-	/**
+	
+	/*
 	 * Initialize the contents of the frame.
 	 */
 	
 	private void initialize() {
 		
 		
-		/**
+		/*
 		 *  Frame
 		 */
 		
@@ -131,14 +109,14 @@ public class mainWindow {
 		frmWebSpider.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		
-		/**
+		/*
 		 *  Menu
 		 */
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmWebSpider.setJMenuBar(menuBar);
 		
-		/**
+		/*
 		 *  Menu: Project
 		 */
 		
@@ -190,7 +168,7 @@ public class mainWindow {
 		});
 		mnProject.add(mntmExit);
 		
-		/**
+		/*
 		 *  Menu: About
 		 */
 		
@@ -207,7 +185,7 @@ public class mainWindow {
 		mnAbout.add(mntmAboutUs);
 		
 		
-		/**
+		/*
 		 *  Main Panel
 		 */
 		
@@ -215,7 +193,7 @@ public class mainWindow {
 		tabbedPane.setBounds(6, 6, 690, 444);
 		frmWebSpider.getContentPane().add(tabbedPane);
 		
-		/**
+		/*
 		 *  Panel: Spider
 		 */
 		
@@ -252,7 +230,7 @@ public class mainWindow {
 		choiceProtocol.add("http");
 		choiceProtocol.add("https");
 		
-		SpiderRun spr = new SpiderRun(protocol_Spider, site_Spider, port_Spider);
+		SpiderRun spr = new SpiderRun();
 		JToggleButton tglbtn_Start_Spider = new JToggleButton("Session Start");
 		tglbtn_Start_Spider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -264,13 +242,18 @@ public class mainWindow {
 					try {
 						String portStr = textField_Port_Spider.getText();
 						Integer portInt = Integer.parseInt(portStr);
-						port_Spider = portInt.intValue();
-						site_Spider = textField_Site_Spider.getText();
-						protocol_Spider = choiceProtocol.getSelectedItem();
+						optionData.setPortSpider(portInt.intValue());
+						optionData.setHost(textField_Site_Spider.getText());
+						optionData.setProtocol(choiceProtocol.getSelectedItem());
 				//Run Spider
 						new Thread(new Runnable() {
 							public void run() {
-								spr.start();
+								try {
+									spr.start(optionData.getProtocol(), optionData.getHost(), optionData.getPortSpider());
+								} catch (nullHostException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 								spr.stop();
 							}
 						});
@@ -292,7 +275,7 @@ public class mainWindow {
 		panel_spider.add(tglbtn_Start_Spider);
 		
 		
-		/**
+		/*
 		 *  Panel2: Site Map
 		 */
 		
@@ -300,7 +283,7 @@ public class mainWindow {
 		tabbedPane.addTab("Site Map", null, panel_SiteMap, null);
 		
 		
-		/**
+		/*
 		 *  Panel3: Intercepter
 		 */
 		
@@ -338,7 +321,7 @@ public class mainWindow {
 							if(!textField_Port_Option.getText().equals("")){
 								try {
 									String strPort_Option = textField_Port_Option.getText();
-									port_Option = Integer.parseInt(strPort_Option);
+									optionData.setPortOption(Integer.parseInt(strPort_Option));
 									httpRequest = new ArrayList<String>();
 									//TODO
 //									new Thread(new Runnable() {
@@ -373,14 +356,14 @@ public class mainWindow {
 		JButton btnForward_Intercept = new JButton("Forward");
 		btnForward_Intercept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				//TODO
 			}
 		});
 		btnForward_Intercept.setBounds(546, 46, 117, 29);
 		panel_intercepter.add(btnForward_Intercept);
 	
 		
-		/**
+		/*
 		 *  Panel4: Options
 		 */
 		
@@ -406,9 +389,9 @@ public class mainWindow {
 		panel_options.add(lblPort_Option);
 		
 		textField_Port_Option = new JTextField();
-		textField_Port_Option.setToolTipText("Leave for default:8080");
 		textField_Port_Option.setBounds(282, 182, 130, 26);
 		panel_options.add(textField_Port_Option);
+		textField_Port_Option.setText("" + optionData.getPortOption());
 		
 		Label labelTip_Option = new Label("Only Localhost Support");
 		labelTip_Option.setBounds(61, 187, 172, 16);
@@ -420,15 +403,7 @@ public class mainWindow {
 		
 		JList<String> list = new JList<String>();
 		scrollPane.setViewportView(list);
-		httpSettings.addElement("Connection: close");
-		httpSettings.addElement("Accept: */*");
-		httpSettings.addElement("User-Agent: "
-				+ "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) "
-				+ "AppleWebKit/602.3.12 (KHTML, like Gecko) "
-				+ "Version/10.0.2 Safari/602.3.12");
-		httpSettings.addElement("Accept-Language: zh-cn");
-		httpSettings.addElement("Accept-Encoding: gzip");
-		list.setModel(httpSettings);
+		list.setModel(optionData.getRequestHeader());
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				list.validate();
@@ -439,7 +414,7 @@ public class mainWindow {
 		JButton btnNew = new JButton("New");
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				OptionNewHeader frame = new OptionNewHeader();
+				OptionNewHeader frame = new OptionNewHeader(optionData);
 				frame.setVisible(true);
 			}
 		});
@@ -451,7 +426,7 @@ public class mainWindow {
 			public void actionPerformed(ActionEvent e) {
 				OptionEditHeader frame;
 				try {
-					frame = new OptionEditHeader(list.getSelectedIndex());
+					frame = new OptionEditHeader(list.getSelectedIndex(), optionData);
 					frame.setVisible(true);
 				} catch (IndexOutOfBoundsException e1) {
 				}
@@ -466,13 +441,13 @@ public class mainWindow {
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					httpSettings.remove(list.getSelectedIndex());
+					optionData.removeHeaderElement(list.getSelectedIndex());
 				} catch (IndexOutOfBoundsException e1) {
 				}
 			}
 		});
 		
-		/**
+		/*
 		 *  Panel5: Decoder
 		 */
 		

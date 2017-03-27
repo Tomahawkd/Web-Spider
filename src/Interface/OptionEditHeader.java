@@ -3,6 +3,9 @@ package Interface;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import data.Option;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -22,7 +25,7 @@ public class OptionEditHeader extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public OptionEditHeader(int index) throws IndexOutOfBoundsException {
+	public OptionEditHeader(int index, Option optionData) throws ArrayIndexOutOfBoundsException {
 		setBounds(100, 100, 450, 150);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -36,7 +39,7 @@ public class OptionEditHeader extends JFrame {
 		Content = new JTextField();
 		Content.setBounds(6, 46, 438, 26);
 		contentPane.add(Content);
-		Content.setText(mainWindow.gerHttpHeaderAtIndex(index));
+		Content.setText(optionData.getHeaderElement(index));
 		
 		JButton btnConfirm = new JButton("Confirm");
 		btnConfirm.addActionListener(new ActionListener() {
@@ -44,7 +47,7 @@ public class OptionEditHeader extends JFrame {
 				if(!Content.getText().equals("") && Content.getText().contains(":")){
 					lblTip.setVisible(false);
 					String newHeader = Content.getText();
-					mainWindow.editHttpHeader(index, newHeader);
+					optionData.editHeaderElement(index, newHeader);
 					dispose();
 				} else {
 					lblTip.setVisible(true);
