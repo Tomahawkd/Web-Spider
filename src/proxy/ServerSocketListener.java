@@ -3,6 +3,7 @@ package proxy;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import data.RequestData;
 
 public class ServerSocketListener {
 	private Socket socket = null;
