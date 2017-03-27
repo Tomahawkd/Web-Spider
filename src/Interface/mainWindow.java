@@ -63,7 +63,8 @@ public class mainWindow {
 					mainWindow window = new mainWindow();
 					window.frmWebSpider.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					Error frame = new Error();
+					frame.setVisible(true);
 				}
 			}
 		});
