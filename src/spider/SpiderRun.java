@@ -16,16 +16,16 @@ public class SpiderRun {
 	private SpiderIndex result;
 	private boolean suspendFlag;
 	
-	public static void main(String[] args){
-		SpiderRun spr;
-		try {
-			spr = new SpiderRun();
-			spr.start("https", "www.baidu.com", 443);
-		} catch (nullHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args){
+//		SpiderRun spr;
+//		try {
+//			spr = new SpiderRun();
+//			spr.start("https", "www.baidu.com", 443);
+//		} catch (nullHostException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
 	public SpiderRun() {
 		suspendFlag = false;

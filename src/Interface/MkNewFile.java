@@ -14,9 +14,9 @@ public class MkNewFile extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
 	private final int THREADSLEEP = 50;
-	/**
+	
+	/*
 	 * Create the frame.
 	 */
 	public MkNewFile() {

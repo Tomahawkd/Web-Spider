@@ -28,8 +28,8 @@ public class Option {
 	
 	public Option() {
 		requestHeader = new DefaultListModel<String>();
-		portSpider = 8080;
-		portOption = 80;
+		portSpider = 80;
+		portOption = 8080;
 		host = "";
 		protocol = "http";
 		
@@ -229,6 +229,8 @@ public class Option {
 	 * Get the protocol spider uses.
 	 * 
 	 * @return protocol
+	 * 
+	 * @author Ghost
 	 */
 	
 	public String getProtocol() {
@@ -238,7 +240,7 @@ public class Option {
 	/**
 	 * Set the protocol spider uses.
 	 * 
-	 * @param protocol Support for http and https\
+	 * @param protocol Support for http and https
 	 * 
 	 * @author Ghost
 	 */

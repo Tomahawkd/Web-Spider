@@ -18,31 +18,23 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.TextArea;
 import java.awt.Panel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.Button;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
-import javax.swing.ListModel;
-import javax.swing.table.TableColumn;
-
 import javax.swing.JTextArea;
-import javax.swing.JTable;
 import java.awt.Label;
 import java.awt.Font;
 import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.DefaultListModel;
-
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.Choice;
 
@@ -126,8 +118,12 @@ public class mainWindow {
 		JMenuItem mntmNew = new JMenuItem("New...");
 		mntmNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				newFile frame = new newFile();
-				frame.setVisible(true);
+		        JFileChooser jfc=new JFileChooser();  
+		        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);  
+		        jfc.showDialog(new JLabel(), "选择");  
+		        File file=jfc.getSelectedFile();  
+		        System.out.println("文件夹:"+file.getAbsolutePath());  
+		        System.out.println(jfc.getSelectedFile().getName()); 
 			}
 		});
 		mnProject.add(mntmNew);
@@ -135,8 +131,16 @@ public class mainWindow {
 		JMenuItem mntmLoad = new JMenuItem("Load");
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				loadFile frame = new loadFile();
-				frame.setVisible(true);
+		        JFileChooser jfc=new JFileChooser();  
+		        jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);  
+		        jfc.showDialog(new JLabel(), "选择");  
+		        File file=jfc.getSelectedFile();  
+		        if(file.isDirectory()){  
+		            System.out.println("文件夹:"+file.getAbsolutePath());  
+		        }else if(file.isFile()){  
+		            System.out.println("文件:"+file.getAbsolutePath());  
+		        }  
+		        System.out.println(jfc.getSelectedFile().getName()); 
 			}
 		});
 		mnProject.add(mntmLoad);
@@ -153,8 +157,16 @@ public class mainWindow {
 		JMenuItem mntmSaveAs = new JMenuItem("Save as...");
 		mntmSaveAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SavingAsFile frame = new SavingAsFile();
-				frame.setVisible(true);
+				JFileChooser jfc=new JFileChooser();  
+		        jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);  
+		        jfc.showDialog(new JLabel(), "选择");  
+		        File file=jfc.getSelectedFile();  
+		        if(file.isDirectory()){  
+		            System.out.println("文件夹:"+file.getAbsolutePath());  
+		        }else if(file.isFile()){  
+		            System.out.println("文件:"+file.getAbsolutePath());  
+		        }  
+		        System.out.println(jfc.getSelectedFile().getName()); 
 			}
 		});
 		mnProject.add(mntmSaveAs);
