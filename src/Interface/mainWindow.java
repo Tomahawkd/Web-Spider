@@ -1,10 +1,9 @@
 package Interface;
 
 import decode.Decoder;
-import proxy.ServerSocketListener;
-import spider.SpiderRun;
-import spider.nullHostException;
-import data.Option;
+import proxy.*;
+import spider.*;
+import data.*;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -47,8 +46,11 @@ public class mainWindow {
 	private JTextField textField_Site_Spider;
 	private JTextField textField_Port_Spider;
 	private JTextField textField_Port_Option;
-	private ArrayList<String> httpRequest;
+	
+	//User data set
+	private RequestData requestData = new RequestData();
 	private Option optionData = new Option();
+	private FileIO file = new FileIO();
 
 	/*
 	 * Launch the application.
@@ -120,7 +122,7 @@ public class mainWindow {
 			public void actionPerformed(ActionEvent e) {
 		        JFileChooser jfc=new JFileChooser();  
 		        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);  
-		        jfc.showDialog(new JLabel(), "选择");  
+		        jfc.showSaveDialog(new JLabel());  
 		        File file=jfc.getSelectedFile();  
 		        System.out.println("文件夹:"+file.getAbsolutePath());  
 		        System.out.println(jfc.getSelectedFile().getName()); 
@@ -133,7 +135,7 @@ public class mainWindow {
 			public void actionPerformed(ActionEvent e) {
 		        JFileChooser jfc=new JFileChooser();  
 		        jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);  
-		        jfc.showDialog(new JLabel(), "选择");  
+		        jfc.showOpenDialog(new JLabel());  
 		        File file=jfc.getSelectedFile();  
 		        if(file.isDirectory()){  
 		            System.out.println("文件夹:"+file.getAbsolutePath());  
@@ -159,7 +161,7 @@ public class mainWindow {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser jfc=new JFileChooser();  
 		        jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);  
-		        jfc.showDialog(new JLabel(), "选择");  
+		        jfc.showSaveDialog(new JLabel());
 		        File file=jfc.getSelectedFile();  
 		        if(file.isDirectory()){  
 		            System.out.println("文件夹:"+file.getAbsolutePath());  
@@ -334,7 +336,6 @@ public class mainWindow {
 								try {
 									String strPort_Option = textField_Port_Option.getText();
 									optionData.setPortOption(Integer.parseInt(strPort_Option));
-									httpRequest = new ArrayList<String>();
 									//TODO
 //									new Thread(new Runnable() {
 //										public void run() {

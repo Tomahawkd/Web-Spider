@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 public class ServerSocketListener {
 	private Socket socket = null;
-	boolean suspendFlag;
+	private boolean suspendFlag;
 	private ServerSocket server;
-	int port = 8080;
-	ArrayList<String> httpRequest;
+	private int port = 8080;
+	RequestData request;
 	
 	public static void main(String[] args) {
 		try {
@@ -17,8 +17,8 @@ public class ServerSocketListener {
 				ServerSocketListener s = new ServerSocketListener(8080);
 				s.action();
 				if(s.getSuspend()) {
-					for(int i = 0; i < s.getHttpRequset().size(); i++){
-						System.out.println(s.getHttpRequset().get(i));
+					for(int i = 0; i < s.getData().getRequest().size(); i++){
+						System.out.println(s.getData().getRequest().get(i));
 					}
 					break;
 				}
@@ -30,7 +30,7 @@ public class ServerSocketListener {
 	public ServerSocketListener(int port) throws IOException {
 		this.port = port;
 		suspendFlag = false;
-		httpRequest = new ArrayList<String>();
+		request = new RequestData();
 		server = new ServerSocket(port);
 		socket = server.accept();
 	}
@@ -47,8 +47,8 @@ public class ServerSocketListener {
 		return suspendFlag;
 	}
 	
-	public ArrayList<String> getHttpRequset() {
-		return httpRequest;
+	public RequestData getData() {
+		return request;
 	}
 	
 	public void setPort(int port) {
@@ -61,14 +61,11 @@ public class ServerSocketListener {
 		}
 		BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 		for(String temp = br.readLine() ; temp!=null; temp = br.readLine()){
-			httpRequest.add(temp);
+			request.addRequestElement(temp);
 		}
 		br.close();
 		suspendFlag = true;
 	}
 	
-	public void sendRequest() {
-		
-	}
 	
 }
