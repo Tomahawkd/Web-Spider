@@ -19,7 +19,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.awt.TextArea;
 import java.awt.Panel;
 import javax.swing.JLabel;
@@ -50,7 +49,6 @@ public class mainWindow {
 	//User data set
 	private RequestData requestData = new RequestData();
 	private Option optionData = new Option();
-	private FileIO file = new FileIO();
 
 	/*
 	 * Launch the application.
@@ -121,12 +119,8 @@ public class mainWindow {
 		JMenuItem mntmNew = new JMenuItem("New...");
 		mntmNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-		        JFileChooser jfc=new JFileChooser();  
-		        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);  
-		        jfc.showSaveDialog(new JLabel());  
-		        File file=jfc.getSelectedFile();  
-		        System.out.println("文件夹:"+file.getAbsolutePath());  
-		        System.out.println(jfc.getSelectedFile().getName()); 
+				NewFile newFile = new NewFile();
+				newFile.setVisible(true);
 			}
 		});
 		mnProject.add(mntmNew);
