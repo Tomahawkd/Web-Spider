@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import data.Option;
+import data.SpiderOption;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -25,7 +25,7 @@ public class OptionEditHeader extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public OptionEditHeader(int index, Option optionData) throws ArrayIndexOutOfBoundsException {
+	public OptionEditHeader(int index, SpiderOption optionData) throws ArrayIndexOutOfBoundsException {
 		setBounds(100, 100, 450, 150);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

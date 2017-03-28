@@ -21,4 +21,5 @@ public class RequestData {
 	public void addRequestElement(String element) {
 		request.add(element);
 	}
+	
 }

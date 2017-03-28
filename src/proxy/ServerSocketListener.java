@@ -2,21 +2,25 @@ package proxy;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
+
+import data.IntercepterOption;
 import data.RequestData;
 
 public class ServerSocketListener {
 	private Socket socket = null;
 	private boolean suspendFlag;
 	private ServerSocket server;
-	private int port = 8080;
+	private IntercepterOption option;
 	RequestData request;
 	
 	public static void main(String[] args) {
+		IntercepterOption optionTest = new IntercepterOption();
+		optionTest.setPort(8080);
 		try {
 			while(true){
-				ServerSocketListener s = new ServerSocketListener(8080);
-				s.action();
+				ServerSocketListener s = new ServerSocketListener();
+				s.setOption(optionTest);
+				s.start();
 				if(s.getSuspend()) {
 					for(int i = 0; i < s.getData().getRequest().size(); i++){
 						System.out.println(s.getData().getRequest().get(i));
@@ -28,12 +32,19 @@ public class ServerSocketListener {
 		}
 	}
 	
-	public ServerSocketListener(int port) throws IOException {
-		this.port = port;
+	public ServerSocketListener() {
 		suspendFlag = false;
 		request = new RequestData();
-		server = new ServerSocket(port);
+	}
+	
+	public void setOption(IntercepterOption option) {
+		this.option = option;
+	}
+	
+	public void start() throws IOException {
+		server = new ServerSocket(option.getPort());
 		socket = server.accept();
+		action();
 	}
 	
 	public void closeSocket() throws IOException {
@@ -52,11 +63,7 @@ public class ServerSocketListener {
 		return request;
 	}
 	
-	public void setPort(int port) {
-		this.port = port;
-	}
-	
-	public void action() throws IOException {
+	private void action() throws IOException {
 		if (this.socket == null){
 			return ;
 		}

@@ -46,7 +46,8 @@ public class mainWindow {
 	
 	//User data set
 	private RequestData requestData = new RequestData();
-	private Option optionData = new Option();
+	private SpiderOption spiderOption = new SpiderOption();
+	private IntercepterOption interceptOption = new IntercepterOption();
 	private FileIO file = new FileIO();
 
 	/*
@@ -220,6 +221,7 @@ public class mainWindow {
 		textField_Port_Spider.setBounds(532, 43, 86, 26);
 		panel_spider.add(textField_Port_Spider);
 		textField_Port_Spider.setColumns(10);
+		textField_Port_Spider.setText("" + spiderOption.getPort());
 		
 		Choice choiceProtocol = new Choice();
 		choiceProtocol.setBounds(76, 48, 118, 21);
@@ -239,17 +241,17 @@ public class mainWindow {
 					try {
 						String portStr = textField_Port_Spider.getText();
 						Integer portInt = Integer.parseInt(portStr);
-						optionData.setPortSpider(portInt.intValue());
-						optionData.setHost(textField_Site_Spider.getText());
-						optionData.setProtocol(choiceProtocol.getSelectedItem());
+						spiderOption.setPort(portInt.intValue());
+						spiderOption.setHost(textField_Site_Spider.getText());
+						spiderOption.setProtocol(choiceProtocol.getSelectedItem());
+						spr.setOption(spiderOption);
 				//Run Spider
 						new Thread(new Runnable() {
 							public void run() {
 								try {
-									spr.start(optionData.getProtocol(), optionData.getHost(), optionData.getPortSpider());
+									spr.start();
 								} catch (nullHostException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
+									lblTipInvalid_Spider.setVisible(true);
 								}
 								spr.stop();
 							}
@@ -257,9 +259,6 @@ public class mainWindow {
 				
 					} catch (NumberFormatException e1) {
 						lblTipInvalid_Spider.setVisible(true);
-//					} catch (IOException e1){
-//						Error frame = new Error();
-//						frame.setVisible(true);
 					}
 				} else {
 					spr.stop();
@@ -318,7 +317,7 @@ public class mainWindow {
 							if(!textField_Port_Option.getText().equals("")){
 								try {
 									String strPort_Option = textField_Port_Option.getText();
-									optionData.setPortOption(Integer.parseInt(strPort_Option));
+									interceptOption.setPort(Integer.parseInt(strPort_Option));
 									//TODO
 //									new Thread(new Runnable() {
 //										public void run() {
@@ -387,7 +386,7 @@ public class mainWindow {
 		textField_Port_Option = new JTextField();
 		textField_Port_Option.setBounds(282, 182, 130, 26);
 		panel_options.add(textField_Port_Option);
-		textField_Port_Option.setText("" + optionData.getPortOption());
+		textField_Port_Option.setText("" + interceptOption.getPort());
 		
 		Label labelTip_Option = new Label("Only Localhost Support");
 		labelTip_Option.setBounds(61, 187, 172, 16);
@@ -399,7 +398,7 @@ public class mainWindow {
 		
 		JList<String> list = new JList<String>();
 		scrollPane.setViewportView(list);
-		list.setModel(optionData.getRequestHeader());
+		list.setModel(spiderOption.getRequestHeader());
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				list.validate();
@@ -410,7 +409,7 @@ public class mainWindow {
 		JButton btnNew = new JButton("New");
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				OptionNewHeader frame = new OptionNewHeader(optionData);
+				OptionNewHeader frame = new OptionNewHeader(spiderOption);
 				frame.setVisible(true);
 			}
 		});
@@ -422,7 +421,7 @@ public class mainWindow {
 			public void actionPerformed(ActionEvent e) {
 				OptionEditHeader frame;
 				try {
-					frame = new OptionEditHeader(list.getSelectedIndex(), optionData);
+					frame = new OptionEditHeader(list.getSelectedIndex(), spiderOption);
 					frame.setVisible(true);
 				} catch (IndexOutOfBoundsException e1) {
 				}
@@ -437,7 +436,7 @@ public class mainWindow {
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					optionData.removeHeaderElement(list.getSelectedIndex());
+					spiderOption.removeHeaderElement(list.getSelectedIndex());
 				} catch (IndexOutOfBoundsException e1) {
 				}
 			}

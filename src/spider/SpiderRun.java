@@ -6,6 +6,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import data.SpiderOption;
+
 
 @SuppressWarnings("restriction")
 public class SpiderRun {
@@ -15,27 +17,21 @@ public class SpiderRun {
 	private String hostFilter;
 	private SpiderIndex result;
 	private boolean suspendFlag;
-	
-//	public static void main(String[] args){
-//		SpiderRun spr;
-//		try {
-//			spr = new SpiderRun();
-//			spr.start("https", "www.baidu.com", 443);
-//		} catch (nullHostException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+	private SpiderOption option;
 	
 	public SpiderRun() {
 		suspendFlag = false;
 	}
 	
-	public void start(String protocol, String host, int port) throws nullHostException {
-		if (host.equals("")) throw new nullHostException();
+	public void setOption(SpiderOption option) {
+		this.option = option;
+	}
+	
+	public void start() throws nullHostException {
+		if (option.getHost().equals("")) throw new nullHostException();
 		suspendFlag = false;
-		currentUrl = protocol + "://" + host + ":" +port + "/";
-		hostFilter = protocol + "://" + host;
+		currentUrl = option.getProtocol() + "://" + option.getHost() + ":" + option.getPort() + "/";
+		hostFilter = option.getProtocol() + "://" + option.getHost();
 		result = new SpiderIndex(hostFilter);
 		result.addNewUrl(currentUrl);
 		getHerfHTML();

@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import data.Option;
+import data.SpiderOption;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -22,7 +22,7 @@ public class OptionNewHeader extends JFrame {
 	/*
 	 * Create the frame.
 	 */
-	public OptionNewHeader(Option optionData) {
+	public OptionNewHeader(SpiderOption optionData) {
 		setBounds(100, 100, 450, 150);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

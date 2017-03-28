@@ -4,16 +4,15 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
 /**
- * Option: Store option data
+ * Option: Store spider option data
  * 
  * @author Ghost
  */
 
-public class Option {
+public class SpiderOption {
 	
 	private DefaultListModel<String> requestHeader;
-	private int portOption;
-	private int portSpider;
+	private int port;
 	private String host;
 	private String protocol;
 	
@@ -26,10 +25,9 @@ public class Option {
 	 *  
 	 */
 	
-	public Option() {
+	public SpiderOption() {
 		requestHeader = new DefaultListModel<String>();
-		portSpider = 80;
-		portOption = 8080;
+		port = 80;
 		host = "";
 		protocol = "http";
 		
@@ -49,20 +47,18 @@ public class Option {
 	 * Using it to load user's preference.
 	 * 
 	 * @param requestHeader Request header using in http transfer.
-	 * @param portOption	Intercepter listener port preference.
-	 * @param portSpider	Access the server with the port.
+	 * @param port			Access the server with the port.
 	 * @param host			The target server.
 	 * @param protocol		Access the server with the protocol.
 	 * 
 	 * @author Ghost
 	 */
 	
-	public Option(DefaultListModel<String> requestHeader, int portOption, int portSpider, String host,
+	public SpiderOption(DefaultListModel<String> requestHeader, int port, String host,
 			String protocol) {
 
 		this.requestHeader = requestHeader;
-		this.portSpider = portSpider;
-		this.portOption = portOption;
+		this.port = port;
 		this.host = host;
 		this.protocol = protocol;
 	}
@@ -152,30 +148,6 @@ public class Option {
 	public void removeHeaderElement(int index) throws ArrayIndexOutOfBoundsException {
 		this.requestHeader.remove(index);
 	}
-
-	/**
-	 * Get the port preference correspond to Intercepter.
-	 * 
-	 * @return port
-	 * 
-	 * @author Ghost
-	 */
-	
-	public int getPortOption() {
-		return portOption;
-	}
-
-	/**
-	 * Set port preference correspond to Intercepter.
-	 * 
-	 * @param portOption a port to listen and intercept
-	 * 
-	 * @author Ghost
-	 */
-	
-	public void setPortOption(int port) {
-		this.portOption = port;
-	}
 	
 	/**
 	 * Get port preference correspond to Spider.
@@ -185,8 +157,8 @@ public class Option {
 	 * @author Ghost
 	 */
 
-	public int getPortSpider() {
-		return portSpider;
+	public int getPort() {
+		return port;
 	}
 
 	/**
@@ -197,8 +169,8 @@ public class Option {
 	 * @author Ghost
 	 */
 	
-	public void setPortSpider(int portSpider) {
-		this.portSpider = portSpider;
+	public void setPort(int port) {
+		this.port = port;
 	}
 	
 	/**
