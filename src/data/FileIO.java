@@ -6,6 +6,7 @@ public class FileIO {
 	private String newFilePath;
 	private boolean saveFileFlag;
 	private boolean newFileFlag;
+	private boolean target;
 	
 	public FileIO() {
 		this.existFilePath = "";
@@ -46,6 +47,9 @@ public class FileIO {
 		this.saveFileFlag = saveFileFlag;
 	}
 	
+	public boolean hasTargetFile() {
+		return target;
+	}
 	
 	
 }

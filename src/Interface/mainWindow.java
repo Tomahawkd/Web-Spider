@@ -17,13 +17,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.IOException;
 import java.awt.TextArea;
 import java.awt.Panel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 
 import java.awt.Button;
 import javax.swing.JTextField;
@@ -49,6 +47,7 @@ public class mainWindow {
 	//User data set
 	private RequestData requestData = new RequestData();
 	private Option optionData = new Option();
+	private FileIO file = new FileIO();
 
 	/*
 	 * Launch the application.
@@ -119,7 +118,7 @@ public class mainWindow {
 		JMenuItem mntmNew = new JMenuItem("New...");
 		mntmNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				NewFile newFile = new NewFile();
+				NewFile newFile = new NewFile(file);
 				newFile.setVisible(true);
 			}
 		});
@@ -128,16 +127,8 @@ public class mainWindow {
 		JMenuItem mntmLoad = new JMenuItem("Load");
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-		        JFileChooser jfc=new JFileChooser();  
-		        jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);  
-		        jfc.showOpenDialog(new JLabel());  
-		        File file=jfc.getSelectedFile();  
-		        if(file.isDirectory()){  
-		            System.out.println("文件夹:"+file.getAbsolutePath());  
-		        }else if(file.isFile()){  
-		            System.out.println("文件:"+file.getAbsolutePath());  
-		        }  
-		        System.out.println(jfc.getSelectedFile().getName()); 
+		        LoadFile loadFile = new LoadFile(file);
+		        loadFile.setVisible(true);
 			}
 		});
 		mnProject.add(mntmLoad);
@@ -145,8 +136,13 @@ public class mainWindow {
 		JMenuItem mntmSave = new JMenuItem("Save");
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				saving frame = new saving();
-				frame.setVisible(true);				
+				if(file.hasTargetFile()) {
+					//TODO save file process
+					SaveFileProcess frame = new SaveFileProcess();
+					frame.setVisible(true);	
+				} else {
+					//TODO turn to save as
+				}
 			}
 		});
 		mnProject.add(mntmSave);
@@ -154,16 +150,8 @@ public class mainWindow {
 		JMenuItem mntmSaveAs = new JMenuItem("Save as...");
 		mntmSaveAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser jfc=new JFileChooser();  
-		        jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);  
-		        jfc.showSaveDialog(new JLabel());
-		        File file=jfc.getSelectedFile();  
-		        if(file.isDirectory()){  
-		            System.out.println("文件夹:"+file.getAbsolutePath());  
-		        }else if(file.isFile()){  
-		            System.out.println("文件:"+file.getAbsolutePath());  
-		        }  
-		        System.out.println(jfc.getSelectedFile().getName()); 
+				SaveFile saveFile = new SaveFile(file);
+				saveFile.setVisible(true);
 			}
 		});
 		mnProject.add(mntmSaveAs);

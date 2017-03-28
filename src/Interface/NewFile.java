@@ -12,12 +12,14 @@ public class NewFile extends JFileChooser {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private FileIO file = new FileIO();
 	private int state;
+	private FileIO file;
 	
-	public NewFile() {
+	public NewFile(FileIO file) {
 		
 		super();
+		
+		this.file = file;
 		
 		setFileSelectionMode(DIRECTORIES_ONLY);
 		setDialogTitle("New File");
@@ -34,8 +36,10 @@ public class NewFile extends JFileChooser {
 			
 			File filePath=this.getSelectedFile();
 			file.setNewFilePath(filePath.getAbsolutePath());
+			//TODO
 			
-			
+			NewFileProcess process = new NewFileProcess();
+			process.setVisible(true);
 			break;
 
 		default:

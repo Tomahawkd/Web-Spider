@@ -10,7 +10,7 @@ import javax.swing.event.ChangeEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 
-public class MkNewFile extends JFrame {
+public class NewFileProcess extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -19,7 +19,7 @@ public class MkNewFile extends JFrame {
 	/*
 	 * Create the frame.
 	 */
-	public MkNewFile() {
+	public NewFileProcess() {
 		setEnabled(false);
 
 		setBounds(100, 100, 450, 178);
