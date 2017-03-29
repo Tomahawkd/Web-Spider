@@ -17,7 +17,8 @@ public class FileExceptions extends Exception {
 enum ExceptionType {
 	
 	EXIST("File is already exist."), 
-	NULL("File is not exist.");
+	NULL("File is not exist."),
+	INVALID("File name is invalid.");
 	
 	private String errorMessage;
 	
@@ -55,3 +56,18 @@ class fileNotFoundException extends FileExceptions {
 	}
 	
 }
+
+class fileNameInvaildException extends FileExceptions {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public fileNameInvaildException() {
+		super(ExceptionType.INVALID.getErrorMessage());
+	}
+	
+}
+
+
