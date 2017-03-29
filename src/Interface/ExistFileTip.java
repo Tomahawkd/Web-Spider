@@ -3,6 +3,9 @@ package Interface;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import data.FileIO;
+
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -20,7 +23,7 @@ public class ExistFileTip extends JFrame {
 	/*
 	 * Create the frame.
 	 */
-	public ExistFileTip() {
+	public ExistFileTip(FileIO file) {
 		setBounds(100, 100, 450, 155);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -35,6 +38,7 @@ public class ExistFileTip extends JFrame {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//TODO
+				
 				
 				LoadFileProcess process = new LoadFileProcess();
 				process.setVisible(true);

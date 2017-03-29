@@ -39,6 +39,7 @@ public class mainWindow {
 	/*
 	 * Global element in order to transfer data throw different tab pane
 	 */
+	
 	private JFrame frmWebSpider;
 	private JTextField textField_Site_Spider;
 	private JTextField textField_Port_Spider;

@@ -35,18 +35,26 @@ public class NewFile extends JFileChooser {
 		case JFileChooser.APPROVE_OPTION:
 			
 			File filePath=this.getSelectedFile();
-			new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					file.setTargetFilePath(filePath.getAbsolutePath());
-					//TODO
-					
-				}
-			});
+			file.setTargetFilePath(filePath.getAbsolutePath());
 			
-			NewFileProcess process = new NewFileProcess();
-			process.setVisible(true);
+			if(file.isExist()){
+				ExistFileTip tip = new ExistFileTip(file);
+				tip.setVisible(true);
+				
+			} else {
+			
+				new Thread(new Runnable() {
+				
+					@Override
+					public void run() {
+						//TODO
+						
+					}
+				});
+				NewFileProcess process = new NewFileProcess();
+				process.setVisible(true);
+			}
+			
 			break;
 
 		default:
