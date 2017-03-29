@@ -138,11 +138,20 @@ public class mainWindow {
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(file.hasTargetFile()) {
-					//TODO save file process
-					SaveFileProcess frame = new SaveFileProcess();
-					frame.setVisible(true);	
+					new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+							//TODO	
+							
+							SaveFileProcess frame = new SaveFileProcess();
+							frame.setVisible(true);	
+						}
+					});
 				} else {
 					//TODO turn to save as
+					SaveFile saveFile = new SaveFile(file);
+					saveFile.setVisible(true);
 				}
 			}
 		});

@@ -55,8 +55,15 @@ public class LoadFile extends JFileChooser {
 		case JFileChooser.APPROVE_OPTION:
 			
 			File filePath=this.getSelectedFile();
-			file.setNewFilePath(filePath.getAbsolutePath());
-			//TODO
+			
+			new Thread(new Runnable() {
+				public void run() {
+					file.setTargetFilePath(filePath.getAbsolutePath());
+					//TODO
+					
+				}
+			}
+			);
 			
 			LoadFileProcess process = new LoadFileProcess();
 			process.setVisible(true);

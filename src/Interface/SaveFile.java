@@ -54,9 +54,15 @@ public class SaveFile extends JFileChooser {
 		switch (state) {
 		case JFileChooser.APPROVE_OPTION:
 			
-			File filePath=this.getSelectedFile();
-			file.setNewFilePath(filePath.getAbsolutePath());
-			//TODO
+			final File filePath=this.getSelectedFile();
+			
+			new Thread(new Runnable() {
+				public void run() {
+					file.setTargetFilePath(filePath.getAbsolutePath());
+					//TODO
+					
+				}
+			});
 			
 			SaveFileProcess process = new SaveFileProcess();
 			process.setVisible(true);
