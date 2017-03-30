@@ -145,7 +145,7 @@ public class mainWindow {
 						public void run() {
 							//TODO	
 							
-							SaveFileProcess frame = new SaveFileProcess();
+							FileProcess frame = new FileProcess(OperationType.SAVE);
 							frame.setVisible(true);	
 						}
 					});

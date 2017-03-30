@@ -64,8 +64,8 @@ public class NewFile extends JFileChooser {
 			
 			try {
 				
-				file.createFile();
-				NewFileProcess process = new NewFileProcess();
+				file.createFile(false);
+				FileProcess process = new FileProcess(OperationType.NEW);
 				process.setVisible(true);
 			} catch (existFileException e) {
 						
@@ -82,7 +82,6 @@ public class NewFile extends JFileChooser {
 				error.setVisible(true);
 			}
 
-			
 			break;
 
 		default:

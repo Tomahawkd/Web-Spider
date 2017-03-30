@@ -4,11 +4,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Exception.existFileException;
+import Exception.fileNameInvaildException;
 import data.FileIO;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 public class ExistFileTip extends JFrame {
@@ -39,9 +43,19 @@ public class ExistFileTip extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//TODO
 				
+					try {
+						file.createFile(true);
+					} catch (existFileException | fileNameInvaildException e1) {
+						
+					} catch (IOException e1) {
+						Error error = new Error();
+						error.setVisible(true);
+						dispose();
+					}
 				
-				LoadFileProcess process = new LoadFileProcess();
+				FileProcess process = new FileProcess(OperationType.NEW);
 				process.setVisible(true);
+				dispose();
 			}
 		});
 		btnOk.setBounds(68, 86, 117, 29);

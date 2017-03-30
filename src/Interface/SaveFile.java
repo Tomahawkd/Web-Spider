@@ -64,7 +64,7 @@ public class SaveFile extends JFileChooser {
 				}
 			});
 			
-			SaveFileProcess process = new SaveFileProcess();
+			FileProcess process = new FileProcess(OperationType.SAVE);
 			process.setVisible(true);
 			break;
 

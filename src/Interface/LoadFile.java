@@ -65,7 +65,7 @@ public class LoadFile extends JFileChooser {
 			}
 			);
 			
-			LoadFileProcess process = new LoadFileProcess();
+			FileProcess process = new FileProcess(OperationType.LOAD);
 			process.setVisible(true);
 			break;
 

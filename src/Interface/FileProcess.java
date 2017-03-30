@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 
-public class SaveFileProcess extends JFrame {
+public class FileProcess extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -21,7 +21,7 @@ public class SaveFileProcess extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SaveFileProcess() {
+	public FileProcess(OperationType type) {
 		setResizable(false);
 		
 		setBounds(100, 100, 450, 178);
@@ -30,7 +30,7 @@ public class SaveFileProcess extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblSaving = new JLabel("Saving...");
+		JLabel lblSaving = new JLabel(type.getMessage());
 		lblSaving.setBounds(194, 48, 61, 16);
 		contentPane.add(lblSaving);
 		lblSaving.setVisible(true);
@@ -72,7 +72,7 @@ public class SaveFileProcess extends JFrame {
 						for(int i = progressBar.getMinimum(); i <= progressBar.getMaximum(); i++){
 							progressBar.setValue(i);
 							try {
-								Thread.sleep(50);
+								Thread.sleep(type.getSleepTime());
 							} catch (InterruptedException ex) {}
 						} 
 					}
@@ -82,3 +82,27 @@ public class SaveFileProcess extends JFrame {
 		
 	}
 }
+
+enum OperationType {
+	NEW("Creating...", 10), 
+	LOAD("Loading...", 50),
+	SAVE("Saving..." , 50);
+	
+	private String message;
+	private int sleepTime;
+	
+	private OperationType(String message, int sleepTime) {
+		this.message = message;
+		this.sleepTime = sleepTime;
+	}
+	
+	String getMessage() {
+		return message;
+	}
+	
+	int getSleepTime() {
+		return sleepTime;
+	}
+}
+
+

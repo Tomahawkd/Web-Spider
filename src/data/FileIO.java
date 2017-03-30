@@ -34,16 +34,12 @@ public class FileIO {
 		return target;
 	}
 	
-	private void setTarget(boolean target) {
-		this.target = target;
-	}
-	
-	public void createFile() throws existFileException, fileNameInvaildException, FileNotFoundException, IOException {
+	public void createFile(boolean force) throws existFileException, fileNameInvaildException, FileNotFoundException, IOException {
 		if(!targetFilePath.contains(".spf")) {
 			targetFilePath += ".spf";
 		}
 		
-		String targetFileName = targetFilePath.split("\\")[targetFilePath.split("\\").length - 1];
+		String targetFileName = targetFilePath.split(File.separator)[targetFilePath.split(File.separator).length - 1];
 		
 		if (targetFileName.contains("\\") || targetFileName.contains("/") || targetFileName.contains(":") || 
 			targetFileName.contains("*") || targetFileName.contains("?") || targetFileName.contains("\"") || 
@@ -53,12 +49,13 @@ public class FileIO {
 			
 		File newFile = new File(targetFilePath);
 		
-		if (newFile.exists()) {
+		if (!force && newFile.exists()) {
 			throw new existFileException();
 		}
 			
 		ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(targetFilePath));
-		setTarget(true);
+		
+		target = true;
 		output.close();
 	}
 }
