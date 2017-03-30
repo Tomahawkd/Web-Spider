@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.regex.*;
 
 import Exception.existFileException;
 import Exception.fileNameInvaildException;
@@ -39,11 +40,12 @@ public class FileIO {
 			targetFilePath += ".spf";
 		}
 		
-		String targetFileName = targetFilePath.split(File.separator)[targetFilePath.split(File.separator).length - 1];
+		String targetFileName = targetFilePath.substring(targetFilePath.lastIndexOf(File.separator) + 1);
 		
-		if (targetFileName.contains("\\") || targetFileName.contains("/") || targetFileName.contains(":") || 
-			targetFileName.contains("*") || targetFileName.contains("?") || targetFileName.contains("\"") || 
-			targetFileName.contains("<") || targetFileName.contains(">") || targetFileName.contains("|")) {
+		Matcher invalid = Pattern.compile("[\\/:\"*?<>|]").matcher(targetFileName);
+		Matcher rejectHide = Pattern.compile("^.").matcher(targetFileName);
+		
+		if (invalid.find() | rejectHide.find()) {
 			throw new fileNameInvaildException();
 		}
 			
