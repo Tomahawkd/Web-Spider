@@ -1,6 +1,7 @@
 package spider;
 
 import java.io.IOException;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -8,6 +9,11 @@ import org.jsoup.select.Elements;
 
 import data.SpiderOption;
 
+/**
+ * Spider: Web Spider core system
+ * 
+ * @author Ghost
+ */
 
 @SuppressWarnings("restriction")
 public class SpiderRun {
@@ -23,9 +29,25 @@ public class SpiderRun {
 		suspendFlag = false;
 	}
 	
+	/**
+	 * Get user's option data.
+	 * 
+	 * @param option user's preference
+	 * 
+	 * @author Ghost
+	 */
+	
 	public void setOption(SpiderOption option) {
 		this.option = option;
 	}
+	
+	/**
+	 * Start web spider operation.
+	 * 
+	 * @throws nullHostException throws while the host has no parameters
+	 * 
+	 * @author Ghost
+	 */
 	
 	public void start() throws nullHostException {
 		if (option.getHost().equals("")) throw new nullHostException();
@@ -34,17 +56,35 @@ public class SpiderRun {
 		hostFilter = option.getProtocol() + "://" + option.getHost();
 		result = new SpiderIndex(hostFilter);
 		result.addNewUrl(currentUrl);
-		getHerfHTML();
+		getHerfHtml();
 	}
+	
+	/**
+	 * Resume a suspend spider operation.
+	 * 
+	 * @author Ghost
+	 */
 	
 	public void resume() {
 		suspendFlag = false;
-		getHerfHTML();
+		getHerfHtml();
 	}
+	
+	/**
+	 * Stop a spider operation.
+	 * 
+	 * @author Ghost
+	 */
 	
 	public void stop() {
 		suspendFlag = true;
 	}
+	
+	/**
+	 * Test the host connection.
+	 * 
+	 * @param baseURL
+	 */
 	
 	private void connect(String baseURL){
 		try {
@@ -52,28 +92,38 @@ public class SpiderRun {
 			urlValidate = true;
 		} catch (IOException e) {
 			urlValidate = false;
-		}
+		} 
 	}
+	
+	
 	
 	boolean getUrlValid(){
 		return urlValidate;
 	}
 	
-	private void getHerfHTML(){
+	/**
+	 * Rescue to get html
+	 * 
+	 * @author Ghost
+	 */
+	
+	private void getHerfHtml(){
 		
 		if (!suspendFlag) {
+			
 			connect(currentUrl);
+			
 			if (urlValidate) {
 				Elements media = doc.select("[src]");
 				for (Element src : media) {
 					if (src.attr("abs:src").contains(hostFilter)) {
-//						System.out.println(src.attr("abs:src"));
+						//TODO
+						
 						currentUrl = src.attr("abs:src");
 						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
 							result.addNewUrl(currentUrl);
 							urlValidate = false;
-//							System.out.printf("currentURL=%s\n", currentURL);
-							getHerfHTML();
+							getHerfHtml();
 						}
 					}
 				}
@@ -81,18 +131,16 @@ public class SpiderRun {
 				Elements imports = doc.select("*[href]");
 				for (Element link : imports) {
 					if (link.attr("abs:href").contains(hostFilter)) {
-//						System.out.println(link.attr("abs:href"));
+						//TODO
+						
 						currentUrl = link.attr("abs:href");
 						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
 							result.addNewUrl(currentUrl);
 							urlValidate = false;
-//							System.out.printf("currentURL=%s\n", currentURL);
-							getHerfHTML();
+							getHerfHtml();
 						}
 					}
 				}
-//			} else {
-//				System.out.println("url is not valid");
 			} 
 		}
 		

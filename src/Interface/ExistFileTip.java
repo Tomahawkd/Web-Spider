@@ -4,14 +4,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Exception.existFileException;
-import Exception.fileNameInvaildException;
+import Exception.ExistFileException;
+import Exception.FileNameInvaildException;
 import data.FileIO;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 
@@ -45,7 +44,7 @@ public class ExistFileTip extends JFrame {
 				
 					try {
 						file.createFile(true);
-					} catch (existFileException | fileNameInvaildException e1) {
+					} catch (ExistFileException | FileNameInvaildException e1) {
 						
 					} catch (IOException e1) {
 						Error error = new Error();

@@ -6,6 +6,12 @@ import java.net.*;
 import data.IntercepterOption;
 import data.RequestData;
 
+/**
+ * Intercepter: Intercept http transfer data
+ * 
+ * @author Ghost
+ */
+
 public class ServerSocketListener {
 	private Socket socket = null;
 	private boolean suspendFlag;
@@ -36,6 +42,14 @@ public class ServerSocketListener {
 		suspendFlag = false;
 		request = new RequestData();
 	}
+	
+	/**
+	 * Read user's option
+	 * 
+	 * @param option user's preference
+	 * 
+	 * @author Ghost
+	 */
 	
 	public void setOption(IntercepterOption option) {
 		this.option = option;

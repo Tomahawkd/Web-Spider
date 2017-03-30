@@ -1,5 +1,11 @@
 package spider;
 
+/**
+ * Exception: The exception throws when the host equals non-parameters.
+ * 
+ * @author Ghost
+ */
+
 public class nullHostException extends Exception {
 
 	/**

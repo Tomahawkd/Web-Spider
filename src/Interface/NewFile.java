@@ -7,9 +7,10 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-import Exception.existFileException;
-import Exception.fileNameInvaildException;
+import Exception.ExistFileException;
+import Exception.FileNameInvaildException;
 
 
 public class NewFile extends JFileChooser {
@@ -27,24 +28,7 @@ public class NewFile extends JFileChooser {
 		
 		this.file = file;
 		
-		FileFilter filter = new FileFilter() {
-			
-			@Override
-			public String getDescription() {
-				return "Spider Data File";
-			}
-			
-			@Override
-			public boolean accept(File fileName) {
-				
-				boolean flag = false;
-				
-				if(fileName.getName().contains(".sdf")){
-					flag = true;
-				}
-				return flag;
-			}
-		};
+		FileFilter filter = new FileNameExtensionFilter("Spider Data File", "sdf");
 		setFileFilter(filter);
 		setFileSelectionMode(DIRECTORIES_ONLY);
 		setDialogTitle("New File");
@@ -67,12 +51,12 @@ public class NewFile extends JFileChooser {
 				file.createFile(false);
 				FileProcess process = new FileProcess(OperationType.NEW);
 				process.setVisible(true);
-			} catch (existFileException e) {
+			} catch (ExistFileException e) {
 						
 				ExistFileTip tip = new ExistFileTip(file);
 				tip.setVisible(true);
 						
-			} catch (fileNameInvaildException e) {
+			} catch (FileNameInvaildException e) {
 				
 				FileNameInvalid invalid = new FileNameInvalid();
 				invalid.setVisible(true);

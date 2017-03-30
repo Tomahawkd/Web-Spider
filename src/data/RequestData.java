@@ -2,6 +2,12 @@ package data;
 
 import java.util.ArrayList;
 
+/**
+ * Data: Store intercepter's cache data
+ * 
+ * @author Ghost
+ */
+
 public class RequestData {
 
 	private ArrayList<String> request;

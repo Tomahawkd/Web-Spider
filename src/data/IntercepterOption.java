@@ -1,7 +1,7 @@
 package data;
 
 /**
- * Option: Store option data
+ * Option: Store intercepter option data
  * 
  * @author Ghost
  */

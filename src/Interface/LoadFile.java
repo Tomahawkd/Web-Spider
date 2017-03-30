@@ -5,6 +5,7 @@ import data.FileIO;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class LoadFile extends JFileChooser {
@@ -22,24 +23,7 @@ public class LoadFile extends JFileChooser {
 		
 		this.file = file;
 		
-		FileFilter filter = new FileFilter() {
-			
-			@Override
-			public String getDescription() {
-				return "Spider Data File";
-			}
-			
-			@Override
-			public boolean accept(File fileName) {
-				
-				boolean flag = false;
-				
-				if(fileName.getName().contains(".sdf")){
-					flag = true;
-				}
-				return flag;
-			}
-		};
+		FileFilter filter = new FileNameExtensionFilter("Spider Data File", "sdf");
 		setFileFilter(filter);
 		setFileSelectionMode(FILES_AND_DIRECTORIES);
 		setDialogTitle("Open File");

@@ -1,5 +1,11 @@
 package Exception;
 
+/**
+ * Exception: Universal exceptions about files
+ * 
+ * @author Ghost
+ */
+
 public class FileExceptions extends Exception {
 
 	/**
