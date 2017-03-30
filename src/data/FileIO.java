@@ -6,16 +6,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import Exception.existFileException;
+import Exception.fileNameInvaildException;
+
 public class FileIO {
 	
 	private String targetFilePath;
 	private boolean target;
-	private boolean exist;
 	
 	public FileIO() {
 		this.targetFilePath = "";
 		this.target = false;
-		this.exist = false;
 	}
 
 
@@ -33,18 +34,17 @@ public class FileIO {
 		return target;
 	}
 	
-	
-	public boolean isExist() {
-		return exist;
-	}
-	
 	private void setTarget(boolean target) {
 		this.target = target;
 	}
 	
 	public void createFile() throws existFileException, fileNameInvaildException, FileNotFoundException, IOException {
+		if(!targetFilePath.contains(".spf")) {
+			targetFilePath += ".spf";
+		}
+		
 		String targetFileName = targetFilePath.split("\\")[targetFilePath.split("\\").length - 1];
-			
+		
 		if (targetFileName.contains("\\") || targetFileName.contains("/") || targetFileName.contains(":") || 
 			targetFileName.contains("*") || targetFileName.contains("?") || targetFileName.contains("\"") || 
 			targetFileName.contains("<") || targetFileName.contains(">") || targetFileName.contains("|")) {
@@ -58,5 +58,7 @@ public class FileIO {
 		}
 			
 		ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(targetFilePath));
+		setTarget(true);
+		output.close();
 	}
 }

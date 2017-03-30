@@ -1,2 +1,5 @@
 *.classpath
-.classpath
+
+*.class
+
+.DS_Store
