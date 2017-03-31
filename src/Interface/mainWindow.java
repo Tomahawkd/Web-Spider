@@ -417,7 +417,7 @@ public class mainWindow {
 		list.setModel(file.getDataSet().getSpiderOption().getRequestHeader());
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				list.validate();
+				list.setModel(file.getDataSet().getSpiderOption().getRequestHeader());
 			}
 		});
 		

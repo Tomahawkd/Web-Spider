@@ -123,9 +123,10 @@ public class FileIO {
 		this.data = (DataSet) input.readObject();
 		
 		input.close();
+		target = true;
 	}
 	
-public void saveFile() throws FileNotFoundException, IOException {
+	public void saveFile() throws FileNotFoundException, IOException {
 			
 		if (!target) {
 			throw new FileNotFoundException();
@@ -154,7 +155,7 @@ public void saveFile() throws FileNotFoundException, IOException {
 			
 		File saveFile = new File(targetFilePath);
 		
-		if (!target && !force && saveFile.exists()) {
+		if (!force && saveFile.exists()) {
 			throw new ExistFileException();
 		}
 			
