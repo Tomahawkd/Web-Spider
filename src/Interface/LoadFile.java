@@ -21,7 +21,7 @@ public class LoadFile extends JFileChooser {
 	private int state;
 	private FileIO file;
 	
-	public LoadFile(FileIO file) {
+	public LoadFile(FileIO file, MainWindow window) {
 		
 		super();
 		
@@ -35,10 +35,10 @@ public class LoadFile extends JFileChooser {
 		
 		state = showOpenDialog(null);
 		
-		execute();
+		execute(window);
 	}
 	
-	private void execute() {
+	private void execute(MainWindow window) {
 		switch (state) {
 		case JFileChooser.APPROVE_OPTION:
 			
@@ -48,6 +48,7 @@ public class LoadFile extends JFileChooser {
 				file.loadFile();
 				FileProcess process = new FileProcess(OperationType.LOAD);
 				process.setVisible(true);
+				window.updateUI();
 			} catch (FileNotFoundException e) {
 				NewFile newFile = new NewFile(file);
 				newFile.setVisible(true);

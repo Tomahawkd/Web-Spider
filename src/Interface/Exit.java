@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class exit extends JFrame {
+public class Exit extends JFrame {
 
 	/**
 	 * 
@@ -18,7 +18,7 @@ public class exit extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public exit() {
+	public Exit() {
 		setResizable(false);
 		setTitle("Confirm");
 		setBounds(230, 250, 450, 150);

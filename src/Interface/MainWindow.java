@@ -38,7 +38,7 @@ import javax.swing.event.ListSelectionEvent;
 import java.awt.Choice;
 import javax.swing.JTree;
 
-public class mainWindow {
+public class MainWindow {
 
 	/*
 	 * Global element in order to transfer data throw different tab pane
@@ -48,6 +48,8 @@ public class mainWindow {
 	private JTextField textField_Site_Spider;
 	private JTextField textField_Port_Spider;
 	private JTextField textField_Port_Option;
+	private Choice choiceProtocol;
+	private JList<String> list;
 	private JTree siteMap;
 	
 	//User data set
@@ -57,11 +59,12 @@ public class mainWindow {
 	 * Launch the application.
 	 */
 	
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					mainWindow window = new mainWindow();
+					MainWindow window = new MainWindow();
 					window.frmWebSpider.setVisible(true);
 				} catch (Exception e) {
 					Error frame = new Error();
@@ -70,12 +73,12 @@ public class mainWindow {
 			}
 		});
 	}
-
+	
 	/*
 	 * Create the application.
 	 */
 	
-	public mainWindow() {
+	public MainWindow() {
 		initialize();
 	}
 
@@ -97,13 +100,12 @@ public class mainWindow {
 		frmWebSpider.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				exit frame = new exit();
+				Exit frame = new Exit();
 				frame.setVisible(true);
 			}
 		});
 		frmWebSpider.setBounds(100, 100, 702, 500);
 		frmWebSpider.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		
 		
 		/*
 		 *  Menu
@@ -129,9 +131,10 @@ public class mainWindow {
 		mnProject.add(mntmNew);
 		
 		JMenuItem mntmLoad = new JMenuItem("Load");
+		MainWindow window = this;
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-		        LoadFile loadFile = new LoadFile(file);
+		        LoadFile loadFile = new LoadFile(file, window);
 		        loadFile.setVisible(true);
 			}
 		});
@@ -174,7 +177,7 @@ public class mainWindow {
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				exit frame = new exit();
+				Exit frame = new Exit();
 				frame.setVisible(true);
 			}
 		});
@@ -237,7 +240,7 @@ public class mainWindow {
 		textField_Port_Spider.setColumns(10);
 		textField_Port_Spider.setText("" + file.getDataSet().getSpiderOption().getPort());
 		
-		Choice choiceProtocol = new Choice();
+		choiceProtocol = new Choice();
 		choiceProtocol.setBounds(76, 48, 118, 21);
 		panel_spider.add(choiceProtocol);
 		choiceProtocol.add("http");
@@ -412,7 +415,7 @@ public class mainWindow {
 		scrollPane.setBounds(135, 40, 513, 87);
 		panel_options.add(scrollPane);
 		
-		JList<String> list = new JList<String>();
+		list = new JList<String>();
 		scrollPane.setViewportView(list);
 		list.setModel(file.getDataSet().getSpiderOption().getRequestHeader());
 		list.addListSelectionListener(new ListSelectionListener() {
@@ -507,5 +510,15 @@ public class mainWindow {
 		});
 		btnClear_Decode.setBounds(419, 205, 117, 29);
 		panel_decoder.add(btnClear_Decode);
+	}
+	
+	
+	public void updateUI() {
+		this.frmWebSpider.setTitle("Web Spider - " + file.getTargetFilePath());
+		this.textField_Port_Option.setText("" + file.getDataSet().getIntercepterOption().getPort());
+		this.textField_Port_Spider.setText("" + file.getDataSet().getSpiderOption().getPort());
+		this.textField_Site_Spider.setText(file.getDataSet().getSpiderOption().getHost());
+		this.choiceProtocol.select(file.getDataSet().getSpiderOption().getProtocol());
+		this.list.setModel(file.getDataSet().getSpiderOption().getRequestHeader());
 	}
 }
