@@ -49,11 +49,15 @@ public class NewFile extends JFileChooser {
 			try {
 				
 				file.createFile(false);
-				FileProcess process = new FileProcess(OperationType.NEW);
-				process.setVisible(true);
+				new Thread(new Runnable() {
+					public void run() {
+						FileProcess process = new FileProcess(OperationType.NEW);
+						process.setVisible(true);
+					}
+				});
 			} catch (ExistFileException e) {
 						
-				ExistFileTip tip = new ExistFileTip(file);
+				ExistFileTip tip = new ExistFileTip(file, Operation.NEW);
 				tip.setVisible(true);
 						
 			} catch (FileNameInvaildException e) {

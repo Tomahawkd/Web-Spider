@@ -26,7 +26,7 @@ public class ExistFileTip extends JFrame {
 	/*
 	 * Create the frame.
 	 */
-	public ExistFileTip(FileIO file) {
+	public ExistFileTip(FileIO file, Operation type) {
 		setBounds(100, 100, 450, 155);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -41,7 +41,8 @@ public class ExistFileTip extends JFrame {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//TODO
-				
+				switch(type) {
+				case NEW:
 					try {
 						file.createFile(true);
 					} catch (ExistFileException | FileNameInvaildException e1) {
@@ -51,9 +52,28 @@ public class ExistFileTip extends JFrame {
 						error.setVisible(true);
 						dispose();
 					}
+				break;
 				
-				FileProcess process = new FileProcess(OperationType.NEW);
-				process.setVisible(true);
+				case SAVE:
+					try {
+						file.saveAsFile(true);
+					} catch (ExistFileException | FileNameInvaildException e1) {
+						
+					} catch (IOException e1) {
+						Error error = new Error();
+						error.setVisible(true);
+						dispose();
+					}
+				break;
+				}
+				
+				new Thread(new Runnable() {
+					public void run() {
+						FileProcess process = new FileProcess(type.getOperationType());
+						process.setVisible(true);
+					}
+				});
+				
 				dispose();
 			}
 		});
@@ -68,5 +88,21 @@ public class ExistFileTip extends JFrame {
 		});
 		btnCancel.setBounds(265, 86, 117, 29);
 		contentPane.add(btnCancel);
+	}
+}
+
+
+enum Operation {
+	NEW(OperationType.NEW), 
+	SAVE(OperationType.SAVE);
+	
+	private OperationType type;
+	
+	private Operation(OperationType type) {
+		this.type = type;
+	}
+	
+	OperationType getOperationType() {
+		return type;
 	}
 }

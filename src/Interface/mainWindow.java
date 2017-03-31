@@ -31,8 +31,12 @@ import java.awt.Label;
 import java.awt.Font;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionListener;
+
+import Exception.FileNotFoundException;
+
 import javax.swing.event.ListSelectionEvent;
 import java.awt.Choice;
+import javax.swing.JTree;
 
 public class mainWindow {
 
@@ -44,11 +48,9 @@ public class mainWindow {
 	private JTextField textField_Site_Spider;
 	private JTextField textField_Port_Spider;
 	private JTextField textField_Port_Option;
+	private JTree siteMap;
 	
 	//User data set
-	private RequestData requestData = new RequestData();
-	private SpiderOption spiderOption = new SpiderOption();
-	private IntercepterOption interceptOption = new IntercepterOption();
 	private FileIO file = new FileIO();
 
 	/*
@@ -140,10 +142,18 @@ public class mainWindow {
 			public void actionPerformed(ActionEvent e) {
 				if(file.hasTargetFile()) {
 					new Thread(new Runnable() {
-						
 						@Override
-						public void run() {
-							//TODO	
+						public void run() {	
+							try {
+								file.saveFile();
+							} catch (FileNotFoundException e) {
+								// TODO Auto-generated catch block
+								SaveFile saveFile = new SaveFile(file);
+								saveFile.setVisible(true);
+							} catch (IOException e) {
+								Error error = new Error();
+								error.setVisible(true);
+							}
 							
 							FileProcess frame = new FileProcess(OperationType.SAVE);
 							frame.setVisible(true);	
@@ -231,7 +241,7 @@ public class mainWindow {
 		textField_Port_Spider.setBounds(532, 43, 86, 26);
 		panel_spider.add(textField_Port_Spider);
 		textField_Port_Spider.setColumns(10);
-		textField_Port_Spider.setText("" + spiderOption.getPort());
+		textField_Port_Spider.setText("" + file.getDataSet().getSpiderOption().getPort());
 		
 		Choice choiceProtocol = new Choice();
 		choiceProtocol.setBounds(76, 48, 118, 21);
@@ -251,10 +261,10 @@ public class mainWindow {
 					try {
 						String portStr = textField_Port_Spider.getText();
 						Integer portInt = Integer.parseInt(portStr);
-						spiderOption.setPort(portInt.intValue());
-						spiderOption.setHost(textField_Site_Spider.getText());
-						spiderOption.setProtocol(choiceProtocol.getSelectedItem());
-						spr.setOption(spiderOption);
+						file.getDataSet().getSpiderOption().setPort(portInt.intValue());
+						file.getDataSet().getSpiderOption().setHost(textField_Site_Spider.getText());
+						file.getDataSet().getSpiderOption().setProtocol(choiceProtocol.getSelectedItem());
+						spr.setOption(file.getDataSet().getSpiderOption());
 				//Run Spider
 						new Thread(new Runnable() {
 							public void run() {
@@ -284,18 +294,20 @@ public class mainWindow {
 		/*
 		 *  Panel2: Site Map
 		 */
-		
+
 		JScrollPane panel_SiteMap = new JScrollPane();
 		tabbedPane.addTab("Site Map", null, panel_SiteMap, null);
 		
-		
-		/*
-		 *  Panel3: Intercepter
-		 */
+		siteMap = new JTree();
+		panel_SiteMap.setViewportView(siteMap);
 		
 		JPanel panel_intercepter = new JPanel();
 		tabbedPane.addTab("Intercepter", null, panel_intercepter, null);
 		panel_intercepter.setLayout(null);
+		
+		/*
+		 *  Panel3: Intercepter
+		 */
 		
 		JTextArea httpContent_Intercept = new JTextArea();
 		httpContent_Intercept.setBounds(6, 87, 657, 305);
@@ -327,7 +339,7 @@ public class mainWindow {
 							if(!textField_Port_Option.getText().equals("")){
 								try {
 									String strPort_Option = textField_Port_Option.getText();
-									interceptOption.setPort(Integer.parseInt(strPort_Option));
+									file.getDataSet().getIntercepterOption().setPort(Integer.parseInt(strPort_Option));
 									//TODO
 //									new Thread(new Runnable() {
 //										public void run() {
@@ -396,7 +408,7 @@ public class mainWindow {
 		textField_Port_Option = new JTextField();
 		textField_Port_Option.setBounds(282, 182, 130, 26);
 		panel_options.add(textField_Port_Option);
-		textField_Port_Option.setText("" + interceptOption.getPort());
+		textField_Port_Option.setText("" + file.getDataSet().getIntercepterOption().getPort());
 		
 		Label labelTip_Option = new Label("Only Localhost Support");
 		labelTip_Option.setBounds(61, 187, 172, 16);
@@ -408,7 +420,7 @@ public class mainWindow {
 		
 		JList<String> list = new JList<String>();
 		scrollPane.setViewportView(list);
-		list.setModel(spiderOption.getRequestHeader());
+		list.setModel(file.getDataSet().getSpiderOption().getRequestHeader());
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				list.validate();
@@ -419,7 +431,7 @@ public class mainWindow {
 		JButton btnNew = new JButton("New");
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				OptionNewHeader frame = new OptionNewHeader(spiderOption);
+				OptionNewHeader frame = new OptionNewHeader(file.getDataSet().getSpiderOption());
 				frame.setVisible(true);
 			}
 		});
@@ -431,7 +443,7 @@ public class mainWindow {
 			public void actionPerformed(ActionEvent e) {
 				OptionEditHeader frame;
 				try {
-					frame = new OptionEditHeader(list.getSelectedIndex(), spiderOption);
+					frame = new OptionEditHeader(list.getSelectedIndex(), file.getDataSet().getSpiderOption());
 					frame.setVisible(true);
 				} catch (IndexOutOfBoundsException e1) {
 				}
@@ -446,7 +458,7 @@ public class mainWindow {
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					spiderOption.removeHeaderElement(list.getSelectedIndex());
+					file.getDataSet().getSpiderOption().removeHeaderElement(list.getSelectedIndex());
 				} catch (IndexOutOfBoundsException e1) {
 				}
 			}

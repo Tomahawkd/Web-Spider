@@ -29,7 +29,7 @@ public class IntercepterOption {
 	 * 
 	 * Using it to load user's preference.
 	 * 
-	 * @param port	Intercepter listener port preference.
+	 * @param port Intercepter listener port preference.
 	 * 
 	 * @author Ghost
 	 */
@@ -55,7 +55,7 @@ public class IntercepterOption {
 	/**
 	 * Set port preference correspond to Intercepter.
 	 * 
-	 * @param portOption a port to listen and intercept
+	 * @param port a port to listen and intercept
 	 * 
 	 * @author Ghost
 	 */
