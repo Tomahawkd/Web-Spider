@@ -45,6 +45,8 @@ public class ExistFileTip extends JFrame {
 				case NEW:
 					try {
 						file.createFile(true);
+						FileProcess process = new FileProcess(type.getOperationType());
+						process.setVisible(true);
 					} catch (ExistFileException | FileNameInvaildException e1) {
 						
 					} catch (IOException e1) {
@@ -57,6 +59,8 @@ public class ExistFileTip extends JFrame {
 				case SAVE:
 					try {
 						file.saveAsFile(true);
+						FileProcess process = new FileProcess(type.getOperationType());
+						process.setVisible(true);
 					} catch (ExistFileException | FileNameInvaildException e1) {
 						
 					} catch (IOException e1) {
@@ -66,13 +70,6 @@ public class ExistFileTip extends JFrame {
 					}
 				break;
 				}
-				
-				new Thread(new Runnable() {
-					public void run() {
-						FileProcess process = new FileProcess(type.getOperationType());
-						process.setVisible(true);
-					}
-				});
 				
 				dispose();
 			}

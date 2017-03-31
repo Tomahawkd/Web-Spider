@@ -141,24 +141,23 @@ public class mainWindow {
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(file.hasTargetFile()) {
-					new Thread(new Runnable() {
-						@Override
-						public void run() {	
-							try {
-								file.saveFile();
-							} catch (FileNotFoundException e) {
-								// TODO Auto-generated catch block
-								SaveFile saveFile = new SaveFile(file);
-								saveFile.setVisible(true);
-							} catch (IOException e) {
-								Error error = new Error();
-								error.setVisible(true);
-							}
-							
-							FileProcess frame = new FileProcess(OperationType.SAVE);
-							frame.setVisible(true);	
-						}
-					});
+					try {
+						file.saveFile();
+						FileProcess frame = new FileProcess(OperationType.SAVE);
+						frame.setVisible(true);	
+					} catch (FileNotFoundException e1) {
+
+						SaveFile saveFile = new SaveFile(file);
+						saveFile.setVisible(true);
+					} catch (IOException e1) {
+						Error error = new Error();
+						error.setVisible(true);
+					} catch (ClassCastException e1) {
+						FileDataError error = new FileDataError();
+						error.setVisible(true);
+						file.setTargetFilePath("");
+					}
+
 				} else {
 					//TODO turn to save as
 					SaveFile saveFile = new SaveFile(file);
