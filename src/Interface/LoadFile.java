@@ -3,9 +3,13 @@ package Interface;
 import data.FileIO;
 
 import java.io.File;
+import java.io.IOException;
+
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import Exception.FileNotFoundException;
 
 
 public class LoadFile extends JFileChooser {
@@ -39,18 +43,27 @@ public class LoadFile extends JFileChooser {
 		case JFileChooser.APPROVE_OPTION:
 			
 			File filePath=this.getSelectedFile();
-			
-			new Thread(new Runnable() {
-				public void run() {
-					file.setTargetFilePath(filePath.getAbsolutePath());
-					//TODO
-					
-				}
+			file.setTargetFilePath(filePath.getAbsolutePath());
+			try {
+				file.loadFile();
+				FileProcess process = new FileProcess(OperationType.LOAD);
+				process.setVisible(true);
+			} catch (FileNotFoundException e) {
+				NewFile newFile = new NewFile(file);
+				newFile.setVisible(true);
+			} catch (ClassCastException e) {
+				FileDataError error = new FileDataError();
+				error.setVisible(true);
+				file.setTargetFilePath("");
+			} catch (ClassNotFoundException e) {
+				FileDataError error = new FileDataError();
+				error.setVisible(true);
+				file.setTargetFilePath("");
+			} catch (IOException e) {
+				Error error = new Error();
+				error.setVisible(true);
 			}
-			);
 			
-			FileProcess process = new FileProcess(OperationType.LOAD);
-			process.setVisible(true);
 			break;
 
 		default:

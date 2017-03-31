@@ -1,7 +1,13 @@
 package data;
 
-public class DataSet {
+import java.io.Serializable;
 
+public class DataSet implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private RequestData requestData;
 	private IntercepterOption intercepter;
 	private SpiderData spiderData;

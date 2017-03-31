@@ -146,16 +146,11 @@ public class mainWindow {
 						FileProcess frame = new FileProcess(OperationType.SAVE);
 						frame.setVisible(true);	
 					} catch (FileNotFoundException e1) {
-
 						SaveFile saveFile = new SaveFile(file);
 						saveFile.setVisible(true);
 					} catch (IOException e1) {
 						Error error = new Error();
 						error.setVisible(true);
-					} catch (ClassCastException e1) {
-						FileDataError error = new FileDataError();
-						error.setVisible(true);
-						file.setTargetFilePath("");
 					}
 
 				} else {

@@ -1,13 +1,19 @@
 package data;
 
+import java.io.Serializable;
+
 /**
  * Option: Store intercepter option data
  * 
  * @author Ghost
  */
 
-public class IntercepterOption {
+public class IntercepterOption implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int port;
 	
 	/**

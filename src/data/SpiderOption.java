@@ -1,5 +1,7 @@
 package data;
 
+import java.io.Serializable;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
@@ -9,8 +11,12 @@ import javax.swing.JList;
  * @author Ghost
  */
 
-public class SpiderOption {
+public class SpiderOption implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private DefaultListModel<String> requestHeader;
 	private int port;
 	private String host;

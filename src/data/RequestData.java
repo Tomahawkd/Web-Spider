@@ -1,5 +1,6 @@
 package data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -8,8 +9,12 @@ import java.util.ArrayList;
  * @author Ghost
  */
 
-public class RequestData {
+public class RequestData implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<String> request;
 	
 	public RequestData() {
