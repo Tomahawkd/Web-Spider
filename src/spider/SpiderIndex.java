@@ -18,6 +18,8 @@ public class SpiderIndex {
 		return flag;
 	}
 	
+	
+	
 	void addNewUrl(String newUrl){
 		existUrl.add(newUrl);
 	}
