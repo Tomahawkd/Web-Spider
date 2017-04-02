@@ -7,6 +7,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import data.SpiderData;
 import data.SpiderOption;
 
 /**
@@ -24,9 +25,11 @@ public class SpiderRun {
 	private SpiderIndex result;
 	private boolean suspendFlag;
 	private SpiderOption option;
+	private SpiderData data;
 	
-	public SpiderRun() {
+	public SpiderRun(SpiderData data) {
 		suspendFlag = false;
+		this.data = data;
 	}
 	
 	/**

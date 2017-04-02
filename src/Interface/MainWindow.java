@@ -37,6 +37,8 @@ import Exception.FileNotFoundException;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.Choice;
 import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 public class MainWindow {
 
@@ -246,7 +248,7 @@ public class MainWindow {
 		choiceProtocol.add("http");
 		choiceProtocol.add("https");
 		
-		SpiderRun spr = new SpiderRun();
+		SpiderRun spr = new SpiderRun(file.getDataSet().getSpiderData());
 		JToggleButton tglbtn_Start_Spider = new JToggleButton("Session Start");
 		tglbtn_Start_Spider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -296,6 +298,31 @@ public class MainWindow {
 		tabbedPane.addTab("Site Map", null, panel_SiteMap, null);
 		
 		siteMap = new JTree();
+		siteMap.setModel(new DefaultTreeModel(
+			new DefaultMutableTreeNode("www.baidu.com") {
+				{
+					DefaultMutableTreeNode node_1;
+					node_1 = new DefaultMutableTreeNode("images");
+						node_1.add(new DefaultMutableTreeNode("blue"));
+						node_1.add(new DefaultMutableTreeNode("violet"));
+						node_1.add(new DefaultMutableTreeNode("red"));
+						node_1.add(new DefaultMutableTreeNode("yellow"));
+					add(node_1);
+					node_1 = new DefaultMutableTreeNode("sports");
+						node_1.add(new DefaultMutableTreeNode("basketball"));
+						node_1.add(new DefaultMutableTreeNode("soccer"));
+						node_1.add(new DefaultMutableTreeNode("football"));
+						node_1.add(new DefaultMutableTreeNode("hockey"));
+					add(node_1);
+					node_1 = new DefaultMutableTreeNode("more");
+						node_1.add(new DefaultMutableTreeNode("hot dogs"));
+						node_1.add(new DefaultMutableTreeNode("pizza"));
+						node_1.add(new DefaultMutableTreeNode("ravioli"));
+						node_1.add(new DefaultMutableTreeNode("bananas"));
+					add(node_1);
+				}
+			}
+		));
 		panel_SiteMap.setViewportView(siteMap);
 		
 		JPanel panel_intercepter = new JPanel();
