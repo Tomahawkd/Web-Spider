@@ -17,22 +17,15 @@ public class SpiderData implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String host;
 	private String data;
 	private SpiderNode mainNode;
 	private SpiderNode parentNode;
-	private SpiderNode childNode;
+	private SpiderNode currentNode;
 	
-	public SpiderData() {
-	}
+	public SpiderData() {}
 	
 	public SpiderData(String host, String data) {
-		this.host = host;
 		mainNode = new SpiderNode(host, data);
-	}
-	
-	public String getHost() {
-		return host;
 	}
 	
 	public String getData() {
@@ -44,12 +37,41 @@ public class SpiderData implements Serializable {
 	}
 	
 	public void addChild(String name, String data) {
-		childNode = new SpiderNode(name, data);
+		currentNode = new SpiderNode(name, data);
 		
 	}
 	
-	public void search(String path) {
+	private void search(String path) {
 		
+	}
+	
+	private class SpiderNode extends DefaultMutableTreeNode implements Serializable {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private String name;
+		private String data;
+		
+		
+		public SpiderNode(String name, String data) {
+			super(name);
+			this.data = data;
+		}
+		
+		public String getData() {
+			return data;
+		}
+		
+		public void setData(String data) {
+			this.data = data;
+		}
+		
+		public String getName() {
+			return name;
+		}
+
 	}
 	
 }
