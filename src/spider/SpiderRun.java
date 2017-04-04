@@ -57,7 +57,7 @@ public class SpiderRun {
 		suspendFlag = false;
 		currentUrl = option.getProtocol() + "://" + option.getHost() + ":" + option.getPort() + "/";
 		hostFilter = option.getProtocol() + "://" + option.getHost();
-		result = new SpiderIndex(hostFilter);
+		result = new SpiderIndex(hostFilter, option.getProtocol());
 		result.addNewUrl(currentUrl);
 		getHerfHtml();
 	}

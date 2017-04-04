@@ -332,6 +332,16 @@ public class MainWindow {
 		siteMap.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
 				//TODO
+				
+				Object node = siteMap.getLastSelectedPathComponent();
+				if(node != null) {
+					try {
+						String data = file.getDataSet().getSpiderData().getData(node);
+						DataInformation frame = new DataInformation(data);
+						frame.setVisible(true);
+					} catch (ClassCastException e1) {
+					}
+				}
 			}
 		});
 		siteMap.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -559,5 +569,6 @@ public class MainWindow {
 		this.textField_Site_Spider.setText(file.getDataSet().getSpiderOption().getHost());
 		this.choiceProtocol.select(file.getDataSet().getSpiderOption().getProtocol());
 		this.list.setModel(file.getDataSet().getSpiderOption().getRequestHeader());
+		//TODO
 	}
 }
