@@ -1,12 +1,9 @@
 package data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.NoSuchElementException;
+import org.jsoup.nodes.Document;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
 
 /**
  * Data: Store spider's site data
@@ -14,6 +11,7 @@ import javax.swing.tree.TreeNode;
  * @author Ghost
  */
 
+@SuppressWarnings("restriction")
 public class SpiderData implements Serializable {
 
 	/**
@@ -25,10 +23,11 @@ public class SpiderData implements Serializable {
 	private SpiderNode currentNode;
 	
 	public SpiderData() {
-		mainNode = new SpiderNode("", "");
+		Document empty = new Document("");
+		mainNode = new SpiderNode("", empty);
 	}
 	
-	public SpiderData(String host, String data) {
+	public SpiderData(String host, Document data) {
 		mainNode = new SpiderNode(host, data);
 	}
 	
@@ -44,19 +43,25 @@ public class SpiderData implements Serializable {
 		return mainNode;
 	}
 	
-	public String getData(Object node) throws ClassCastException {
+	public Document getData(Object node) throws ClassCastException {
 		return ((SpiderNode) node).getData();
 	}
 	
-	public void add(String[] path, String name, String data) {
+	public void add(String[] path, String name, Document data) {
 		currentNode = mainNode;
 		for(int index = 0; index < path.length; index++) {
 			if(currentNode.isChildExist(path[index]) == -1) {
-				SpiderNode newChild = new SpiderNode(name, data);
+				SpiderNode newChild;
+				if(index != path.length - 1) {
+					Document empty = new Document("");
+					newChild = new SpiderNode(name, empty);
+				} else {
+					newChild = new SpiderNode(name, data);
+				}
 				currentNode.add(newChild);
 				
 			} else {
-				currentNode = (SpiderNode) currentNode.getChildAt(index);
+				currentNode = (SpiderNode) currentNode.getChildAt(currentNode.isChildExist(path[index]));
 			}
 		}
 	}
@@ -73,14 +78,15 @@ public class SpiderData implements Serializable {
 		 */
 		private static final long serialVersionUID = 1L;
 		private String name;
-		private String data;
+		private Document data;
 		
-		public SpiderNode(String name, String data) {
+		public SpiderNode(String name, Document data) {
+			super(name);
 			this.name = name;
 			this.data = data;
 		}
 
-		public String getData() {
+		public Document getData() {
 			return data;
 		}
 		
@@ -94,14 +100,16 @@ public class SpiderData implements Serializable {
 		
 		public int isChildExist(String name) {
 			int exist = -1;
-			for(Object child : this.children) {
-				try{
-					SpiderNode childNode = (SpiderNode) child;
-					if (childNode.name.equals(name)) {
-						break;
-					}
-					exist++;
-				} catch(ClassCastException e) {}
+			if(this.children != null) {
+				for(Object child : this.children) {
+					try{
+						SpiderNode childNode = (SpiderNode) child;
+						if (childNode.name.equals(name)) {
+							break;
+						}
+						exist++;
+					} catch(ClassCastException e) {}
+				}
 			}
 			return exist;
 		}

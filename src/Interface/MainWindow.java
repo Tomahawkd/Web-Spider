@@ -4,6 +4,7 @@ import decode.Decoder;
 import proxy.*;
 import spider.*;
 import data.*;
+import Exception.FileNotFoundException;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -33,19 +34,17 @@ import java.awt.Font;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionListener;
 
-import Exception.FileNotFoundException;
+import org.jsoup.nodes.Document;
 
 import javax.swing.event.ListSelectionEvent;
 import java.awt.Choice;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.event.TreeSelectionEvent;
+
 import java.awt.event.MouseAdapter;
 
+@SuppressWarnings("restriction")
 public class MainWindow {
 
 	/*
@@ -165,7 +164,6 @@ public class MainWindow {
 					}
 
 				} else {
-					//TODO turn to save as
 					SaveFile saveFile = new SaveFile(file);
 					saveFile.setVisible(true);
 				}
@@ -288,6 +286,7 @@ public class MainWindow {
 					}
 				} else {
 					spr.stop();
+					updateUI();
 					tglbtn_Start_Spider.setText("Session Start");
 					lblTipInvalid_Spider.setVisible(false);
 				}
@@ -313,7 +312,7 @@ public class MainWindow {
 					Object node = siteMap.getLastSelectedPathComponent();
 					if(node != null) {
 						try {
-							String data = file.getDataSet().getSpiderData().getData(node);
+							Document data = file.getDataSet().getSpiderData().getData(node);
 							DataInformation frame = new DataInformation(data);
 							frame.setVisible(true);
 						} catch (ClassCastException e1) {}

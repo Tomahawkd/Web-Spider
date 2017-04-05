@@ -118,11 +118,11 @@ public class SpiderRun {
 			connect(currentUrl);
 			
 			if (urlValidate) {
+				
+				data.add(result.searchFromNode(currentUrl), result.searchFromNode(currentUrl)[result.searchFromNode(currentUrl).length -1], doc);
 				Elements media = doc.select("[src]");
 				for (Element src : media) {
 					if (src.attr("abs:src").contains(hostFilter)) {
-						//TODO
-						data.add(result.searchFromNode(currentUrl), result.searchFromNode(currentUrl)[result.searchFromNode(currentUrl).length -1], doc.data());
 						currentUrl = src.attr("abs:src");
 						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
 							result.addNewUrl(currentUrl);
@@ -135,8 +135,6 @@ public class SpiderRun {
 				Elements imports = doc.select("*[href]");
 				for (Element link : imports) {
 					if (link.attr("abs:href").contains(hostFilter)) {
-						//TODO
-						data.add(result.searchFromNode(currentUrl), result.searchFromNode(currentUrl)[result.searchFromNode(currentUrl).length -1], doc.data());
 						currentUrl = link.attr("abs:href");
 						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
 							result.addNewUrl(currentUrl);
