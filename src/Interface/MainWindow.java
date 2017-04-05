@@ -280,8 +280,9 @@ public class MainWindow {
 								}
 								spr.stop();
 							}
-						});
-				
+						}).start();
+			
+						updateUI();
 					} catch (NumberFormatException e1) {
 						lblTipInvalid_Spider.setVisible(true);
 					}
@@ -304,42 +305,18 @@ public class MainWindow {
 		tabbedPane.addTab("Site Map", null, panel_SiteMap, null);
 		
 		siteMap = new JTree();
-		siteMap.setModel(new DefaultTreeModel(
-			new DefaultMutableTreeNode("www.baidu.com") {
-				{
-					DefaultMutableTreeNode node_1;
-					node_1 = new DefaultMutableTreeNode("images");
-						node_1.add(new DefaultMutableTreeNode("blue"));
-						node_1.add(new DefaultMutableTreeNode("violet"));
-						node_1.add(new DefaultMutableTreeNode("red"));
-						node_1.add(new DefaultMutableTreeNode("yellow"));
-					add(node_1);
-					node_1 = new DefaultMutableTreeNode("sports");
-						node_1.add(new DefaultMutableTreeNode("basketball"));
-						node_1.add(new DefaultMutableTreeNode("soccer"));
-						node_1.add(new DefaultMutableTreeNode("football"));
-						node_1.add(new DefaultMutableTreeNode("hockey"));
-					add(node_1);
-					node_1 = new DefaultMutableTreeNode("more");
-						node_1.add(new DefaultMutableTreeNode("hot dogs"));
-						node_1.add(new DefaultMutableTreeNode("pizza"));
-						node_1.add(new DefaultMutableTreeNode("ravioli"));
-						node_1.add(new DefaultMutableTreeNode("bananas"));
-					add(node_1);
-				}
-			}
-		));
-		siteMap.addTreeSelectionListener(new TreeSelectionListener() {
-			public void valueChanged(TreeSelectionEvent e) {
-				//TODO
-				
-				Object node = siteMap.getLastSelectedPathComponent();
-				if(node != null) {
-					try {
-						String data = file.getDataSet().getSpiderData().getData(node);
-						DataInformation frame = new DataInformation(data);
-						frame.setVisible(true);
-					} catch (ClassCastException e1) {
+		siteMap.setModel(new DefaultTreeModel(file.getDataSet().getSpiderData().getMainNode()));
+		siteMap.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount() == 2) {
+					Object node = siteMap.getLastSelectedPathComponent();
+					if(node != null) {
+						try {
+							String data = file.getDataSet().getSpiderData().getData(node);
+							DataInformation frame = new DataInformation(data);
+							frame.setVisible(true);
+						} catch (ClassCastException e1) {}
 					}
 				}
 			}
@@ -391,10 +368,15 @@ public class MainWindow {
 //										public void run() {
 //											try {
 //												while(true){
-//													ServerSocketListener ssl = new ServerSocketListener(port_Option);
-//													ssl.action();
+//													ServerSocketListener ssl = new ServerSocketListener();
+//													ssl.setOption(file.getDataSet().getIntercepterOption());
+//													ssl.start();
 //													if(ssl.getSuspend()) {
-//														httpRequest = ssl.getHttpRequset();
+//														String result = "";
+//														for (String text : ssl.getData().getRequest()) {
+//															result += text;
+//														}
+//														httpContent_Intercept.setText(result);
 //														break;
 //													}
 //												}
@@ -402,7 +384,7 @@ public class MainWindow {
 //												lblError_InterceptLab.setVisible(true);
 //											}
 //										}
-//									});
+//									}).start();
 								} catch (NumberFormatException e1) {
 									lblTip_Intercept.setVisible(true);
 								}
@@ -570,5 +552,6 @@ public class MainWindow {
 		this.choiceProtocol.select(file.getDataSet().getSpiderOption().getProtocol());
 		this.list.setModel(file.getDataSet().getSpiderOption().getRequestHeader());
 		//TODO
+		this.siteMap.setModel(new DefaultTreeModel(file.getDataSet().getSpiderData().getMainNode()));
 	}
 }

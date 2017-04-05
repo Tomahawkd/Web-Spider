@@ -45,9 +45,14 @@ public class LoadFile extends JFileChooser {
 			File filePath=this.getSelectedFile();
 			file.setTargetFilePath(filePath.getAbsolutePath());
 			try {
+				
 				file.loadFile();
-				FileProcess process = new FileProcess(OperationType.LOAD);
-				process.setVisible(true);
+				new Thread(new Runnable() {
+					public void run() {
+						FileProcess process = new FileProcess(OperationType.LOAD);
+						process.setVisible(true);
+					}
+				}).start();
 				window.updateUI();
 			} catch (FileNotFoundException e) {
 				NewFile newFile = new NewFile(file);

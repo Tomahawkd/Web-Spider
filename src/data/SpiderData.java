@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 /**
@@ -30,6 +31,10 @@ public class SpiderData implements Serializable {
 	public SpiderData(String host, String data) {
 		mainNode = new SpiderNode(host, data);
 	}
+	
+	public void setHost(String host) {
+		mainNode.setName(host);
+	}
 		
 	public void setMainNode(SpiderNode main) {
 		this.mainNode = main;
@@ -44,10 +49,16 @@ public class SpiderData implements Serializable {
 	}
 	
 	public void add(String[] path, String name, String data) {
-		//TODO
-		
-		
-		currentNode.add(new SpiderNode(name, data, currentNode));
+		currentNode = mainNode;
+		for(int index = 0; index < path.length; index++) {
+			if(currentNode.isChildExist(path[index]) == -1) {
+				SpiderNode newChild = new SpiderNode(name, data);
+				currentNode.add(newChild);
+				
+			} else {
+				currentNode = (SpiderNode) currentNode.getChildAt(index);
+			}
+		}
 	}
 	
 	public String getName() {
@@ -55,7 +66,7 @@ public class SpiderData implements Serializable {
 	}
 	 
 	
-	private static class SpiderNode implements Serializable, TreeNode {
+	private static class SpiderNode extends DefaultMutableTreeNode implements Serializable {
 
 		/**
 		 * 
@@ -63,96 +74,39 @@ public class SpiderData implements Serializable {
 		private static final long serialVersionUID = 1L;
 		private String name;
 		private String data;
-		private TreeNode parent;
-		private ArrayList<SpiderNode> children;
 		
 		public SpiderNode(String name, String data) {
 			this.name = name;
 			this.data = data;
-			this.parent = null;
-			this.children = new ArrayList<SpiderNode>();
-		}
-		
-		public SpiderNode(SpiderNode self, TreeNode parent) {
-			this.name = self.getName();
-			this.data = self.getData();
-			this.parent = parent;
-			this.children = self.children;
-		}
-		
-		public SpiderNode(String name, String data, TreeNode parent) {
-			this.name = name;
-			this.data = data;
-			this.parent = parent;
-			this.children = new ArrayList<SpiderNode>();
 		}
 
 		public String getData() {
 			return data;
 		}
 		
+		public void setName(String name) {
+			this.name = name;
+		}
+		
 		public String getName() {
 			return name;
 		}
 		
-		public void add(SpiderNode child) {
-			children.add(child);
-		}
-
-		@Override
-		public TreeNode getChildAt(int childIndex) {
-			return new SpiderNode(this.children.get(childIndex), this);
-		}
-
-		@Override
-		public int getChildCount() {
-			return this.children.size();
-		}
-
-		@Override
-		public TreeNode getParent() {
-			return this.parent;
-		}
-
-		@Override
-		public int getIndex(TreeNode node) {
-			SpiderNode sn = (SpiderNode) node;
-			for (int i = 0; i < this.children.size(); i++) {
-				if (sn.equals(this.children.get(i)))
-					return i;
-			}
-			return -1;
-		}
-
-		@Override
-		public boolean getAllowsChildren() {
-			return true;
-		}
-
-		@Override
-		public boolean isLeaf() {
-			return (this.getChildCount() == 0);
-		}
-
-		@Override
-		public Enumeration<?> children() {
-			final int elementCount = this.children.size();
-			return new Enumeration<SpiderNode>() {
-				int count = 0;
-
-				public boolean hasMoreElements() {
-					return this.count < elementCount;
-				}
-
-				public SpiderNode nextElement() {
-					if (this.count < elementCount) {
-						return SpiderNode.this.children.get(this.count++);
+		public int isChildExist(String name) {
+			int exist = -1;
+			for(Object child : this.children) {
+				try{
+					SpiderNode childNode = (SpiderNode) child;
+					if (childNode.name.equals(name)) {
+						break;
 					}
-					throw new NoSuchElementException("Vector Enumeration");
-				}
-			};
-
+					exist++;
+				} catch(ClassCastException e) {}
+			}
+			return exist;
 		}
+		
+		
 
 	}
 	

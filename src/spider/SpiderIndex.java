@@ -26,8 +26,8 @@ public class SpiderIndex {
 		existUrl.add(newUrl);
 	}
 	
-	//  http://www.baidu.com/more
-	// http:   www.baidu.com   more
+	//  www.baidu.com/more
+	//  www.baidu.com   more
 	//
 	String[] searchFromNode(String url) {
 		

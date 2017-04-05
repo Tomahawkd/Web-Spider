@@ -54,7 +54,7 @@ public class NewFile extends JFileChooser {
 						FileProcess process = new FileProcess(OperationType.NEW);
 						process.setVisible(true);
 					}
-				});
+				}).start();
 			} catch (ExistFileException e) {
 						
 				ExistFileTip tip = new ExistFileTip(file, Operation.NEW);

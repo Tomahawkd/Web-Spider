@@ -69,7 +69,7 @@ public class SaveFile extends JFileChooser {
 						FileProcess process = new FileProcess(OperationType.SAVE);
 						process.setVisible(true);
 					}
-				});
+				}).start();
 			} catch (ExistFileException e) {
 						
 				ExistFileTip tip = new ExistFileTip(file, Operation.SAVE);

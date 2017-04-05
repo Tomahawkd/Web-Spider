@@ -59,6 +59,7 @@ public class SpiderRun {
 		hostFilter = option.getProtocol() + "://" + option.getHost();
 		result = new SpiderIndex(hostFilter, option.getProtocol());
 		result.addNewUrl(currentUrl);
+		data.setHost(option.getProtocol() + "://" + option.getHost());
 		getHerfHtml();
 	}
 	
@@ -121,7 +122,7 @@ public class SpiderRun {
 				for (Element src : media) {
 					if (src.attr("abs:src").contains(hostFilter)) {
 						//TODO
-						
+						data.add(result.searchFromNode(currentUrl), result.searchFromNode(currentUrl)[result.searchFromNode(currentUrl).length -1], doc.data());
 						currentUrl = src.attr("abs:src");
 						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
 							result.addNewUrl(currentUrl);
@@ -135,7 +136,7 @@ public class SpiderRun {
 				for (Element link : imports) {
 					if (link.attr("abs:href").contains(hostFilter)) {
 						//TODO
-						
+						data.add(result.searchFromNode(currentUrl), result.searchFromNode(currentUrl)[result.searchFromNode(currentUrl).length -1], doc.data());
 						currentUrl = link.attr("abs:href");
 						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
 							result.addNewUrl(currentUrl);
