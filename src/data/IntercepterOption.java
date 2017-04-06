@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Option: Store intercepter option data
  * 
- * @author Ghost
+ * @author Tomahawkd
  */
 
 public class IntercepterOption implements Serializable {
@@ -21,7 +21,7 @@ public class IntercepterOption implements Serializable {
 	 *  
 	 *  All option use preset.
 	 *  
-	 *  @author Ghost
+	 *  @author Tomahawkd
 	 *  
 	 */
 	
@@ -37,7 +37,7 @@ public class IntercepterOption implements Serializable {
 	 * 
 	 * @param port Intercepter listener port preference.
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public IntercepterOption(int port) {
@@ -51,7 +51,7 @@ public class IntercepterOption implements Serializable {
 	 * 
 	 * @return port
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public int getPort() {
@@ -63,7 +63,7 @@ public class IntercepterOption implements Serializable {
 	 * 
 	 * @param port a port to listen and intercept
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public void setPort(int port) {

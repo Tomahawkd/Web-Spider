@@ -9,7 +9,7 @@ import data.RequestData;
 /**
  * Intercepter: Intercept http transfer data
  * 
- * @author Ghost
+ * @author Tomahawkd
  */
 
 public class ServerSocketListener {

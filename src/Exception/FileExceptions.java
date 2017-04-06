@@ -3,7 +3,7 @@ package Exception;
 /**
  * Exception: Universal exceptions about files
  * 
- * @author Ghost
+ * @author Tomahawkd
  */
 
 public class FileExceptions extends Exception {

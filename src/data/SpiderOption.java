@@ -8,7 +8,7 @@ import javax.swing.JList;
 /**
  * Option: Store spider option data
  * 
- * @author Ghost
+ * @author Tomahawkd
  */
 
 public class SpiderOption implements Serializable {
@@ -27,7 +27,7 @@ public class SpiderOption implements Serializable {
 	 *  
 	 *  All option use preset.
 	 *  
-	 *  @author Ghost
+	 *  @author Tomahawkd
 	 *  
 	 */
 	
@@ -57,7 +57,7 @@ public class SpiderOption implements Serializable {
 	 * @param host			The target server.
 	 * @param protocol		Access the server with the protocol.
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public SpiderOption(DefaultListModel<String> requestHeader, int port, String host,
@@ -74,7 +74,7 @@ public class SpiderOption implements Serializable {
 	 * 
 	 * @return current request header data array.
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public DefaultListModel<String> getRequestHeader() {
@@ -87,7 +87,7 @@ public class SpiderOption implements Serializable {
 	 * 
 	 * @param requestHeader set the header from the file.
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public void setRequestHeader(DefaultListModel<String> requestHeader) {
@@ -105,7 +105,7 @@ public class SpiderOption implements Serializable {
 	 * 
 	 * @see JList
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public String getHeaderElement(int index) throws ArrayIndexOutOfBoundsException {
@@ -117,7 +117,7 @@ public class SpiderOption implements Serializable {
 	 * 
 	 * @param newHeader a string contains the request header data.
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public void newHeaderElement(String newHeader) {
@@ -134,7 +134,7 @@ public class SpiderOption implements Serializable {
 	 * 
 	 * @see JList
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public void editHeaderElement(int index, String header) throws ArrayIndexOutOfBoundsException {
@@ -148,7 +148,7 @@ public class SpiderOption implements Serializable {
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public void removeHeaderElement(int index) throws ArrayIndexOutOfBoundsException {
@@ -160,7 +160,7 @@ public class SpiderOption implements Serializable {
 	 * 
 	 * @return port
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 
 	public int getPort() {
@@ -172,7 +172,7 @@ public class SpiderOption implements Serializable {
 	 * 
 	 * @param portOption Generally 80 for http and 443 for https
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public void setPort(int port) {
@@ -184,7 +184,7 @@ public class SpiderOption implements Serializable {
 	 * 
 	 * @return host
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 
 	public String getHost() {
@@ -196,7 +196,7 @@ public class SpiderOption implements Serializable {
 	 * 
 	 * @param host The destination for spider to access
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 
 	public void setHost(String host) {
@@ -208,7 +208,7 @@ public class SpiderOption implements Serializable {
 	 * 
 	 * @return protocol
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public String getProtocol() {
@@ -220,7 +220,7 @@ public class SpiderOption implements Serializable {
 	 * 
 	 * @param protocol Support for http and https
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public void setProtocol(String protocol) {

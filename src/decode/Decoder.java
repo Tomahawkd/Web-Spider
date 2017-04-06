@@ -12,7 +12,7 @@ public class Decoder {
 	 * 
 	 * @throws IllegalArgumentException
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public static String getFromBASE64(String string) throws IllegalArgumentException { 

@@ -3,7 +3,7 @@ package Exception;
 /**
  * Exception: File is not found while tend to open a file.
  * 
- * @author Ghost
+ * @author Tomahawkd
  */
 
 public class FileNotFoundException extends FileExceptions {

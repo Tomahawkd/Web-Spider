@@ -3,7 +3,7 @@ package Exception;
 /**
  * Exception: file name invalid, handle it to tip the user to rename the file.
  * 
- * @author Ghost
+ * @author Tomahawkd
  */
 
 public class FileNameInvaildException extends FileExceptions {

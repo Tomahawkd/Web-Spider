@@ -7,7 +7,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 /**
  * Data: Store spider's site data
  * 
- * @author Ghost
+ * @author Tomahawkd
  */
 
 public class SpiderData implements Serializable {

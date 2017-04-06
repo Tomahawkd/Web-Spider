@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * Data: Store intercepter's cache data
  * 
- * @author Ghost
+ * @author Tomahawkd
  */
 
 public class RequestData implements Serializable {

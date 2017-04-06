@@ -15,7 +15,7 @@ import Exception.FileNotFoundException;
 /**
  * FileIO: Execute file load & save operation
  * 
- * @author Ghost and Yezipoiny
+ * @author Tomahawkd and Yezipoiny
  */
 
 public class FileIO {
@@ -39,7 +39,7 @@ public class FileIO {
 	 * 
 	 * @return file path
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public String getTargetFilePath() {
@@ -53,7 +53,7 @@ public class FileIO {
 	 * 
 	 * @see JFileChooser
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 
 	public void setTargetFilePath(String targetFilePath) {
@@ -66,7 +66,7 @@ public class FileIO {
 	 * 
 	 * @return return true if and only if the project has a file to save
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public boolean hasTargetFile() {
@@ -82,7 +82,7 @@ public class FileIO {
 	 * @throws fileNameInvaildException the file name is not valid cause of the system restriction.
 	 * @throws IOException other exceptions
 	 * 
-	 * @author Ghost and Yezipoiny
+	 * @author Tomahawkd and Yezipoiny
 	 */
 	
 	public void createFile(boolean force) throws ExistFileException, FileNameInvaildException, IOException {

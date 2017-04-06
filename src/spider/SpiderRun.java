@@ -13,7 +13,7 @@ import data.SpiderOption;
 /**
  * Spider: Web Spider core system
  * 
- * @author Ghost
+ * @author Tomahawkd
  */
 
 @SuppressWarnings("restriction")
@@ -37,7 +37,7 @@ public class SpiderRun {
 	 * 
 	 * @param option user's preference
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public void setOption(SpiderOption option) {
@@ -49,7 +49,7 @@ public class SpiderRun {
 	 * 
 	 * @throws nullHostException throws while the host has no parameters
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public void start() throws nullHostException {
@@ -66,7 +66,7 @@ public class SpiderRun {
 	/**
 	 * Resume a suspend spider operation.
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public void resume() {
@@ -77,7 +77,7 @@ public class SpiderRun {
 	/**
 	 * Stop a spider operation.
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	public void stop() {
@@ -88,6 +88,8 @@ public class SpiderRun {
 	 * Test the host connection.
 	 * 
 	 * @param baseURL
+	 * 
+	 * @author Tomahawkd
 	 */
 	
 	private void connect(String baseURL){
@@ -108,7 +110,7 @@ public class SpiderRun {
 	/**
 	 * Rescue to get html
 	 * 
-	 * @author Ghost
+	 * @author Tomahawkd
 	 */
 	
 	private void getHerfHtml(){
