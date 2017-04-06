@@ -14,6 +14,12 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 
+/**
+ * Interface: Notify the user if tend to overwrite the file.
+ * 
+ * @author Tomahawkd
+ */
+
 public class ExistFileTip extends JFrame {
 
 	/**

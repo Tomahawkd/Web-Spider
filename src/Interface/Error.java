@@ -8,6 +8,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Interface: Fatal error handled notify to the user.
+ * 
+ * @author Tomahawkd
+ */
+
 public class Error extends JFrame {
 
 	/**
@@ -28,7 +34,7 @@ public class Error extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblUnconfirmedException = new JLabel("Unconfirmed Exception");
-		lblUnconfirmedException.setBounds(151, 39, 147, 16);
+		lblUnconfirmedException.setBounds(151, 27, 147, 16);
 		contentPane.add(lblUnconfirmedException);
 		
 		JButton btnConfirm = new JButton("Confirm");
@@ -37,7 +43,11 @@ public class Error extends JFrame {
 				System.exit(1);
 			}
 		});
-		btnConfirm.setBounds(169, 81, 117, 29);
+		btnConfirm.setBounds(166, 81, 117, 29);
 		contentPane.add(btnConfirm);
+		
+		JLabel lblContactUs = new JLabel("Please contact us.");
+		lblContactUs.setBounds(166, 55, 117, 16);
+		contentPane.add(lblContactUs);
 	}
 }

@@ -11,6 +11,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Exception.FileNotFoundException;
 
+/**
+ * Interface: Load file FileChooser panel.
+ * 
+ * @author Tomahawkd
+ *
+ */
 
 public class LoadFile extends JFileChooser {
 

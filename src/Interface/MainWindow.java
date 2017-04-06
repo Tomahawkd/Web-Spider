@@ -42,6 +42,13 @@ import javax.swing.tree.TreeSelectionModel;
 
 import java.awt.event.MouseAdapter;
 
+/**
+ * Interface: The main panel
+ * 
+ * @author Tomahawkd
+ *
+ */
+
 public class MainWindow {
 
 	/*

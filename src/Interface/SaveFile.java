@@ -11,6 +11,12 @@ import javax.swing.filechooser.FileFilter;
 import Exception.ExistFileException;
 import Exception.FileNameInvaildException;
 
+/**
+ * Interface: Save to a new file FileChooser panel.
+ * 
+ * @author Tomahawkd
+ *
+ */
 
 public class SaveFile extends JFileChooser {
 

@@ -9,6 +9,13 @@ import javax.swing.JTextPane;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * Interface: The detailed data web spider got.
+ * 
+ * @author Tomahawkd
+ *
+ */
+
 public class DataInformation extends JFrame {
 
 	/**

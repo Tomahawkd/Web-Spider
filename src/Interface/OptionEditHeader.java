@@ -12,6 +12,13 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Interface: Http request header editor.
+ * 
+ * @author Tomahawkd
+ *
+ */
+
 public class OptionEditHeader extends JFrame {
 
 	/**

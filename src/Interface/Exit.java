@@ -7,6 +7,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Interface: Notify the user when exit the application.
+ * 
+ * @author Tomahawkd
+ */
+
 public class Exit extends JFrame {
 
 	/**

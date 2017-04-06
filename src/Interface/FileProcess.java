@@ -13,6 +13,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 
+/**
+ * Interface: File load & save process indicator.
+ * 
+ * @author Tomahawkd
+ *
+ */
+
 public class FileProcess extends JFrame {
 
 	private static final long serialVersionUID = 1L;

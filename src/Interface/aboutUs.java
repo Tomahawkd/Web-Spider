@@ -9,9 +9,19 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-@SuppressWarnings("serial")
+/**
+ * Interface: Detailed information and developer contact.
+ * 
+ * @author Tomahawkd
+ *
+ */
+
 class aboutUs extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	public aboutUs() {
@@ -36,7 +46,7 @@ class aboutUs extends JFrame {
 		lblContactUs.setBounds(25, 144, 400, 16);
 		contentPane.add(lblContactUs);
 		
-		JLabel lblAuthor = new JLabel("Author: Duan Mingcheng(Web), Ye Tianchun(Data Structure)");
+		JLabel lblAuthor = new JLabel("Author: Duan Mingcheng(Tomahawkd), Ye Tianchun(Yezipoiny)");
 		lblAuthor.setBounds(25, 116, 400, 16);
 		contentPane.add(lblAuthor);
 		

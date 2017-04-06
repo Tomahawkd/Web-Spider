@@ -8,6 +8,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Interface: Notify the user the file isn't match the data class.
+ * 
+ * @author Tomahawkd
+ */
+
 public class FileDataError extends JFrame {
 
 	/**

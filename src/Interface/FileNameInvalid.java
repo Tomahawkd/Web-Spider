@@ -11,6 +11,13 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Interface: Notify the user the file name is invalid.
+ * 
+ * @author Tomahawkd
+ *
+ */
+
 public class FileNameInvalid extends JDialog {
 
 	/**

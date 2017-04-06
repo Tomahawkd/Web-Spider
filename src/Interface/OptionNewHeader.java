@@ -12,6 +12,13 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Interface: Http request header creator.
+ * 
+ * @author Tomahawkd
+ *
+ */
+
 public class OptionNewHeader extends JFrame {
 
 	private static final long serialVersionUID = 1L;

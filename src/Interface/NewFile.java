@@ -12,6 +12,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import Exception.ExistFileException;
 import Exception.FileNameInvaildException;
 
+/**
+ * Interface: Create new file FileChooser panel.
+ * 
+ * @author Tomahawkd
+ *
+ */
 
 public class NewFile extends JFileChooser {
 
