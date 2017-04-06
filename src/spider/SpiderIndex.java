@@ -39,7 +39,7 @@ public class SpiderIndex {
 	 * 
 	 * @param newUrl a new url gotten from <code>SpiderRun</code> class
 	 * 
-	 * @see SpiderRun
+	 * @see {@link SpiderRun}
 	 * 
 	 * @author Tomahawkd
 	 */

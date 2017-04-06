@@ -15,30 +15,14 @@ public class DataSet implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private RequestData requestData;
 	private IntercepterOption intercepter;
 	private SpiderData spiderData;
 	private SpiderOption spiderOption;
 	
 	public DataSet() {
-		requestData = new RequestData();
 		intercepter = new IntercepterOption();
 		spiderData = new SpiderData();
 		spiderOption = new SpiderOption();
-	}
-
-	/**
-	 * Get intercept request data
-	 * 
-	 * @see RequestData
-	 * 
-	 * @return Intercepted request data
-	 * 
-	 * @author Tomahawkd
-	 */
-	
-	public RequestData getRequestData() {
-		return requestData;
 	}
 
 	/**

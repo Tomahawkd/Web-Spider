@@ -32,7 +32,7 @@ public class OptionEditHeader extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public OptionEditHeader(int index, SpiderOption optionData) throws ArrayIndexOutOfBoundsException {
+	public OptionEditHeader(int index, SpiderOption optionData, OptionPanel panel) throws ArrayIndexOutOfBoundsException {
 		setBounds(100, 100, 450, 150);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -55,6 +55,7 @@ public class OptionEditHeader extends JFrame {
 					lblTip.setVisible(false);
 					String newHeader = Content.getText();
 					optionData.editHeaderElement(index, newHeader);
+					panel.updateData();
 					dispose();
 				} else {
 					lblTip.setVisible(true);

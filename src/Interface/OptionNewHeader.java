@@ -29,7 +29,7 @@ public class OptionNewHeader extends JFrame {
 	/*
 	 * Create the frame.
 	 */
-	public OptionNewHeader(SpiderOption optionData) {
+	public OptionNewHeader(SpiderOption optionData, OptionPanel panel) {
 		setBounds(100, 100, 450, 150);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -51,6 +51,7 @@ public class OptionNewHeader extends JFrame {
 					lblTip.setVisible(false);
 					String newHeader = Content.getText();
 					optionData.newHeaderElement(newHeader);
+					panel.updateData();
 					dispose();
 				} else {
 					lblTip.setVisible(true);

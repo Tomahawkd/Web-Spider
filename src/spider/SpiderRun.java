@@ -37,7 +37,7 @@ public class SpiderRun {
 	 * 
 	 * @param option user's preference
 	 * 
-	 * @see SpiderOption
+	 * @see {@link SpiderOption}
 	 * 
 	 * @author Tomahawkd
 	 */
