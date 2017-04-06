@@ -13,6 +13,12 @@ import data.FileIO;
 import spider.SpiderRun;
 import spider.nullHostException;
 
+/**
+ * Interface: Spider panel
+ * 
+ * @author Tomahawkd
+ */
+
 class SpiderPanel extends JPanel {
 
 	/**

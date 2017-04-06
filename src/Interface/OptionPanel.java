@@ -13,6 +13,12 @@ import javax.swing.JTextField;
 
 import data.FileIO;
 
+/**
+ * Interface: Option panel
+ * 
+ * @author Tomahawkd
+ */
+
 class OptionPanel extends JPanel {
 
 	/**

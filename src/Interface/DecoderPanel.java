@@ -12,6 +12,12 @@ import javax.swing.JPanel;
 
 import decode.Decoder;
 
+/**
+ * Interface: Decoder panel
+ * 
+ * @author Tomahawkd
+ */
+
 class DecoderPanel extends JPanel {
 
 	/**

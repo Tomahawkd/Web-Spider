@@ -11,6 +11,12 @@ import javax.swing.JMenuItem;
 import Exception.FileNotFoundException;
 import data.FileIO;
 
+/**
+ * Interface: Menu bar
+ * 
+ * @author Tomahawkd
+ */
+
 class MenuBar extends JMenuBar {
 
 	/**

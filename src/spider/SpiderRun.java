@@ -128,6 +128,7 @@ public class SpiderRun {
 				for (Element src : media) {
 					if (src.attr("abs:src").contains(hostFilter)) {
 						currentUrl = src.attr("abs:src");
+//						data.add(searchFromNode(currentUrl), searchFromNode(currentUrl)[searchFromNode(currentUrl).length -1], "");
 						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
 							result.addNewUrl(currentUrl);
 							urlValidate = false;
@@ -140,6 +141,7 @@ public class SpiderRun {
 				for (Element link : imports) {
 					if (link.attr("abs:href").contains(hostFilter)) {
 						currentUrl = link.attr("abs:href");
+						data.add(searchFromNode(currentUrl), searchFromNode(currentUrl)[searchFromNode(currentUrl).length -1], "");
 						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
 							result.addNewUrl(currentUrl);
 							urlValidate = false;

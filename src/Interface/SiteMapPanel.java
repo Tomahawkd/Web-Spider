@@ -10,6 +10,12 @@ import javax.swing.tree.TreeSelectionModel;
 
 import data.FileIO;
 
+/**
+ * Interface: Site Map panel
+ * 
+ * @author Tomahawkd
+ */
+
 class SiteMapPanel extends JScrollPane {
 
 	/**

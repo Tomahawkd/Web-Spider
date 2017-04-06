@@ -13,6 +13,12 @@ import javax.swing.JToggleButton;
 import data.FileIO;
 import proxy.ServerSocketListener;
 
+/**
+ * Interface: Intercepter panel
+ * 
+ * @author Tomahawkd
+ */
+
 public class IntercepterPanel extends JPanel {
 
 	/**

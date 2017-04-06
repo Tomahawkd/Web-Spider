@@ -136,7 +136,11 @@ public class MainWindow {
 		tabbedPane.addTab("Decoder", null, decoder, null);
 	}
 	
-	
+	/**
+	 * Update all data in <code>DataSet</code> class.
+	 * 
+	 * @author Tomahawkd
+	 */
 	public void updateUI() {
 		this.frmWebSpider.setTitle("Web Spider - " + file.getTargetFilePath());
 		this.spider.updateData();
