@@ -88,19 +88,23 @@ public class SpiderData implements Serializable {
 	 */
 	
 	public void add(String[] path, String name, String data) {
-		currentNode = mainNode;
-		for(int index = 0; index < path.length; index++) {
-			if(currentNode.isChildExist(path[index]) == -1) {
-				SpiderNode newChild;
-				if(index != path.length - 1) {
-					newChild = new SpiderNode(name, "");
-				} else {
-					newChild = new SpiderNode(name, data);
-				}
-				currentNode.add(newChild);
+		if(path.length == 1){
+			mainNode = new SpiderNode(name, data);
+		} else {
+			currentNode = mainNode;
+			for(int index = 0; index < path.length; index++) {
+				if(currentNode.isChildExist(path[index]) == -1) {
+					SpiderNode newChild;
+					if(index != path.length - 1) {
+						newChild = new SpiderNode(name, "");
+					} else {
+						newChild = new SpiderNode(name, data);
+					}
+					currentNode.add(newChild);
 				
-			} else {
-				currentNode = (SpiderNode) currentNode.getChildAt(currentNode.isChildExist(path[index]));
+				} else {
+					currentNode = (SpiderNode) currentNode.getChildAt(currentNode.isChildExist(path[index]));
+				}
 			}
 		}
 	}
@@ -134,6 +138,18 @@ public class SpiderData implements Serializable {
 		public SpiderNode(String name, String data) {
 			super(name);
 			this.name = name;
+			this.data = data;
+		}
+		
+		/**
+		 * Set specific node's data.
+		 * 
+		 * @param name node's data.
+		 * 
+		 * @author Tomahawkd
+		 */
+		
+		void setData(String data) {
 			this.data = data;
 		}
 

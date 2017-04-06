@@ -1,6 +1,8 @@
 package data;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -18,6 +20,7 @@ public class SpiderOption implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private DefaultListModel<String> requestHeader;
+	private Map<String, String> headers;
 	private int port;
 	private String host;
 	private String protocol;
@@ -32,6 +35,7 @@ public class SpiderOption implements Serializable {
 	 */
 	
 	public SpiderOption() {
+		headers = new HashMap<String, String>();
 		requestHeader = new DefaultListModel<String>();
 		port = 80;
 		host = "";
@@ -45,6 +49,14 @@ public class SpiderOption implements Serializable {
 				+ "Version/10.0.2 Safari/602.3.12");
 		requestHeader.addElement("Accept-Language: zh-cn");
 		requestHeader.addElement("Accept-Encoding: gzip");
+		
+		headers.put("Connection", "close");
+		headers.put("Accept", "*/*");
+		headers.put("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) "
+				+ "AppleWebKit/602.3.12 (KHTML, like Gecko) "
+				+ "Version/10.0.2 Safari/602.3.12");
+		headers.put("Accept-Language", "zh-cn");
+		headers.put("Accept-Encoding", "gzip");
 	}
 	
 	/**
@@ -79,6 +91,10 @@ public class SpiderOption implements Serializable {
 	
 	public DefaultListModel<String> getRequestHeader() {
 		return this.requestHeader;
+	}
+	
+	public Map<String, String> getHeaders() {
+		return headers;
 	}
 
 	/**
@@ -122,6 +138,8 @@ public class SpiderOption implements Serializable {
 	
 	public void newHeaderElement(String newHeader) {
 		this.requestHeader.addElement(newHeader);
+		String[] key = newHeader.split(": ");
+		headers.put(key[0], key[1]);
 	}
 	
 	/**
@@ -138,7 +156,11 @@ public class SpiderOption implements Serializable {
 	 */
 	
 	public void editHeaderElement(int index, String header) throws ArrayIndexOutOfBoundsException {
+		String[] oldHeader = requestHeader.getElementAt(index).split(": ");
 		this.requestHeader.set(index, header);
+		String[] newHeader = header.split(": ");
+		headers.remove(oldHeader[0], oldHeader[1]);
+		headers.put(newHeader[0], newHeader[1]);
 	}
 	
 	/**
@@ -152,7 +174,9 @@ public class SpiderOption implements Serializable {
 	 */
 	
 	public void removeHeaderElement(int index) throws ArrayIndexOutOfBoundsException {
+		String[] oldHeader = requestHeader.getElementAt(index).split(": ");
 		this.requestHeader.remove(index);
+		headers.remove(oldHeader[0], oldHeader[1]);
 	}
 	
 	/**

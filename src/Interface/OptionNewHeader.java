@@ -47,7 +47,7 @@ public class OptionNewHeader extends JFrame {
 		JButton btnConfirm = new JButton("Confirm");
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!Content.getText().equals("") && Content.getText().contains(":")){
+				if(!Content.getText().equals("") && Content.getText().contains(": ")){
 					lblTip.setVisible(false);
 					String newHeader = Content.getText();
 					optionData.newHeaderElement(newHeader);

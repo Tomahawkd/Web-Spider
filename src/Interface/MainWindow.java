@@ -18,11 +18,10 @@ import java.awt.event.WindowEvent;
 
 public class MainWindow {
 
-	/*
-	 * Global element in order to transfer data throw different tab pane
-	 */
-	
+
+	//main frame
 	private JFrame frmWebSpider;
+	//tab panel contains
 	private SpiderPanel spider;
 	private SiteMapPanel siteMap;
 	private IntercepterPanel intercepter;
@@ -104,14 +103,14 @@ public class MainWindow {
 		 */
 		
 		spider = new SpiderPanel(file);
-		tabbedPane.addTab("Spider", null, spider, null);
+		tabbedPane.addTab("Spider", null, spider, "Web Spider");
 		
 		/*
 		 *  Panel2: Site Map
 		 */
 
 		siteMap = new SiteMapPanel(file);
-		tabbedPane.addTab("Site Map", null, siteMap, null);
+		tabbedPane.addTab("Site Map", null, siteMap, "Site Map");
 		spider.setSiteMap(siteMap);
 		
 		/*
@@ -119,21 +118,21 @@ public class MainWindow {
 		 */
 		
 		intercepter = new IntercepterPanel(file);
-		tabbedPane.addTab("Intercepter", null, intercepter, null);
+		tabbedPane.addTab("Intercepter", null, intercepter, "Intercepter Server");
 		
 		/*
 		 *  Panel4: Options
 		 */
 		
 		options = new OptionPanel(file);
-		tabbedPane.addTab("Options", null, options, null);
+		tabbedPane.addTab("Options", null, options, "User Preference");
 		
 		/*
 		 *  Panel5: Decoder
 		 */
 		
 		decoder = new DecoderPanel();
-		tabbedPane.addTab("Decoder", null, decoder, null);
+		tabbedPane.addTab("Decoder", null, decoder, "Decodes BASE64");
 	}
 	
 	/**

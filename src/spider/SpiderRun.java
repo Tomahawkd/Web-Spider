@@ -2,6 +2,7 @@ package spider;
 
 import java.io.IOException;
 
+import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,6 +20,7 @@ import data.SpiderOption;
 @SuppressWarnings("restriction")
 public class SpiderRun {
 	private Document doc = null;
+	private String body;
 	private boolean urlValidate;
 	private String currentUrl;
 	private String hostFilter;
@@ -96,7 +98,9 @@ public class SpiderRun {
 	
 	private void connect(String baseURL){
 		try {
-			doc = Jsoup.connect(baseURL).get();
+			Response res = Jsoup.connect(baseURL).headers(option.getHeaders()).execute();
+			
+			doc = Jsoup.connect(baseURL).headers(option.getHeaders()).get();
 			urlValidate = true;
 		} catch (IOException e) {
 			urlValidate = false;
@@ -119,6 +123,7 @@ public class SpiderRun {
 		
 		if (!suspendFlag) {
 			
+			data.add(searchFromNode(currentUrl), searchFromNode(currentUrl)[searchFromNode(currentUrl).length -1], "");
 			connect(currentUrl);
 			
 			if (urlValidate) {
@@ -128,7 +133,6 @@ public class SpiderRun {
 				for (Element src : media) {
 					if (src.attr("abs:src").contains(hostFilter)) {
 						currentUrl = src.attr("abs:src");
-//						data.add(searchFromNode(currentUrl), searchFromNode(currentUrl)[searchFromNode(currentUrl).length -1], "");
 						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
 							result.addNewUrl(currentUrl);
 							urlValidate = false;
@@ -141,7 +145,6 @@ public class SpiderRun {
 				for (Element link : imports) {
 					if (link.attr("abs:href").contains(hostFilter)) {
 						currentUrl = link.attr("abs:href");
-						data.add(searchFromNode(currentUrl), searchFromNode(currentUrl)[searchFromNode(currentUrl).length -1], "");
 						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
 							result.addNewUrl(currentUrl);
 							urlValidate = false;
