@@ -119,7 +119,7 @@ public class SpiderRun {
 			
 			if (urlValidate) {
 				
-				data.add(result.searchFromNode(currentUrl), result.searchFromNode(currentUrl)[result.searchFromNode(currentUrl).length -1], doc);
+				data.add(result.searchFromNode(currentUrl), result.searchFromNode(currentUrl)[result.searchFromNode(currentUrl).length -1], doc.html());
 				Elements media = doc.select("[src]");
 				for (Element src : media) {
 					if (src.attr("abs:src").contains(hostFilter)) {

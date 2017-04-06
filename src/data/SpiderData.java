@@ -1,7 +1,6 @@
 package data;
 
 import java.io.Serializable;
-import org.jsoup.nodes.Document;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -11,7 +10,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author Ghost
  */
 
-@SuppressWarnings("restriction")
 public class SpiderData implements Serializable {
 
 	/**
@@ -23,11 +21,10 @@ public class SpiderData implements Serializable {
 	private SpiderNode currentNode;
 	
 	public SpiderData() {
-		Document empty = new Document("");
-		mainNode = new SpiderNode("", empty);
+		mainNode = new SpiderNode("", "");
 	}
 	
-	public SpiderData(String host, Document data) {
+	public SpiderData(String host, String data) {
 		mainNode = new SpiderNode(host, data);
 	}
 	
@@ -43,18 +40,17 @@ public class SpiderData implements Serializable {
 		return mainNode;
 	}
 	
-	public Document getData(Object node) throws ClassCastException {
+	public String getData(Object node) throws ClassCastException {
 		return ((SpiderNode) node).getData();
 	}
 	
-	public void add(String[] path, String name, Document data) {
+	public void add(String[] path, String name, String data) {
 		currentNode = mainNode;
 		for(int index = 0; index < path.length; index++) {
 			if(currentNode.isChildExist(path[index]) == -1) {
 				SpiderNode newChild;
 				if(index != path.length - 1) {
-					Document empty = new Document("");
-					newChild = new SpiderNode(name, empty);
+					newChild = new SpiderNode(name, "");
 				} else {
 					newChild = new SpiderNode(name, data);
 				}
@@ -65,37 +61,28 @@ public class SpiderData implements Serializable {
 			}
 		}
 	}
-	
-	public String getName() {
-		return currentNode.getName();
-	}
-	 
-	
-	private static class SpiderNode extends DefaultMutableTreeNode implements Serializable {
+
+	private class SpiderNode extends DefaultMutableTreeNode implements Serializable {
 
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
 		private String name;
-		private Document data;
+		private String data;
 		
-		public SpiderNode(String name, Document data) {
+		public SpiderNode(String name, String data) {
 			super(name);
 			this.name = name;
 			this.data = data;
 		}
 
-		public Document getData() {
+		public String getData() {
 			return data;
 		}
 		
 		public void setName(String name) {
 			this.name = name;
-		}
-		
-		public String getName() {
-			return name;
 		}
 		
 		public int isChildExist(String name) {

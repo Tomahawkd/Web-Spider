@@ -34,8 +34,6 @@ import java.awt.Font;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionListener;
 
-import org.jsoup.nodes.Document;
-
 import javax.swing.event.ListSelectionEvent;
 import java.awt.Choice;
 import javax.swing.JTree;
@@ -44,7 +42,6 @@ import javax.swing.tree.TreeSelectionModel;
 
 import java.awt.event.MouseAdapter;
 
-@SuppressWarnings("restriction")
 public class MainWindow {
 
 	/*
@@ -312,7 +309,7 @@ public class MainWindow {
 					Object node = siteMap.getLastSelectedPathComponent();
 					if(node != null) {
 						try {
-							Document data = file.getDataSet().getSpiderData().getData(node);
+							String data = file.getDataSet().getSpiderData().getData(node);
 							DataInformation frame = new DataInformation(data);
 							frame.setVisible(true);
 						} catch (ClassCastException e1) {}

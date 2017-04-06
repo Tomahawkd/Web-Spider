@@ -4,14 +4,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import org.jsoup.nodes.Document;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-@SuppressWarnings("restriction")
 public class DataInformation extends JFrame {
 
 	/**
@@ -23,7 +20,7 @@ public class DataInformation extends JFrame {
 	/*
 	 * Create the frame.
 	 */
-	public DataInformation(Document data) {
+	public DataInformation(String data) {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -43,7 +40,7 @@ public class DataInformation extends JFrame {
 		
 		JTextPane dataTextPanel = new JTextPane();
 		dataTextPanel.setEditable(false);
-		dataTextPanel.setText(data.text());
+		dataTextPanel.setText(data);
 		scrollPane.setViewportView(dataTextPanel);
 	}
 }
