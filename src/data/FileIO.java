@@ -76,10 +76,10 @@ public class FileIO {
 	/**
 	 * Create file operation
 	 * 
-	 * @param force is tend to force to cover the exist file
+	 * @param force is tend to force to cover the exist file.
 	 * 
-	 * @throws existFileException throws if not force to cover and there exist the file.
-	 * @throws fileNameInvaildException the file name is not valid cause of the system restriction.
+	 * @throws ExistFileException throws if not force to cover and there exist the file.
+	 * @throws FileNameInvaildException the file name is not valid cause of the system restriction.
 	 * @throws IOException other exceptions
 	 * 
 	 * @author Tomahawkd and Yezipoiny
@@ -111,6 +111,17 @@ public class FileIO {
 		output.close();
 	}
 	
+	/**
+	 * Load user's file
+	 * 
+	 * @throws FileNotFoundException throws if not force to cover and there exist the file.
+	 * @throws ClassCastException the data does not match application's data class.
+	 * @throws IOException other exceptions.
+	 * @throws ClassNotFoundException the data does not match application's data class.
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	public void loadFile() throws FileNotFoundException, ClassCastException, IOException, ClassNotFoundException {
 		
 		File newFile = new File(targetFilePath);
@@ -126,6 +137,15 @@ public class FileIO {
 		target = true;
 	}
 	
+	/**
+	 * Save data to exist file.
+	 * 
+	 * @throws FileNotFoundException throws if not force to cover and there exist the file.
+	 * @throws IOException other exceptions.
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	public void saveFile() throws FileNotFoundException, IOException {
 			
 		if (!target) {
@@ -137,6 +157,17 @@ public class FileIO {
 		output.close();
 		
 	}
+	
+	/**
+	 * Save data to a new file.
+	 * 
+	 * @param force is tend to force to cover the exist file
+	 * @throws ExistFileException throws if not force to cover and there exist the file.
+	 * @throws FileNameInvaildException the file name is not valid cause of the system restriction.
+	 * @throws IOException other exceptions.
+	 * 
+	 * @author Tomahawkd
+	 */
 	
 	public void saveAsFile(boolean force) throws ExistFileException, FileNameInvaildException, IOException {
 		

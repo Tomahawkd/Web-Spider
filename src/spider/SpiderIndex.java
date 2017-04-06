@@ -2,15 +2,29 @@ package spider;
 
 import java.util.ArrayList;
 
+/**
+ * Data Index: This is the index of the site map. Cache only.
+ * 
+ * @author Tomahawkd
+ */
+
 public class SpiderIndex {
 	private ArrayList<String> existUrl;
-	private String protocol;
 	
-	public SpiderIndex(String baseURL, String protocol){
+	public SpiderIndex(String baseURL){
 		existUrl = new ArrayList<>();
-		this.protocol = protocol;
 		existUrl.add(baseURL);
 	}
+	
+	/**
+	 * Compare with exist url to comfirm if it is already exist.
+	 * 
+	 * @param url Absolute url
+	 * 
+	 * @return a boolean stands its existence
+	 * 
+	 * @author Tomahawkd
+	 */
 	
 	boolean compareExistUrl(String url){
 		boolean flag = false;
@@ -20,18 +34,17 @@ public class SpiderIndex {
 		return flag;
 	}
 	
-	
+	/**
+	 * Add a new url to index
+	 * 
+	 * @param newUrl a new url gotten from <code>SpiderRun</code> class
+	 * 
+	 * @see SpiderRun
+	 * 
+	 * @author Tomahawkd
+	 */
 	
 	void addNewUrl(String newUrl){
 		existUrl.add(newUrl);
-	}
-	
-	//  www.baidu.com/more
-	//  www.baidu.com   more
-	//
-	String[] searchFromNode(String url) {
-		
-		url = url.replace(protocol + "://", "");
-		return url.split("/");
 	}
 }

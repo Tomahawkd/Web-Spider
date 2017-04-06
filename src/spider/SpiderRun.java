@@ -37,6 +37,8 @@ public class SpiderRun {
 	 * 
 	 * @param option user's preference
 	 * 
+	 * @see SpiderOption
+	 * 
 	 * @author Tomahawkd
 	 */
 	
@@ -57,7 +59,7 @@ public class SpiderRun {
 		suspendFlag = false;
 		currentUrl = option.getProtocol() + "://" + option.getHost() + ":" + option.getPort() + "/";
 		hostFilter = option.getProtocol() + "://" + option.getHost();
-		result = new SpiderIndex(hostFilter, option.getProtocol());
+		result = new SpiderIndex(hostFilter);
 		result.addNewUrl(currentUrl);
 		data.setHost(option.getProtocol() + "://" + option.getHost());
 		getHerfHtml();
@@ -121,7 +123,7 @@ public class SpiderRun {
 			
 			if (urlValidate) {
 				
-				data.add(result.searchFromNode(currentUrl), result.searchFromNode(currentUrl)[result.searchFromNode(currentUrl).length -1], doc.html());
+				data.add(searchFromNode(currentUrl), searchFromNode(currentUrl)[searchFromNode(currentUrl).length -1], doc.html());
 				Elements media = doc.select("[src]");
 				for (Element src : media) {
 					if (src.attr("abs:src").contains(hostFilter)) {
@@ -148,5 +150,21 @@ public class SpiderRun {
 			} 
 		}
 		
+	}
+	
+	
+	/**
+	 * Get the path of the file in the host file system.
+	 * 
+	 * @param url Absolute url
+	 * 
+	 * @return array contains path
+	 * 
+	 * @author Tomahawkd
+	 */
+	
+	private String[] searchFromNode(String url) {
+		url = url.replace(option.getProtocol() + "://", "");
+		return url.split("/");
 	}
 }
