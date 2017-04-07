@@ -91,9 +91,9 @@ public class FileProcess extends JFrame {
 }
 
 enum OperationType {
-	NEW("Creating...", 10), 
-	LOAD("Loading...", 50),
-	SAVE("Saving..." , 50);
+	NEW("Creating...", 5), 
+	LOAD("Loading...", 10),
+	SAVE("Saving..." , 10);
 	
 	private String message;
 	private int sleepTime;
