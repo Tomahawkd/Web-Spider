@@ -1,10 +1,7 @@
 package spider;
 
 import java.io.IOException;
-import java.util.Map;
 
-import org.jsoup.Connection.Response;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -20,14 +17,12 @@ import data.SpiderOption;
 
 @SuppressWarnings("restriction")
 public class SpiderRun {
-	private Response res = null;
-	private String body;
-	private boolean urlValidate;
 	private String currentUrl;
 	private SpiderIndex result;
 	private boolean suspendFlag;
 	private SpiderOption option;
 	private SpiderData data;
+	private SpiderConnection connection;
 	
 	public SpiderRun(SpiderData data) {
 		suspendFlag = false;
@@ -63,6 +58,7 @@ public class SpiderRun {
 		result = new SpiderIndex(option.getHost());
 		result.addNewUrl(currentUrl);
 		data.setHost(option.getProtocol() + "://" + option.getHost());
+		connection = new SpiderConnection(option.getHeaders());
 		getHerfHtml();
 	}
 	
@@ -87,31 +83,8 @@ public class SpiderRun {
 		suspendFlag = true;
 	}
 	
-	/**
-	 * Test the host connection.
-	 * 
-	 * @param baseURL
-	 * 
-	 * @author Tomahawkd
-	 */
-	
-	private void connect(String baseURL){
-		try {
-			res = Jsoup.connect(baseURL).headers(option.getHeaders()).execute();
-			body = "HTTP/1.1 " + res.statusCode() + " " + res.statusMessage() + "\n";
-			body += mapToString(res.headers());
-			body += "\n\n";
-			body += res.body();
-			urlValidate = true;
-		} catch (IOException e) {
-			urlValidate = false;
-			String[] path = searchFromNode(currentUrl);
-			data.add(path, path[path.length - 1], "");
-		} 
-	}
-	
 	boolean getUrlValid(){
-		return urlValidate;
+		return connection.Validate();
 	}
 	
 	/**
@@ -124,38 +97,38 @@ public class SpiderRun {
 		
 		if (!suspendFlag) {
 			
-//			data.add(searchFromNode(currentUrl), searchFromNode(currentUrl)[searchFromNode(currentUrl).length -1], "");
-			connect(currentUrl);
+			connection.setUrl(currentUrl);
+			String content = connection.getHeaders() + "\n";
 			
-			if (urlValidate) {
-				String[] path = searchFromNode(currentUrl);
-				data.add(path, path[path.length - 1], body);
-				
+			if (connection.Validate()) {
 				try {
-					Document doc = res.parse();	
-					Elements media = doc.select("[src]");
-					for (Element src : media) {
-						if (src.attr("abs:src").contains(option.getHost())) {
-							currentUrl = src.attr("abs:src");
-							if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
-								result.addNewUrl(currentUrl);
-								urlValidate = false;
-								getHerfHtml();
-							}
-						}
-					}
-
+					Document doc = connection.getResponse().parse();
+					
+					content += doc.data();
+					String[] path = searchFromNode(currentUrl);
+					data.add(path, path[path.length - 1], content);
+				
 					Elements imports = doc.select("*[href]");
 					for (Element link : imports) {
 						if (link.attr("abs:href").contains(option.getHost())) {
 							currentUrl = link.attr("abs:href");
 							if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
 								result.addNewUrl(currentUrl);
-								urlValidate = false;
 								getHerfHtml();
 							}
 						}
 					}
+					Elements media = doc.select("[src]");
+					for (Element src : media) {
+						if (src.attr("abs:src").contains(option.getHost())) {
+							currentUrl = src.attr("abs:src");
+							if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
+								result.addNewUrl(currentUrl);
+								getHerfHtml();
+							}
+						}
+					}
+
 				} catch (IOException e) {}
 			} 
 		}
@@ -176,14 +149,5 @@ public class SpiderRun {
 	private String[] searchFromNode(String url) {
 		url = url.replace(option.getProtocol() + "://", "");
 		return url.split("/");
-	}
-	
-	private String mapToString(Map<String, String> header) {
-		String str = "";
-		for(String key : header.keySet()) {
-			str += key + ": " + header.get(key) + "\n";
-		}
-		
-		return str;
 	}
 }
