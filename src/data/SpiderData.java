@@ -1,6 +1,7 @@
 package data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -18,8 +19,9 @@ public class SpiderData implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private SpiderNode mainNode;
+	private ArrayList<SpiderNode> mainNodes;
 	private SpiderNode currentNode;
+	private SpiderNode root;
 	
 	/**
 	 * Constructor using to initialize data class in <code>DataSet</code>> class.
@@ -30,19 +32,8 @@ public class SpiderData implements Serializable {
 	 */
 	
 	public SpiderData() {
-		mainNode = new SpiderNode("", "");
-	}
-	
-	/**
-	 * Set the host of the data.
-	 * 
-	 * @param host Remote server name.
-	 * 
-	 * @author Tomahawkd
-	 */
-	
-	public void setHost(String host) {
-		mainNode.setName(host);
+		root = new SpiderNode("", "");
+		mainNodes = new ArrayList<SpiderNode>();
 	}
 	
 	/**
@@ -55,8 +46,8 @@ public class SpiderData implements Serializable {
 	 * @author Tomahawkd
 	 */
 	
-	public SpiderNode getMainNode() {
-		return mainNode;
+	public SpiderNode getRoot() {
+		return root;
 	}
 	
 	/**
@@ -88,10 +79,19 @@ public class SpiderData implements Serializable {
 	 */
 	
 	public void add(String[] path, String name, String data) {
-		if(path.length == 1){
-			mainNode = new SpiderNode(name, data);
-		} else {
-			currentNode = mainNode;
+		
+		//Judge a root node
+			for(int index = 0; index < mainNodes.size(); index++) {
+				if(mainNodes.get(index).name.equals(path[0])) {
+					currentNode = mainNodes.get(index);
+				}
+			}
+			if(currentNode == null) {
+				SpiderNode newMainNode = new SpiderNode(name, data);
+				mainNodes.add(newMainNode);
+				root.add(newMainNode);
+				currentNode = newMainNode;
+			}
 			for(int index = 0; index < path.length; index++) {
 				if(currentNode.isChildExist(path[index]) == -1) {
 					SpiderNode newChild;
@@ -106,7 +106,6 @@ public class SpiderData implements Serializable {
 					currentNode = (SpiderNode) currentNode.getChildAt(currentNode.isChildExist(path[index]));
 				}
 			}
-		}
 	}
 
 	/**
@@ -140,18 +139,18 @@ public class SpiderData implements Serializable {
 			this.name = name;
 			this.data = data;
 		}
-		
-		/**
-		 * Set specific node's data.
-		 * 
-		 * @param name node's data.
-		 * 
-		 * @author Tomahawkd
-		 */
-		
-		void setData(String data) {
-			this.data = data;
-		}
+//		
+//		/**
+//		 * Set specific node's data.
+//		 * 
+//		 * @param name node's data.
+//		 * 
+//		 * @author Tomahawkd
+//		 */
+//		
+//		void setData(String data) {
+//			this.data = data;
+//		}
 
 		/**
 		 * Get data in the specific node.
@@ -163,18 +162,6 @@ public class SpiderData implements Serializable {
 		
 		String getData() {
 			return data;
-		}
-		
-		/**
-		 * Set specific node's name.
-		 * 
-		 * @param name node's name.
-		 * 
-		 * @author Tomahawkd
-		 */
-		
-		void setName(String name) {
-			this.name = name;
 		}
 		
 		/**

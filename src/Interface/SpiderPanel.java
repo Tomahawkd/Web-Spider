@@ -37,14 +37,10 @@ class SpiderPanel extends JPanel {
 		
 		setLayout(null);
 		
+		//UI Component
 		JLabel lblHost = new JLabel("Host:");
 		lblHost.setBounds(30, 48, 40, 16);
 		add(lblHost);
-		
-		site = new JTextField();
-		site.setBounds(200, 43, 268, 26);
-		add(site);
-		site.setColumns(10);
 		
 		JLabel lblPort_SpiderLab = new JLabel("Port:");
 		lblPort_SpiderLab.setBounds(480, 48, 40, 16);
@@ -55,33 +51,43 @@ class SpiderPanel extends JPanel {
 		add(lblTipInvalid_Spider);
 		lblTipInvalid_Spider.setVisible(false);
 		
-		port = new JTextField();
-		port.setBounds(532, 43, 86, 26);
-		add(port);
-		port.setColumns(10);
-		port.setText("" + file.getDataSet().getSpiderOption().getPort());
-		
+		//Spider Setting Component
 		protocol = new Choice();
 		protocol.setBounds(76, 48, 118, 21);
 		add(protocol);
 		protocol.add("http");
 		protocol.add("https");
 		
+		site = new JTextField();
+		site.setBounds(200, 43, 268, 26);
+		add(site);
+		site.setColumns(10);
+		
+		port = new JTextField();
+		port.setBounds(532, 43, 86, 26);
+		add(port);
+		port.setColumns(10);
+		port.setText("" + file.getDataSet().getSpiderOption().getPort());
+		
+		//Spider Runner Toggle Button
 		SpiderRun spr = new SpiderRun(file.getDataSet().getSpiderData());
 		JToggleButton tglbtn_Start_Spider = new JToggleButton("Session Start");
 		tglbtn_Start_Spider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Change Text
+				
+				//UI Update
 				if(tglbtn_Start_Spider.getText().equals("Session Start")) {
 					tglbtn_Start_Spider.setText("Session Stop");
-				//Input Check
 					try {
+						
+				//Spider Settings Update		
 						String portStr = port.getText();
 						Integer portInt = Integer.parseInt(portStr);
 						file.getDataSet().getSpiderOption().setPort(portInt.intValue());
 						file.getDataSet().getSpiderOption().setHost(site.getText());
 						file.getDataSet().getSpiderOption().setProtocol(protocol.getSelectedItem());
 						spr.setOption(file.getDataSet().getSpiderOption());
+						
 				//Run Spider
 						new Thread(new Runnable() {
 							public void run() {
@@ -93,13 +99,21 @@ class SpiderPanel extends JPanel {
 								spr.stop();
 							}
 						}).start();
+						
+				//Update data
 						siteMap.updateData();
 					} catch (NumberFormatException e1) {
 						lblTipInvalid_Spider.setVisible(true);
 					}
 				} else {
+					
+				//Stop Spider	
 					spr.stop();
+					
+				//Update data	
 					siteMap.updateData();
+					
+				//UI Update	
 					tglbtn_Start_Spider.setText("Session Start");
 					lblTipInvalid_Spider.setVisible(false);
 				}
@@ -109,11 +123,27 @@ class SpiderPanel extends JPanel {
 		add(tglbtn_Start_Spider);
 	}
 	
+	/**
+	 * Update data after loading a file.
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	void updateData() {
 		this.port.setText("" + file.getDataSet().getSpiderOption().getPort());
 		this.site.setText(file.getDataSet().getSpiderOption().getHost());
 		this.protocol.select(file.getDataSet().getSpiderOption().getProtocol());
 	}
+	
+	/**
+	 * Hold the site map class to update site map data.
+	 * 
+	 * @param siteMap
+	 * 
+	 * @see {@link SiteMapPanel}
+	 * 
+	 * @author Tomahawkd
+	 */
 	
 	void setSiteMap(SiteMapPanel siteMap) {
 		this.siteMap = siteMap;

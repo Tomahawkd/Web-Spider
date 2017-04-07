@@ -30,7 +30,8 @@ class SiteMapPanel extends JScrollPane {
 		this.file = file;
 		
 		siteMap = new JTree();
-		siteMap.setModel(new DefaultTreeModel(file.getDataSet().getSpiderData().getMainNode()));
+		siteMap.setModel(new DefaultTreeModel(file.getDataSet().getSpiderData().getRoot()));
+		siteMap.setRootVisible(false);
 		siteMap.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -51,7 +52,7 @@ class SiteMapPanel extends JScrollPane {
 	}
 	
 	void updateData() {
-		this.siteMap.setModel(new DefaultTreeModel(file.getDataSet().getSpiderData().getMainNode()));
+		this.siteMap.setModel(new DefaultTreeModel(file.getDataSet().getSpiderData().getRoot()));
 	}
 
 }

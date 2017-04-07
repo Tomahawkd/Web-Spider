@@ -1,9 +1,6 @@
 package spider;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -64,28 +61,22 @@ class SpiderConnection {
 	String getHeaders() {
 		String headerStr = "";
 		Map<String, List<String>> headers = connection.getHeaderFields();
+		int index = 0;
 		for(String key : headers.keySet()) {
-			headerStr += key + ": ";
+			if(index != 0) {	
+				headerStr += key + ": ";
+			}
 			for(String value : headers.get(key)){
-				headerStr += value + "; ";
+				if(index != 0) {
+					headerStr += value + "; ";
+				} else {
+					headerStr += value;
+				}
 			}
 			headerStr += "\n";
+			index++;
 		}
 		
 		return headerStr;
-	}
-	
-	String getBody() {
-		String body = "";
-		try{
-			InputStream inputStream = connection.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-			String line = "";
-			while ((line = reader.readLine()) != null) {
-				body += line;
-				body += "\n";
-			}
-		} catch (IOException e) {}
-		return body;
 	}
 }
