@@ -1,6 +1,7 @@
 package spider;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
@@ -99,8 +100,10 @@ public class SpiderRun {
 	private void connect(String baseURL){
 		try {
 			Response res = Jsoup.connect(baseURL).headers(option.getHeaders()).execute();
-			
-			doc = Jsoup.connect(baseURL).headers(option.getHeaders()).get();
+			body = res.statusCode() + " " + res.statusMessage() + "\n";
+			body += mapToString(res.headers());
+			body += "\n\n";
+			body += res.body();
 			urlValidate = true;
 		} catch (IOException e) {
 			urlValidate = false;
@@ -123,35 +126,39 @@ public class SpiderRun {
 		
 		if (!suspendFlag) {
 			
-			data.add(searchFromNode(currentUrl), searchFromNode(currentUrl)[searchFromNode(currentUrl).length -1], "");
+//			data.add(searchFromNode(currentUrl), searchFromNode(currentUrl)[searchFromNode(currentUrl).length -1], "");
 			connect(currentUrl);
 			
 			if (urlValidate) {
 				
-				data.add(searchFromNode(currentUrl), searchFromNode(currentUrl)[searchFromNode(currentUrl).length -1], doc.html());
-				Elements media = doc.select("[src]");
-				for (Element src : media) {
-					if (src.attr("abs:src").contains(hostFilter)) {
-						currentUrl = src.attr("abs:src");
-						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
-							result.addNewUrl(currentUrl);
-							urlValidate = false;
-							getHerfHtml();
+				data.add(searchFromNode(currentUrl), searchFromNode(currentUrl)[searchFromNode(currentUrl).length -1], body);
+				
+				try {
+					doc = Jsoup.connect(currentUrl).headers(option.getHeaders()).get();				
+					Elements media = doc.select("[src]");
+					for (Element src : media) {
+						if (src.attr("abs:src").contains(hostFilter)) {
+							currentUrl = src.attr("abs:src");
+							if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
+								result.addNewUrl(currentUrl);
+								urlValidate = false;
+								getHerfHtml();
+							}
 						}
 					}
-				}
 
-				Elements imports = doc.select("*[href]");
-				for (Element link : imports) {
-					if (link.attr("abs:href").contains(hostFilter)) {
-						currentUrl = link.attr("abs:href");
-						if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
-							result.addNewUrl(currentUrl);
-							urlValidate = false;
-							getHerfHtml();
+					Elements imports = doc.select("*[href]");
+					for (Element link : imports) {
+						if (link.attr("abs:href").contains(hostFilter)) {
+							currentUrl = link.attr("abs:href");
+							if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
+								result.addNewUrl(currentUrl);
+								urlValidate = false;
+								getHerfHtml();
+							}
 						}
 					}
-				}
+				} catch (IOException e) {}
 			} 
 		}
 		
@@ -171,5 +178,14 @@ public class SpiderRun {
 	private String[] searchFromNode(String url) {
 		url = url.replace(option.getProtocol() + "://", "");
 		return url.split("/");
+	}
+	
+	private String mapToString(Map<String, String> header) {
+		String str = "";
+		for(String key : header.keySet()) {
+			str += key + ": " + header.get(key) + "\n";
+		}
+		
+		return str;
 	}
 }
