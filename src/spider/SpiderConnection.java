@@ -7,11 +7,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import org.jsoup.Connection.Response;
-import org.jsoup.Jsoup;
-
-
-@SuppressWarnings("restriction")
 class SpiderConnection {
 	private boolean urlValidate;
 	private URL url;
@@ -46,35 +41,27 @@ class SpiderConnection {
 		return urlValidate;
 	}
 	
-	void connect() {
-		try {
-			connection.connect();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	Response getResponse() throws IOException {
-		return Jsoup.connect(url.toString()).headers(headers).execute();
-	}
-	
 	String getHeaders() {
 		String headerStr = "";
 		Map<String, List<String>> headers = connection.getHeaderFields();
-		int index = 0;
+				
 		for(String key : headers.keySet()) {
-			if(index != 0) {	
-				headerStr += key + ": ";
-			}
-			for(String value : headers.get(key)){
-				if(index != 0) {
-					headerStr += value + "; ";
-				} else {
+			if(key == null) {	
+				for(String value : headers.get(key)){
 					headerStr += value;
 				}
 			}
+		}
+		
+		for(String key : headers.keySet()) {
+			if(key != null) {	
+				headerStr += key + ": ";
+				for(String value : headers.get(key)){
+					headerStr += value + "; ";
+				}
+			}
+
 			headerStr += "\n";
-			index++;
 		}
 		
 		return headerStr;

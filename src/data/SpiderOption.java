@@ -21,7 +21,6 @@ public class SpiderOption implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private DefaultListModel<String> requestHeader;
 	private Map<String, String> headers;
-	private int port;
 	private String host;
 	private String protocol;
 	
@@ -37,7 +36,6 @@ public class SpiderOption implements Serializable {
 	public SpiderOption() {
 		headers = new HashMap<String, String>();
 		requestHeader = new DefaultListModel<String>();
-		port = 80;
 		host = "";
 		protocol = "http";
 		
@@ -65,18 +63,15 @@ public class SpiderOption implements Serializable {
 	 * Using it to load user's preference.
 	 * 
 	 * @param requestHeader Request header using in http transfer.
-	 * @param port			Access the server with the port.
 	 * @param host			The target server.
 	 * @param protocol		Access the server with the protocol.
 	 * 
 	 * @author Tomahawkd
 	 */
 	
-	public SpiderOption(DefaultListModel<String> requestHeader, int port, String host,
-			String protocol) {
+	public SpiderOption(DefaultListModel<String> requestHeader, String host, String protocol) {
 
 		this.requestHeader = requestHeader;
-		this.port = port;
 		this.host = host;
 		this.protocol = protocol;
 	}
@@ -177,30 +172,6 @@ public class SpiderOption implements Serializable {
 		String[] oldHeader = requestHeader.getElementAt(index).split(": ");
 		this.requestHeader.remove(index);
 		headers.remove(oldHeader[0], oldHeader[1]);
-	}
-	
-	/**
-	 * Get port preference correspond to Spider.
-	 * 
-	 * @return port
-	 * 
-	 * @author Tomahawkd
-	 */
-
-	public int getPort() {
-		return port;
-	}
-
-	/**
-	 * Set port preference correspond to spider.
-	 * 
-	 * @param portOption Generally 80 for http and 443 for https
-	 * 
-	 * @author Tomahawkd
-	 */
-	
-	public void setPort(int port) {
-		this.port = port;
 	}
 	
 	/**

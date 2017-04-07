@@ -27,7 +27,6 @@ class SpiderPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private FileIO file;
 	private JTextField site;
-	private JTextField port;
 	private Choice protocol;
 	private SiteMapPanel siteMap;
 	
@@ -39,35 +38,29 @@ class SpiderPanel extends JPanel {
 		
 		//UI Component
 		JLabel lblHost = new JLabel("Host:");
-		lblHost.setBounds(30, 48, 40, 16);
+		lblHost.setBounds(110, 97, 40, 16);
 		add(lblHost);
-		
-		JLabel lblPort_SpiderLab = new JLabel("Port:");
-		lblPort_SpiderLab.setBounds(480, 48, 40, 16);
-		add(lblPort_SpiderLab);
 		
 		JLabel lblTipInvalid_Spider = new JLabel("Input invalid");
 		lblTipInvalid_Spider.setBounds(286, 308, 79, 16);
 		add(lblTipInvalid_Spider);
 		lblTipInvalid_Spider.setVisible(false);
 		
+		JLabel lblProtocol = new JLabel("Protocol:");
+		lblProtocol.setBounds(110, 45, 61, 16);
+		add(lblProtocol);
+		
 		//Spider Setting Component
 		protocol = new Choice();
-		protocol.setBounds(76, 48, 118, 21);
+		protocol.setBounds(200, 45, 118, 21);
 		add(protocol);
 		protocol.add("http");
 		protocol.add("https");
 		
 		site = new JTextField();
-		site.setBounds(200, 43, 268, 26);
+		site.setBounds(200, 92, 290, 26);
 		add(site);
 		site.setColumns(10);
-		
-		port = new JTextField();
-		port.setBounds(532, 43, 86, 26);
-		add(port);
-		port.setColumns(10);
-		port.setText("" + file.getDataSet().getSpiderOption().getPort());
 		
 		//Spider Runner Toggle Button
 		SpiderRun spr = new SpiderRun(file.getDataSet().getSpiderData());
@@ -81,9 +74,6 @@ class SpiderPanel extends JPanel {
 					try {
 						
 				//Spider Settings Update		
-						String portStr = port.getText();
-						Integer portInt = Integer.parseInt(portStr);
-						file.getDataSet().getSpiderOption().setPort(portInt.intValue());
 						file.getDataSet().getSpiderOption().setHost(site.getText());
 						file.getDataSet().getSpiderOption().setProtocol(protocol.getSelectedItem());
 						spr.setOption(file.getDataSet().getSpiderOption());
@@ -130,7 +120,6 @@ class SpiderPanel extends JPanel {
 	 */
 	
 	void updateData() {
-		this.port.setText("" + file.getDataSet().getSpiderOption().getPort());
 		this.site.setText(file.getDataSet().getSpiderOption().getHost());
 		this.protocol.select(file.getDataSet().getSpiderOption().getProtocol());
 	}
@@ -148,5 +137,4 @@ class SpiderPanel extends JPanel {
 	void setSiteMap(SiteMapPanel siteMap) {
 		this.siteMap = siteMap;
 	}
-
 }

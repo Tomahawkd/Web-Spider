@@ -1,6 +1,7 @@
 package spider;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Data Index: This is the index of the site map. Cache only.
@@ -9,29 +10,11 @@ import java.util.ArrayList;
  */
 
 public class SpiderIndex {
-	private ArrayList<String> existUrl;
+	private Map<String, Boolean> urlMap;
 	
 	public SpiderIndex(String baseURL){
-		existUrl = new ArrayList<>();
-		existUrl.add(baseURL);
-	}
-	
-	/**
-	 * Compare with exist url to comfirm if it is already exist.
-	 * 
-	 * @param url Absolute url
-	 * 
-	 * @return a boolean stands its existence
-	 * 
-	 * @author Tomahawkd
-	 */
-	
-	boolean compareExistUrl(String url){
-		boolean flag = false;
-		for(String exist : existUrl){
-			if(url.equals(exist)) flag = true;
-		}
-		return flag;
+		urlMap = new LinkedHashMap<String, Boolean>();
+		urlMap.put(baseURL, false);
 	}
 	
 	/**
@@ -45,6 +28,14 @@ public class SpiderIndex {
 	 */
 	
 	void addNewUrl(String newUrl){
-		existUrl.add(newUrl);
+		urlMap.put(newUrl, false);
+	}
+	
+	Map<String, Boolean> getURLMap() {
+		return urlMap;
+	}
+	
+	void setURLMap(Map<String, Boolean> urlMap) {
+		this.urlMap = urlMap;
 	}
 }
