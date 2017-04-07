@@ -20,11 +20,10 @@ import data.SpiderOption;
 
 @SuppressWarnings("restriction")
 public class SpiderRun {
-	private Document doc = null;
+	private Response res = null;
 	private String body;
 	private boolean urlValidate;
 	private String currentUrl;
-	private String hostFilter;
 	private SpiderIndex result;
 	private boolean suspendFlag;
 	private SpiderOption option;
@@ -60,9 +59,8 @@ public class SpiderRun {
 	public void start() throws nullHostException {
 		if (option.getHost().equals("")) throw new nullHostException();
 		suspendFlag = false;
-		currentUrl = option.getProtocol() + "://" + option.getHost() + ":" + option.getPort() + "/";
-		hostFilter = option.getProtocol() + "://" + option.getHost();
-		result = new SpiderIndex(hostFilter);
+		currentUrl = option.getProtocol() + "://" + option.getHost() + ":" + option.getPort();
+		result = new SpiderIndex(option.getHost());
 		result.addNewUrl(currentUrl);
 		data.setHost(option.getProtocol() + "://" + option.getHost());
 		getHerfHtml();
@@ -99,18 +97,18 @@ public class SpiderRun {
 	
 	private void connect(String baseURL){
 		try {
-			Response res = Jsoup.connect(baseURL).headers(option.getHeaders()).execute();
-			body = res.statusCode() + " " + res.statusMessage() + "\n";
+			res = Jsoup.connect(baseURL).headers(option.getHeaders()).execute();
+			body = "HTTP/1.1 " + res.statusCode() + " " + res.statusMessage() + "\n";
 			body += mapToString(res.headers());
 			body += "\n\n";
 			body += res.body();
 			urlValidate = true;
 		} catch (IOException e) {
 			urlValidate = false;
+			String[] path = searchFromNode(currentUrl);
+			data.add(path, path[path.length - 1], "");
 		} 
 	}
-	
-	
 	
 	boolean getUrlValid(){
 		return urlValidate;
@@ -130,14 +128,14 @@ public class SpiderRun {
 			connect(currentUrl);
 			
 			if (urlValidate) {
-				
-				data.add(searchFromNode(currentUrl), searchFromNode(currentUrl)[searchFromNode(currentUrl).length -1], body);
+				String[] path = searchFromNode(currentUrl);
+				data.add(path, path[path.length - 1], body);
 				
 				try {
-					doc = Jsoup.connect(currentUrl).headers(option.getHeaders()).get();				
+					Document doc = res.parse();	
 					Elements media = doc.select("[src]");
 					for (Element src : media) {
-						if (src.attr("abs:src").contains(hostFilter)) {
+						if (src.attr("abs:src").contains(option.getHost())) {
 							currentUrl = src.attr("abs:src");
 							if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
 								result.addNewUrl(currentUrl);
@@ -149,7 +147,7 @@ public class SpiderRun {
 
 					Elements imports = doc.select("*[href]");
 					for (Element link : imports) {
-						if (link.attr("abs:href").contains(hostFilter)) {
+						if (link.attr("abs:href").contains(option.getHost())) {
 							currentUrl = link.attr("abs:href");
 							if (!currentUrl.equals("") && !result.compareExistUrl(currentUrl)) {
 								result.addNewUrl(currentUrl);
