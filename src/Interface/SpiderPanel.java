@@ -19,7 +19,7 @@ import spider.nullHostException;
  * @author Tomahawkd
  */
 
-class SpiderPanel extends JPanel {
+public class SpiderPanel extends JPanel {
 
 	/**
 	 * 
@@ -28,6 +28,7 @@ class SpiderPanel extends JPanel {
 	private FileIO file;
 	private JTextField site;
 	private Choice protocol;
+	private JLabel lblQueue;
 	private SiteMapPanel siteMap;
 	
 	SpiderPanel(FileIO file) {
@@ -50,6 +51,14 @@ class SpiderPanel extends JPanel {
 		lblProtocol.setBounds(110, 45, 61, 16);
 		add(lblProtocol);
 		
+		JLabel lblInQueue = new JLabel("In queue:");
+		lblInQueue.setBounds(110, 154, 61, 16);
+		add(lblInQueue);
+		
+		lblQueue = new JLabel("0");
+		lblQueue.setBounds(200, 154, 61, 16);
+		add(lblQueue);
+		
 		//Spider Setting Component
 		protocol = new Choice();
 		protocol.setBounds(200, 45, 118, 21);
@@ -63,7 +72,7 @@ class SpiderPanel extends JPanel {
 		site.setColumns(10);
 		
 		//Spider Runner Toggle Button
-		SpiderRun spr = new SpiderRun(file.getDataSet().getSpiderData());
+		SpiderRun spr = new SpiderRun(file.getDataSet().getSpiderData(), this);
 		JToggleButton tglbtn_Start_Spider = new JToggleButton("Session Start");
 		tglbtn_Start_Spider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,6 +120,10 @@ class SpiderPanel extends JPanel {
 		});
 		tglbtn_Start_Spider.setBounds(248, 335, 161, 29);
 		add(tglbtn_Start_Spider);
+	}
+	
+	public void refreshQueue(int queue) {
+		lblQueue.setText("" + queue);
 	}
 	
 	/**

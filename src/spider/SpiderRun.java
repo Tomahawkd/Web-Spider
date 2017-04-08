@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import Interface.SpiderPanel;
 import data.SpiderData;
 import data.SpiderOption;
 
@@ -22,15 +23,18 @@ import data.SpiderOption;
 public class SpiderRun {
 	
 	private boolean suspendFlag;
+	private int queue;
 	
 	private SpiderIndex result;
 	private SpiderOption option;
 	private SpiderData data;
 	private SpiderConnection connection;
+	private SpiderPanel panel;
 	
-	public SpiderRun(SpiderData data) {
+	public SpiderRun(SpiderData data, SpiderPanel panel) {
 		suspendFlag = false;
 		this.data = data;
+		this.panel = panel;
 	}
 	
 	/**
@@ -60,8 +64,18 @@ public class SpiderRun {
 		suspendFlag = false;
 		result = new SpiderIndex(option.getProtocol() + "://" + option.getHost());
 		connection = new SpiderConnection(option.getHeaders());
+		
 		result.setURLMap(crawlLinks(result.getURLMap()));
-		getContents(result.getURLMap());
+		
+		new Thread(new Runnable() {
+			public void run() {
+				while(!suspendFlag){
+					getContents(result.getURLMap());
+				}
+			}
+		}).start();
+		
+		
 	}
 	
 	/**
@@ -91,7 +105,6 @@ public class SpiderRun {
 		if (!suspendFlag) {
 			
 			for (Map.Entry<String, Boolean> mapping : urlMap.entrySet()) {
-//				System.out.println("link:" + mapping.getKey() + "--------check:" + mapping.getValue());
 				
 				if (!mapping.getValue()) {
 					String url = mapping.getKey();
@@ -122,6 +135,10 @@ public class SpiderRun {
 			}
 			if (!newURLMap.isEmpty()) {
 				urlMap.putAll(newURLMap);
+				
+				queue = result.getQueue();
+				panel.refreshQueue(queue);
+				
 				urlMap.putAll(crawlLinks(urlMap));
 			}
 		}
@@ -129,16 +146,27 @@ public class SpiderRun {
 		
 	}
 	
-	void getContents(Map<String, Boolean> urlMap) {
+	void getContents(Map<String, Boolean> urlMapSet) {
+		
+		final Map<String, Boolean> urlMap = urlMapSet;
+		
 		for(String url : urlMap.keySet()) {
+			
 			connection.setUrl(url);
 			if(connection.Validate()) {
+				
 				String content = "";
 				content += connection.getHeaders();
+				
+				queue--;
+				panel.refreshQueue(queue);
+				
 				try {
 					content += Jsoup.connect(url).headers(option.getHeaders()).get().data();
 				} catch (IOException e) {}
-				String path[] = searchFromNode(url);
+				
+				String path[] = toPathArray(url);
+				
 				if (!content.equals("")) {
 					data.add(path, path[path.length - 1], content);
 				}
@@ -157,7 +185,8 @@ public class SpiderRun {
 	 * @author Tomahawkd
 	 */
 	
-	private String[] searchFromNode(String url) {
+	private String[] toPathArray(String url) {
+		
 		if(url.startsWith("http://")) {
 			url = url.replace("http://", "http:/");
 		} else {

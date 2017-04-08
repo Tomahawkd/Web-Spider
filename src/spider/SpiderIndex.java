@@ -38,4 +38,8 @@ public class SpiderIndex {
 	void setURLMap(Map<String, Boolean> urlMap) {
 		this.urlMap = urlMap;
 	}
+	
+	int getQueue() {
+		return urlMap.size();
+	}
 }
