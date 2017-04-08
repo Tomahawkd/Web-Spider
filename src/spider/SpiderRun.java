@@ -35,6 +35,8 @@ public class SpiderRun {
 	
 	private boolean isEditing;
 	
+	private boolean isHostOnly;
+	
 	private Map<String, Boolean> accessedURLs;
 	
 	/**
@@ -121,6 +123,7 @@ public class SpiderRun {
 	
 	public void setOption(SpiderOption option) {
 		this.option = option;
+		isHostOnly = option.isHostOnly();
 	}
 	
 	public void setSiteMap(SiteMapPanel siteMapPanel) {
@@ -217,7 +220,7 @@ public class SpiderRun {
 						for (Element link : imports) {
 							
 							//Filter non-current host URLs
-							if (link.attr("abs:href").contains(option.getHost())) {
+							if (!isHostOnly || link.attr("abs:href").contains(option.getHost())) {
 								
 								//Get the absolute URL
 								String newUrl = link.attr("abs:href");
@@ -234,7 +237,7 @@ public class SpiderRun {
 						for (Element src : media) {
 							
 							//Filter non-current host URLs
-							if (src.attr("abs:src").contains(option.getHost())) {
+							if (!isHostOnly || src.attr("abs:src").contains(option.getHost())) {
 								
 								//Get the absolute URL
 								String newUrl = src.attr("abs:src");

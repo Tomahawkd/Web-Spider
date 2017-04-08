@@ -29,6 +29,7 @@ public class SpiderPanel extends JPanel {
 	private SpiderRun spr;
 	private JTextField site;
 	private Choice protocol;
+	private Choice option;
 	private JLabel lblQueue;
 	private JLabel lblRequest;
 	
@@ -68,6 +69,10 @@ public class SpiderPanel extends JPanel {
 		lblRequest.setBounds(210, 200, 61, 16);
 		add(lblRequest);
 		
+		JLabel lblOption = new JLabel("Option:");
+		lblOption.setBounds(334, 45, 47, 16);
+		add(lblOption);
+		
 		//Spider Setting Component
 		protocol = new Choice();
 		protocol.setBounds(210, 45, 118, 21);
@@ -75,8 +80,14 @@ public class SpiderPanel extends JPanel {
 		protocol.add("http");
 		protocol.add("https");
 		
+		option = new Choice();
+		option.setBounds(387, 45, 118, 21);
+		add(option);
+		option.add("Host Only");
+		option.add("All Site");
+		
 		site = new JTextField();
-		site.setBounds(210, 92, 290, 26);
+		site.setBounds(210, 92, 298, 26);
 		add(site);
 		site.setColumns(10);
 		
@@ -94,6 +105,7 @@ public class SpiderPanel extends JPanel {
 				//Spider Settings Update		
 						file.getDataSet().getSpiderOption().setHost(site.getText());
 						file.getDataSet().getSpiderOption().setProtocol(protocol.getSelectedItem());
+						file.getDataSet().getSpiderOption().serAccessOption(option.getSelectedItem());
 						spr.setOption(file.getDataSet().getSpiderOption());
 						
 				//Run Spider
@@ -159,6 +171,7 @@ public class SpiderPanel extends JPanel {
 	void updateData() {
 		this.site.setText(file.getDataSet().getSpiderOption().getHost());
 		this.protocol.select(file.getDataSet().getSpiderOption().getProtocol());
+		this.option.select(file.getDataSet().getSpiderOption().getAccessOption());
 	}
 	
 	/**
@@ -175,3 +188,7 @@ public class SpiderPanel extends JPanel {
 		spr.setSiteMap(siteMap);
 	}
 }
+
+
+
+

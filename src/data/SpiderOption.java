@@ -23,6 +23,7 @@ public class SpiderOption implements Serializable {
 	private Map<String, String> headers;
 	private String host;
 	private String protocol;
+	private String accessOption;
 	
 	/**
 	 *  Constructor with non-parameter.
@@ -38,6 +39,7 @@ public class SpiderOption implements Serializable {
 		requestHeader = new DefaultListModel<String>();
 		host = "";
 		protocol = "http";
+		accessOption = "Host Only";
 		
 		requestHeader.addElement("Connection: close");
 		requestHeader.addElement("Accept: */*");
@@ -222,7 +224,21 @@ public class SpiderOption implements Serializable {
 		this.protocol = protocol;
 	}
 	
+	public boolean isHostOnly() {
+		boolean option = true;
+		if (accessOption.equals("All Site")) {
+			option = false;
+		}
+		return option;
+	}
 	
+	public String getAccessOption() {
+		return accessOption;
+	}
+	
+	public void serAccessOption(String accessOption) {
+		this.accessOption = accessOption;
+	}
 	
 	
 }
