@@ -10,7 +10,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Exception.ExistFileException;
-import Exception.FileNameInvaildException;
+import Exception.FileNameInvalidException;
 
 /**
  * Interface: Create new file FileChooser panel.
@@ -66,7 +66,7 @@ public class NewFile extends JFileChooser {
 				ExistFileTip tip = new ExistFileTip(file, Operation.NEW);
 				tip.setVisible(true);
 						
-			} catch (FileNameInvaildException e) {
+			} catch (FileNameInvalidException e) {
 				
 				FileNameInvalid invalid = new FileNameInvalid();
 				invalid.setVisible(true);

@@ -20,6 +20,14 @@ public class FileExceptions extends Exception {
 
 }
 
+
+
+/**
+ * Enumeration of all exceptions
+ * 
+ * @author Tomahawkd
+ */
+
 enum ExceptionType {
 	
 	EXIST("File is already exist."), 

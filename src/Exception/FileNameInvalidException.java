@@ -6,14 +6,14 @@ package Exception;
  * @author Tomahawkd
  */
 
-public class FileNameInvaildException extends FileExceptions {
+public class FileNameInvalidException extends FileExceptions {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public FileNameInvaildException() {
+	public FileNameInvalidException() {
 		super(ExceptionType.INVALID.getErrorMessage());
 	}
 	

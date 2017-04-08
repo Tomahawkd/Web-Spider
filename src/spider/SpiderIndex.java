@@ -31,13 +31,37 @@ public class SpiderIndex {
 		urlMap.put(newUrl, false);
 	}
 	
+	/**
+	 * Get URL queue map.
+	 * 
+	 * @return URL queue map
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	Map<String, Boolean> getURLMap() {
 		return urlMap;
 	}
 	
+	/**
+	 * Set a new URL queue map.
+	 * 
+	 * @param urlMap URL queue map
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	void setURLMap(Map<String, Boolean> urlMap) {
 		this.urlMap = urlMap;
 	}
+	
+	/**
+	 * Get URL queue map queue.
+	 * 
+	 * @return Queue length
+	 * 
+	 * @author Tomahawkd
+	 */
 	
 	int getQueue() {
 		return urlMap.size();

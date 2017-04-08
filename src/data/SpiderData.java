@@ -18,7 +18,22 @@ public class SpiderData implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Root nodes
+	 */
+	
 	private SpiderNode root;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * Constructor using to initialize data class in <code>DataSet</code>> class.
@@ -77,9 +92,15 @@ public class SpiderData implements Serializable {
 	public void add(String[] path, String data) {
 		
 		SpiderNode currentNode = root;
+		
+		//Loop path array to locate the file 
 		for(int index = 0; index < path.length; index++) {
+			
+			//Check if the node is already exist
 			int childIndex = currentNode.isChildExist(path[index]);
-			if(childIndex == -1) {
+			if (childIndex == -1) {
+				
+				//Create new node
 				SpiderNode newChild = new SpiderNode(path[index], "");
 				currentNode.add(newChild);
 				currentNode = newChild;
@@ -87,6 +108,8 @@ public class SpiderData implements Serializable {
 				currentNode = (SpiderNode) currentNode.getChildAt(childIndex);
 			}
 		}
+		
+		//Add data
 		currentNode.data = data;
 	}
 
@@ -144,18 +167,32 @@ public class SpiderData implements Serializable {
 		 */
 		
 		int isChildExist(String name) {
+			
+			//Initialize the index pointer
 			int exist = -1;
+			
+			//
 			if(this.children != null) {
+				
+				//Point to the first child
 				exist = 0;
 				for(Object child : this.children) {
 					try{
+						
 						SpiderNode childNode = (SpiderNode) child;
+						
+						//Check the child name
 						if (childNode.name.equals(name)) {
 							break;
 						}
+						
+						//Point to next child
 						exist++;
+						
 					} catch(ClassCastException e) {}
 				}
+				
+				//Out of index equal not exist
 				if(exist == this.children.size()) {
 					exist = -1;
 				}

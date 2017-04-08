@@ -14,6 +14,11 @@ public class IntercepterOption implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Intercepter port
+	 */
+	
 	private int port;
 	
 	/**
@@ -27,7 +32,6 @@ public class IntercepterOption implements Serializable {
 	
 	public IntercepterOption() {
 		port = 8080;
-
 	}
 	
 	/**
@@ -41,9 +45,7 @@ public class IntercepterOption implements Serializable {
 	 */
 	
 	public IntercepterOption(int port) {
-
 		this.port = port;
-		
 	}
 
 	/**

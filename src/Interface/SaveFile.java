@@ -9,7 +9,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import Exception.ExistFileException;
-import Exception.FileNameInvaildException;
+import Exception.FileNameInvalidException;
 
 /**
  * Interface: Save to a new file FileChooser panel.
@@ -81,7 +81,7 @@ public class SaveFile extends JFileChooser {
 				ExistFileTip tip = new ExistFileTip(file, Operation.SAVE);
 				tip.setVisible(true);
 						
-			} catch (FileNameInvaildException e) {
+			} catch (FileNameInvalidException e) {
 				
 				FileNameInvalid invalid = new FileNameInvalid();
 				invalid.setVisible(true);

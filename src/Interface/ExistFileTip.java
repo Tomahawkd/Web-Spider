@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Exception.ExistFileException;
-import Exception.FileNameInvaildException;
+import Exception.FileNameInvalidException;
 import data.FileIO;
 
 import javax.swing.JLabel;
@@ -53,7 +53,7 @@ public class ExistFileTip extends JFrame {
 						file.createFile(true);
 						FileProcess process = new FileProcess(type.getOperationType());
 						process.setVisible(true);
-					} catch (ExistFileException | FileNameInvaildException e1) {
+					} catch (ExistFileException | FileNameInvalidException e1) {
 						
 					} catch (IOException e1) {
 						Error error = new Error();
@@ -67,7 +67,7 @@ public class ExistFileTip extends JFrame {
 						file.saveAsFile(true);
 						FileProcess process = new FileProcess(type.getOperationType());
 						process.setVisible(true);
-					} catch (ExistFileException | FileNameInvaildException e1) {
+					} catch (ExistFileException | FileNameInvalidException e1) {
 						
 					} catch (IOException e1) {
 						Error error = new Error();

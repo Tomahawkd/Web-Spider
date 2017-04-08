@@ -19,10 +19,35 @@ public class SpiderOption implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Request headers option contents
+	 */
+	
 	private DefaultListModel<String> requestHeader;
+	
+	/**
+	 * Request headers when requesting a URL
+	 */
+	
 	private Map<String, String> headers;
+	
+	/**
+	 * Remote host name
+	 */
+	
 	private String host;
+	
+	/**
+	 * Connection protocol. Only support <code>http</code> and <code>https</code>.
+	 */
+	
 	private String protocol;
+	
+	/**
+	 * Host-only filter activation option
+	 */
+	
 	private String accessOption;
 	
 	/**
@@ -35,12 +60,13 @@ public class SpiderOption implements Serializable {
 	 */
 	
 	public SpiderOption() {
-		headers = new HashMap<String, String>();
-		requestHeader = new DefaultListModel<String>();
+		
 		host = "";
 		protocol = "http";
 		accessOption = "Host Only";
 		
+		//Default request headers
+		requestHeader = new DefaultListModel<String>();
 		requestHeader.addElement("Connection: close");
 		requestHeader.addElement("Accept: */*");
 		requestHeader.addElement("User-Agent: "
@@ -50,6 +76,7 @@ public class SpiderOption implements Serializable {
 		requestHeader.addElement("Accept-Language: zh-cn");
 		requestHeader.addElement("Accept-Encoding: gzip");
 		
+		headers = new HashMap<String, String>();
 		headers.put("Connection", "close");
 		headers.put("Accept", "*/*");
 		headers.put("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) "
@@ -72,14 +99,13 @@ public class SpiderOption implements Serializable {
 	 */
 	
 	public SpiderOption(DefaultListModel<String> requestHeader, String host, String protocol) {
-
 		this.requestHeader = requestHeader;
 		this.host = host;
 		this.protocol = protocol;
 	}
 
 	/**
-	 * Get current request header.
+	 * Get current request header to update data in GUI.
 	 * 
 	 * @return current request header data array.
 	 * 
@@ -89,6 +115,14 @@ public class SpiderOption implements Serializable {
 	public DefaultListModel<String> getRequestHeader() {
 		return this.requestHeader;
 	}
+	
+	/**
+	 * Get current request header to request.
+	 * 
+	 * @return current request header data map.
+	 * 
+	 * @author Tomahawkd
+	 */
 	
 	public Map<String, String> getHeaders() {
 		return headers;
@@ -153,11 +187,17 @@ public class SpiderOption implements Serializable {
 	 */
 	
 	public void editHeaderElement(int index, String header) throws ArrayIndexOutOfBoundsException {
+		
+		//header in map
 		String[] oldHeader = requestHeader.getElementAt(index).split(": ");
-		this.requestHeader.set(index, header);
 		String[] newHeader = header.split(": ");
+		
+		//Consider the user would edit it completely, use remove and put method rather than replace method
 		headers.remove(oldHeader[0], oldHeader[1]);
 		headers.put(newHeader[0], newHeader[1]);
+		
+		//header in listModel
+		this.requestHeader.set(index, header);
 	}
 	
 	/**
@@ -224,6 +264,14 @@ public class SpiderOption implements Serializable {
 		this.protocol = protocol;
 	}
 	
+	/**
+	 * Judging is tend to active host-only filter.
+	 * 
+	 * @return host-only filter activation flag.
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	public boolean isHostOnly() {
 		boolean option = true;
 		if (accessOption.equals("All Site")) {
@@ -231,10 +279,26 @@ public class SpiderOption implements Serializable {
 		}
 		return option;
 	}
+
+	/**
+	 * Get filter option to refresh GUI.
+	 * 
+	 * @return host only or all sites
+	 * 
+	 * @author Tomahawkd
+	 */
 	
 	public String getAccessOption() {
 		return accessOption;
 	}
+	
+	/**
+	 * Set filter option
+	 * 
+	 * @param accessOption
+	 * 
+	 * @author Tomahawkd
+	 */
 	
 	public void serAccessOption(String accessOption) {
 		this.accessOption = accessOption;
