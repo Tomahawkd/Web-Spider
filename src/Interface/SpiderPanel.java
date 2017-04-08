@@ -26,10 +26,11 @@ public class SpiderPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private FileIO file;
+	private SpiderRun spr;
 	private JTextField site;
 	private Choice protocol;
 	private JLabel lblQueue;
-	private SiteMapPanel siteMap;
+	private JLabel lblRequest;
 	
 	SpiderPanel(FileIO file) {
 		
@@ -56,23 +57,31 @@ public class SpiderPanel extends JPanel {
 		add(lblInQueue);
 		
 		lblQueue = new JLabel("0");
-		lblQueue.setBounds(200, 154, 61, 16);
+		lblQueue.setBounds(210, 154, 61, 16);
 		add(lblQueue);
+		
+		JLabel lblRequestSent = new JLabel("Request sent:");
+		lblRequestSent.setBounds(110, 200, 85, 16);
+		add(lblRequestSent);
+		
+		lblRequest = new JLabel("0");
+		lblRequest.setBounds(210, 200, 61, 16);
+		add(lblRequest);
 		
 		//Spider Setting Component
 		protocol = new Choice();
-		protocol.setBounds(200, 45, 118, 21);
+		protocol.setBounds(210, 45, 118, 21);
 		add(protocol);
 		protocol.add("http");
 		protocol.add("https");
 		
 		site = new JTextField();
-		site.setBounds(200, 92, 290, 26);
+		site.setBounds(210, 92, 290, 26);
 		add(site);
 		site.setColumns(10);
 		
 		//Spider Runner Toggle Button
-		SpiderRun spr = new SpiderRun(file.getDataSet().getSpiderData(), this);
+		spr = new SpiderRun(file.getDataSet().getSpiderData(), this);
 		JToggleButton tglbtn_Start_Spider = new JToggleButton("Session Start");
 		tglbtn_Start_Spider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -99,8 +108,6 @@ public class SpiderPanel extends JPanel {
 							}
 						}).start();
 						
-				//Update data
-						siteMap.updateData();
 					} catch (NumberFormatException e1) {
 						lblTipInvalid_Spider.setVisible(true);
 					}
@@ -108,9 +115,6 @@ public class SpiderPanel extends JPanel {
 					
 				//Stop Spider	
 					spr.stop();
-					
-				//Update data	
-					siteMap.updateData();
 					
 				//UI Update	
 					tglbtn_Start_Spider.setText("Session Start");
@@ -122,8 +126,28 @@ public class SpiderPanel extends JPanel {
 		add(tglbtn_Start_Spider);
 	}
 	
+	/**
+	 * Refresh the queue indicator.
+	 * 
+	 * @param queue new queue count
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	public void refreshQueue(int queue) {
 		lblQueue.setText("" + queue);
+	}
+	
+	/**
+	 * Refresh the counter.
+	 * 
+	 * @param request new request sent count
+	 * 
+	 * @author Tomahawkd
+	 */
+	
+	public void refreshRequestCounter(int request) {
+		lblRequest.setText("" + request);
 	}
 	
 	/**
@@ -148,6 +172,6 @@ public class SpiderPanel extends JPanel {
 	 */
 	
 	void setSiteMap(SiteMapPanel siteMap) {
-		this.siteMap = siteMap;
+		spr.setSiteMap(siteMap);
 	}
 }

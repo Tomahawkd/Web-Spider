@@ -19,7 +19,6 @@ public class SpiderData implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private SpiderNode root;
-	private SpiderNode main;
 	
 	/**
 	 * Constructor using to initialize data class in <code>DataSet</code>> class.
@@ -75,27 +74,20 @@ public class SpiderData implements Serializable {
 	 * @author Tomahawkd
 	 */
 	
-	public void add(String[] path, String name, String data) {
+	public void add(String[] path, String data) {
 		
-		if(path.length == 2){
-			main = new SpiderNode((path[0] + "//" + name), data);
-			root.add(main);
-		}
-		SpiderNode currentNode = main;
-		for(int index = 1; index < path.length; index++) {
-			if(currentNode.isChildExist(path[index]) == -1) {
-				SpiderNode newChild;
-				if(index != path.length - 1) {
-					newChild = new SpiderNode(name, "");
-				} else {
-					newChild = new SpiderNode(name, data);
-				}
+		SpiderNode currentNode = root;
+		for(int index = 0; index < path.length; index++) {
+			int childIndex = currentNode.isChildExist(path[index]);
+			if(childIndex == -1) {
+				SpiderNode newChild = new SpiderNode(path[index], "");
 				currentNode.add(newChild);
-			
+				currentNode = newChild;
 			} else {
-				currentNode = (SpiderNode) currentNode.getChildAt(currentNode.isChildExist(path[index]));
+				currentNode = (SpiderNode) currentNode.getChildAt(childIndex);
 			}
 		}
+		currentNode.data = data;
 	}
 
 	/**
@@ -154,6 +146,7 @@ public class SpiderData implements Serializable {
 		int isChildExist(String name) {
 			int exist = -1;
 			if(this.children != null) {
+				exist = 0;
 				for(Object child : this.children) {
 					try{
 						SpiderNode childNode = (SpiderNode) child;
@@ -162,6 +155,9 @@ public class SpiderData implements Serializable {
 						}
 						exist++;
 					} catch(ClassCastException e) {}
+				}
+				if(exist == this.children.size()) {
+					exist = -1;
 				}
 			}
 			return exist;

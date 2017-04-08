@@ -51,6 +51,9 @@ class SpiderConnection {
 					headerStr += value;
 				}
 			}
+			if(!headerStr.endsWith("\n")) {
+				headerStr += "\n";
+			}
 		}
 		
 		for(String key : headers.keySet()) {
@@ -60,10 +63,14 @@ class SpiderConnection {
 					headerStr += value + "; ";
 				}
 			}
-
-			headerStr += "\n";
+			if(!headerStr.endsWith("\n")) {
+				headerStr += "\n";
+			}
 		}
 		
+		if(!headerStr.endsWith("\n\n")) {
+			headerStr += "\n";
+		}
 		return headerStr;
 	}
 }

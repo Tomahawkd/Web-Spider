@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Data Index: This is the index of the site map. Cache only.
+ * Data Index: URL Queue map. Cache only.
  * 
  * @author Tomahawkd
  */
@@ -18,9 +18,9 @@ public class SpiderIndex {
 	}
 	
 	/**
-	 * Add a new url to index
+	 * Add a new URL to queue
 	 * 
-	 * @param newUrl a new url gotten from <code>SpiderRun</code> class
+	 * @param newUrl a new URL gotten from <code>SpiderRun</code> class
 	 * 
 	 * @see {@link SpiderRun}
 	 * 

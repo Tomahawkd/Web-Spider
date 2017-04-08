@@ -16,7 +16,7 @@ import data.FileIO;
  * @author Tomahawkd
  */
 
-class SiteMapPanel extends JScrollPane {
+public class SiteMapPanel extends JScrollPane {
 
 	/**
 	 * 
@@ -31,7 +31,7 @@ class SiteMapPanel extends JScrollPane {
 		
 		siteMap = new JTree();
 		siteMap.setModel(new DefaultTreeModel(file.getDataSet().getSpiderData().getRoot()));
-		siteMap.setRootVisible(false);
+		siteMap.setRootVisible(true);
 		siteMap.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -51,7 +51,7 @@ class SiteMapPanel extends JScrollPane {
 		setViewportView(siteMap);
 	}
 	
-	void updateData() {
+	public void updateData() {
 		this.siteMap.setModel(new DefaultTreeModel(file.getDataSet().getSpiderData().getRoot()));
 	}
 

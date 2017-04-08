@@ -21,7 +21,8 @@ public class MainWindow {
 
 	//main frame
 	private JFrame frmWebSpider;
-	//tab panel contains
+	
+	//tab panel components
 	private SpiderPanel spider;
 	private SiteMapPanel siteMap;
 	private IntercepterPanel intercepter;
@@ -31,10 +32,9 @@ public class MainWindow {
 	//User data set
 	private FileIO file = new FileIO();
 
-	/*
+	/**
 	 * Launch the application.
 	 */
-	
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -50,7 +50,7 @@ public class MainWindow {
 		});
 	}
 	
-	/*
+	/**
 	 * Create the application.
 	 */
 	
@@ -59,7 +59,7 @@ public class MainWindow {
 	}
 
 	
-	/*
+	/**
 	 * Initialize the contents of the frame.
 	 */
 	
@@ -141,7 +141,7 @@ public class MainWindow {
 	 * @author Tomahawkd
 	 */
 	public void updateUI() {
-		this.frmWebSpider.setTitle("Web Spider - " + file.getTargetFilePath());
+		this.frmWebSpider.setTitle("Web Spider  " + file.getTargetFilePath());
 		this.spider.updateData();
 		this.options.updateData();
 		this.siteMap.updateData();
