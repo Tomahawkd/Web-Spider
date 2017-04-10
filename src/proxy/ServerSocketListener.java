@@ -35,6 +35,7 @@ public class ServerSocketListener {
 				}
 			}
 		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -61,6 +62,10 @@ public class ServerSocketListener {
 		action();
 	}
 	
+	public void resume() {
+		suspendFlag = false;
+	}
+	
 	public void closeSocket() throws IOException {
 		socket.close();
 	}
@@ -78,15 +83,17 @@ public class ServerSocketListener {
 	}
 	
 	private void action() throws IOException {
-		if (this.socket == null){
-			return ;
+		if (!suspendFlag) {
+			if (this.socket == null) {
+				return;
+			}
+			BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+			for (String temp = br.readLine(); temp != null; temp = br.readLine()) {
+				request.addRequestElement(temp);
+			}
+			br.close();
+			suspendFlag = true;
 		}
-		BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-		for(String temp = br.readLine() ; temp!=null; temp = br.readLine()){
-			request.addRequestElement(temp);
-		}
-		br.close();
-		suspendFlag = true;
 	}
 	
 	
