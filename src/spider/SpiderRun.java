@@ -1,6 +1,7 @@
 package spider;
 
 import java.io.IOException;
+import java.util.ConcurrentModificationException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import org.jsoup.select.Elements;
 
 import Interface.SiteMapPanel;
 import Interface.SpiderPanel;
-import data.DataSet;
+import data.FileIO;
 import data.SpiderData;
 import data.SpiderOption;
 
@@ -31,22 +32,10 @@ public class SpiderRun {
 	private boolean suspendFlag;
 	
 	/**
-	 * Flag to monitor the map is being editing.
-	 */
-	
-	private boolean isEditing;
-	
-	/**
 	 * Flag to indicate the activation of the host-only filter.
 	 */
 	
 	private boolean isHostOnly;
-	
-	/**
-	 * Already accessed URLs map by <code>getContents</code> method.
-	 */
-	
-	private Map<String, Boolean> accessedURLs;
 	
 	/**
 	 * URL counter in queue to access content.
@@ -95,10 +84,10 @@ public class SpiderRun {
 	/**
 	 * Spider index write-in operation.
 	 * 
-	 * @see {@link DataSet}
+	 * @see {@link FileIO}
 	 */
 	
-	private DataSet dataSet;
+	private FileIO file;
 	
 	/**
 	 * Update queue indicator.
@@ -124,14 +113,23 @@ public class SpiderRun {
 	
 	
 	
-	public SpiderRun(DataSet dataSet, SpiderPanel spiderPanel) {
+	public SpiderRun(FileIO file, SpiderPanel spiderPanel) {
 		suspendFlag = false;
-		isEditing = false;
-		this.dataSet = dataSet;
-		this.data = dataSet.getSpiderData();
+		this.file = file;
 		this.spiderPanel = spiderPanel;
-		this.queueCounter = dataSet.getQueueCounter();
-		this.requestCounter = dataSet.getRequestCounter();
+		this.data = file.getDataSet().getSpiderData();
+		this.result = file.getDataSet().getSpiderIndex();
+		this.queueCounter = file.getDataSet().getQueueCounter();
+		this.requestCounter = file.getDataSet().getRequestCounter();
+	}
+	
+	
+	
+	public void updateData() {
+		this.data = file.getDataSet().getSpiderData();
+		this.result = file.getDataSet().getSpiderIndex();
+		this.queueCounter = file.getDataSet().getQueueCounter();
+		this.requestCounter = file.getDataSet().getRequestCounter();
 	}
 	
 	/**
@@ -159,15 +157,6 @@ public class SpiderRun {
 		this.siteMapPanel = siteMapPanel;
 	}
 
-	
-	public void setQueueCounter(int queueCounter) {
-		this.queueCounter = queueCounter;
-	}
-
-	public void setRequestCounter(int requestCounter) {
-		this.requestCounter = requestCounter;
-	}
-
 	/**
 	 * Start web spider operation.
 	 * 
@@ -183,15 +172,12 @@ public class SpiderRun {
 		
 		//Set up monitor
 		suspendFlag = false;
-		isEditing = false;
-		
-		accessedURLs = new LinkedHashMap<String, Boolean>();
-		
+				
 		//Put the host in to the queue map
 		result = new SpiderIndex(option.getProtocol() + "://" + option.getHost());
 		
 		//Save the index to DataSet class
-		dataSet.setSpiderIndex(result);
+		file.getDataSet().setSpiderIndex(result);
 		
 		//Counter initialize value
 		queueCounter = 1;
@@ -204,13 +190,13 @@ public class SpiderRun {
 		new Thread(new Runnable() {
 			public void run() {
 				while(!suspendFlag){
-					if(!isEditing) getContents(result.getURLMap());
+					getContents(result.getURLMap());
 				}
 			}
 		}).start();
 		
 		//Queuing the URL map
-				result.setURLMap(crawlLinks(result.getURLMap()));
+		result.setURLMap(crawlLinks(result.getURLMap()));
 	}
 	
 	
@@ -236,6 +222,10 @@ public class SpiderRun {
 	public boolean isFirstRun() {
 		boolean flag = true;
 		
+		//Set monitor
+		this.queueCounter = file.getDataSet().getQueueCounter();
+		this.requestCounter = file.getDataSet().getRequestCounter();
+		
 		if(requestCounter != 0) {
 			flag = false;
 		}
@@ -250,7 +240,24 @@ public class SpiderRun {
 	 */
 	
 	public void resume() {
+		
+		//Set monitor
 		suspendFlag = false;
+		
+		//Set request headers in spider connection operation
+		connection = new SpiderConnection(option.getHeaders());
+		
+		//Get the content in queue
+		new Thread(new Runnable() {
+			public void run() {
+				while(!suspendFlag){
+					getContents(result.getURLMap());
+				}
+			}
+		}).start();
+		
+		//Queuing the URL map
+		result.setURLMap(crawlLinks(result.getURLMap()));
 	}
 	
 	/**
@@ -325,15 +332,9 @@ public class SpiderRun {
 			
 			//if the new queue map is not empty then rescue
 			if (!newURLMap.isEmpty()) {
-				
-				//Editing monitor prevent getContents method reading the map while editing
-				isEditing = true;
 			
 				//Save URLs to queue map in SpiderIndex class
 				urlMap.putAll(newURLMap);
-				
-				//Editing complete
-				isEditing = false;
 				
 				//Update queue number
 				queueCounter = result.getQueue();
@@ -344,15 +345,9 @@ public class SpiderRun {
 			*/	
 			
 				Map<String, Boolean> childMap = crawlLinks(urlMap);
-				
-				//Editing monitor prevent getContents method reading the map while editing
-				isEditing = true;
 
 				//Save URLs to queue map in SpiderIndex class
 				urlMap.putAll(childMap);
-				
-				//Editing complete
-				isEditing = false;
 			}
 		}
 		return urlMap;
@@ -369,60 +364,63 @@ public class SpiderRun {
 	
 	void getContents(Map<String, Boolean> urlMapSet) {
 		
-		//Copy URL map to a new map to prevent editing while reading
-		Map<String, Boolean> urlMap = new LinkedHashMap<String, Boolean>();
-		urlMap.putAll(urlMapSet);
-		
-		for(Map.Entry<String, Boolean> mapping : urlMap.entrySet()) {
+		try {
+			//Copy URL map to a new map to prevent editing while reading
+			Map<String, Boolean> urlMap = new LinkedHashMap<String, Boolean>();
+			urlMap.putAll(urlMapSet);
 			
-			//Access the new URLs
-			if(!accessedURLs.containsKey(mapping.getKey())) {
-				String url = mapping.getKey();
+			for(Map.Entry<String, Boolean> mapping : urlMap.entrySet()) {
 				
-				try{
-					//Set connection URL to get response headers, ignore it when got IOException
-					connection.setUrl(url);
-				
-					//Validate the connection
-					if(connection.Validate()) {
-				
-						//Data initialize
-						String content = "";
+				//Access the new URLs
+				if(!result.getAccessedURLs().containsKey(mapping.getKey())) {
+					String url = mapping.getKey();
 					
-						//Write the response headers into data
-						content += connection.getHeaders();
-				
-						//Counters counts
-						queueCounter--;
-						requestCounter++;
+					try{
+						//Set connection URL to get response headers, ignore it when got IOException
+						connection.setUrl(url);
 					
-						//Refresh the UI components
-						spiderPanel.refreshQueue(queueCounter);
-						spiderPanel.refreshRequestCounter(requestCounter);
-						siteMapPanel.updateData();
-				
-						try {
+						//Validate the connection
+						if(connection.Validate()) {
+					
+							//Data initialize
+							String content = "";
 						
-							/*	Throws exception if the URL isn't support to parse.
-							 * 	This kind of page whose data is only have response headers
-							 */
-							content += Jsoup.connect(url).headers(option.getHeaders()).get().data();
-						
-						} catch (IOException e) {}
-				
-						//Get the path array prepared to insert into the nodes
-						String path[] = toPathArray(url);
+							//Write the response headers into data
+							content += connection.getHeaders();
 					
-						//Filter the timeout pages
-						if (!content.equals("")) {
-							data.add(path, content);
-						}
-					}	
-				} catch (IOException e) {}
-					//insert URL into already accessed URLs map
-					accessedURLs.put(mapping.getKey(), mapping.getValue());
+							//Counters counts
+							queueCounter--;
+							requestCounter++;
+						
+							//Refresh the UI components
+							spiderPanel.refreshQueue(queueCounter);
+							spiderPanel.refreshRequestCounter(requestCounter);
+							siteMapPanel.updateData();
+					
+							try {
+							
+								/*	Throws exception if the URL isn't support to parse.
+								 * 	This kind of page whose data is only have response headers
+								 */
+								content += Jsoup.connect(url).headers(option.getHeaders()).get().data();
+							
+							} catch (IOException e) {}
+					
+							//Get the path array prepared to insert into the nodes
+							String path[] = toPathArray(url);
+						
+							//Filter the timeout pages
+							if (!content.equals("")) {
+								data.add(path, content);
+							}
+						}	
+					} catch (IOException e) {}
+					
+						//insert URL into already accessed URLs map
+						result.addAccessedURL(mapping.getKey(), mapping.getValue());
+				}
 			}
-		}
+		} catch (ConcurrentModificationException e) {}
 	}
 	
 	

@@ -16,13 +16,18 @@ public class SpiderIndex implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * Already accessed URLs map by <code>getContents</code> method.
+	 */
 	
+	private Map<String, Boolean> accessedURLs;
 	
 	private Map<String, Boolean> urlMap;
 	
 	public SpiderIndex(String baseURL){
 		urlMap = new LinkedHashMap<String, Boolean>();
 		urlMap.put(baseURL, false);
+		accessedURLs = new LinkedHashMap<String, Boolean>();
 	}
 	
 	/**
@@ -73,5 +78,13 @@ public class SpiderIndex implements Serializable {
 	
 	int getQueue() {
 		return urlMap.size();
+	}
+
+	Map<String, Boolean> getAccessedURLs() {
+		return accessedURLs;
+	}
+
+	void addAccessedURL(String key, boolean value) {
+		this.accessedURLs.put(key, value);
 	}
 }

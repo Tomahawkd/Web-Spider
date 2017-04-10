@@ -69,7 +69,7 @@ public class SpiderPanel extends JPanel {
 		lblRequest.setBounds(210, 200, 61, 16);
 		add(lblRequest);
 		
-		JLabel lblOption = new JLabel("Option:");
+		JLabel lblOption = new JLabel("Filter:");
 		lblOption.setBounds(334, 45, 47, 16);
 		add(lblOption);
 		
@@ -92,7 +92,7 @@ public class SpiderPanel extends JPanel {
 		site.setColumns(10);
 		
 		//Spider Runner Toggle Button
-		spr = new SpiderRun(file.getDataSet(), this);
+		spr = new SpiderRun(file, this);
 		JToggleButton tglbtn_Start_Spider = new JToggleButton("Session Start");
 		tglbtn_Start_Spider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -180,6 +180,7 @@ public class SpiderPanel extends JPanel {
 		this.option.select(file.getDataSet().getSpiderOption().getAccessOption());
 		lblQueue.setText("" + file.getDataSet().getQueueCounter());
 		lblRequest.setText("" + file.getDataSet().getRequestCounter());
+		spr.updateData();
 	}
 	
 	/**
