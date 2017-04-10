@@ -92,7 +92,7 @@ public class SpiderPanel extends JPanel {
 		site.setColumns(10);
 		
 		//Spider Runner Toggle Button
-		spr = new SpiderRun(file.getDataSet().getSpiderData(), this);
+		spr = new SpiderRun(file.getDataSet(), this);
 		JToggleButton tglbtn_Start_Spider = new JToggleButton("Session Start");
 		tglbtn_Start_Spider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -112,7 +112,11 @@ public class SpiderPanel extends JPanel {
 						new Thread(new Runnable() {
 							public void run() {
 								try {
-									spr.start();
+									if(spr.isFirstRun()) {
+										spr.start();
+									} else {
+										spr.resume();
+									}
 								} catch (nullHostException e) {
 									lblTipInvalid_Spider.setVisible(true);
 								}
@@ -148,6 +152,7 @@ public class SpiderPanel extends JPanel {
 	
 	public void refreshQueue(int queue) {
 		lblQueue.setText("" + queue);
+		file.getDataSet().setQueueCounter(queue);
 	}
 	
 	/**
@@ -160,6 +165,7 @@ public class SpiderPanel extends JPanel {
 	
 	public void refreshRequestCounter(int request) {
 		lblRequest.setText("" + request);
+		file.getDataSet().setRequestCounter(request);
 	}
 	
 	/**
@@ -172,6 +178,8 @@ public class SpiderPanel extends JPanel {
 		this.site.setText(file.getDataSet().getSpiderOption().getHost());
 		this.protocol.select(file.getDataSet().getSpiderOption().getProtocol());
 		this.option.select(file.getDataSet().getSpiderOption().getAccessOption());
+		lblQueue.setText("" + file.getDataSet().getQueueCounter());
+		lblRequest.setText("" + file.getDataSet().getRequestCounter());
 	}
 	
 	/**

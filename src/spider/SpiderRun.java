@@ -11,6 +11,7 @@ import org.jsoup.select.Elements;
 
 import Interface.SiteMapPanel;
 import Interface.SpiderPanel;
+import data.DataSet;
 import data.SpiderData;
 import data.SpiderOption;
 
@@ -92,6 +93,14 @@ public class SpiderRun {
 	private SpiderConnection connection;
 	
 	/**
+	 * Spider index write-in operation.
+	 * 
+	 * @see {@link DataSet}
+	 */
+	
+	private DataSet dataSet;
+	
+	/**
 	 * Update queue indicator.
 	 * Use <code>refreshQueue</code> method to update indicator.
 	 * 
@@ -115,11 +124,14 @@ public class SpiderRun {
 	
 	
 	
-	public SpiderRun(SpiderData data, SpiderPanel spiderPanel) {
+	public SpiderRun(DataSet dataSet, SpiderPanel spiderPanel) {
 		suspendFlag = false;
 		isEditing = false;
-		this.data = data;
+		this.dataSet = dataSet;
+		this.data = dataSet.getSpiderData();
 		this.spiderPanel = spiderPanel;
+		this.queueCounter = dataSet.getQueueCounter();
+		this.requestCounter = dataSet.getRequestCounter();
 	}
 	
 	/**
@@ -146,7 +158,16 @@ public class SpiderRun {
 	public void setSiteMap(SiteMapPanel siteMapPanel) {
 		this.siteMapPanel = siteMapPanel;
 	}
+
 	
+	public void setQueueCounter(int queueCounter) {
+		this.queueCounter = queueCounter;
+	}
+
+	public void setRequestCounter(int requestCounter) {
+		this.requestCounter = requestCounter;
+	}
+
 	/**
 	 * Start web spider operation.
 	 * 
@@ -169,6 +190,9 @@ public class SpiderRun {
 		//Put the host in to the queue map
 		result = new SpiderIndex(option.getProtocol() + "://" + option.getHost());
 		
+		//Save the index to DataSet class
+		dataSet.setSpiderIndex(result);
+		
 		//Counter initialize value
 		queueCounter = 1;
 		requestCounter = 0;
@@ -186,9 +210,10 @@ public class SpiderRun {
 		}).start();
 		
 		//Queuing the URL map
-		result.setURLMap(crawlLinks(result.getURLMap()));
-		
+				result.setURLMap(crawlLinks(result.getURLMap()));
 	}
+	
+	
 	
 	/**
 	 * Stop web spider operation.
@@ -198,6 +223,34 @@ public class SpiderRun {
 	
 	public void stop() {
 		suspendFlag = true;
+	}
+	
+	/**
+	 * A monitor indicate is the first time running the operation 
+	 * 
+	 * @return a boolean indicate is the first time running the operation 
+	 * 
+	 * @author Tomahawkd
+	 */
+	
+	public boolean isFirstRun() {
+		boolean flag = true;
+		
+		if(requestCounter != 0) {
+			flag = false;
+		}
+		
+		return flag;
+	}
+	
+	/**
+	 * Resume web spider operation.
+	 * 
+	 * @author Tomahawkd
+	 */
+	
+	public void resume() {
+		suspendFlag = false;
 	}
 	
 	/**
@@ -215,30 +268,30 @@ public class SpiderRun {
 		//New URLs queue map
 		Map<String, Boolean> newURLMap = new LinkedHashMap<String, Boolean>();
 		
-		if (!suspendFlag) {
-			
+		if(!suspendFlag) {
+					
 			for (Map.Entry<String, Boolean> mapping : urlMap.entrySet()) {
 				
 				//Check if is already accessed
 				if (!mapping.getValue()) {
 					String url = mapping.getKey();
-					
+				
 					//Set to already accessed
 					urlMap.replace(url, false, true);
 					try {
-						
-						/*	Throws exception if the URL isn't support to parse.
-						 * 	Considerate it as the end of the current index.
-						 */
+					
+					   /*	Throws exception if the URL isn't support to parse.
+					 	* 	Considerate it as the end of the current index.
+					 	*/
 						Document doc = Jsoup.connect(url).headers(option.getHeaders()).get();
-						
+					
 						//Page source like HTML etc.
 						Elements imports = doc.select("*[href]");
 						for (Element link : imports) {
-							
+						
 							//Filter non-current host URLs
 							if (!isHostOnly || link.attr("abs:href").contains(option.getHost())) {
-								
+							
 								//Get the absolute URL
 								String newUrl = link.attr("abs:href");
 								
@@ -255,17 +308,17 @@ public class SpiderRun {
 							
 							//Filter non-current host URLs
 							if (!isHostOnly || src.attr("abs:src").contains(option.getHost())) {
-								
+							
 								//Get the absolute URL
 								String newUrl = src.attr("abs:src");
-
+							
 								//Filter empty URL and exist URL
 								if (!newUrl.equals("") && !urlMap.containsKey(newUrl) && !newURLMap.containsKey(newUrl)) {
 									newURLMap.put(newUrl, false);
 								}
 							}
 						}
-						
+					
 					} catch (IOException e) {}
 				}
 			}
@@ -275,7 +328,7 @@ public class SpiderRun {
 				
 				//Editing monitor prevent getContents method reading the map while editing
 				isEditing = true;
-				
+			
 				//Save URLs to queue map in SpiderIndex class
 				urlMap.putAll(newURLMap);
 				
@@ -285,9 +338,11 @@ public class SpiderRun {
 				//Update queue number
 				queueCounter = result.getQueue();
 				spiderPanel.refreshQueue(queueCounter);
-				
-			//Rescue section
-				
+		
+		   /*	
+			*  Rescue section
+			*/	
+			
 				Map<String, Boolean> childMap = crawlLinks(urlMap);
 				
 				//Editing monitor prevent getContents method reading the map while editing

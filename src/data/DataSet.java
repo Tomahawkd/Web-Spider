@@ -2,6 +2,8 @@ package data;
 
 import java.io.Serializable;
 
+import spider.SpiderIndex;
+
 /**
  * Data: The data class include all class data to be saved to a specific file.
  * 
@@ -35,6 +37,27 @@ public class DataSet implements Serializable {
 	private SpiderOption spiderOption;
 	
 	
+	/**
+	 * 
+	 */
+	
+	private SpiderIndex spiderIndex;
+	
+	/**
+	 * URL counter in queue to access content.
+	 */
+	
+	private int queueCounter;
+	
+	/**
+	 * Request counter has already sent.
+	 */
+	
+	private int requestCounter;
+	
+	
+	
+	
 	
 	
 	
@@ -45,6 +68,9 @@ public class DataSet implements Serializable {
 		intercepter = new IntercepterOption();
 		spiderData = new SpiderData();
 		spiderOption = new SpiderOption();
+		spiderIndex = new SpiderIndex("");
+		queueCounter = 0;
+		requestCounter = 0;
 	}
 
 	/**
@@ -62,7 +88,7 @@ public class DataSet implements Serializable {
 	}
 
 	/**
-	 * Get spider data main node
+	 * Get spider data
 	 * 
 	 * @see {@link SpiderData}
 	 * 
@@ -89,7 +115,51 @@ public class DataSet implements Serializable {
 		return spiderOption;
 	}
 	
+	/**
+	 * Get spider queue
+	 * 
+	 * @see {@link SpiderData}
+	 * 
+	 * @return spider data map
+	 * 
+	 * @author Tomahawkd
+	 */
+
+	public SpiderIndex getSpiderIndex() {
+		return spiderIndex;
+	}
 	
+	/**
+	 * Set spider queue
+	 * 
+	 * @see {@link SpiderData}
+	 * 
+	 * @return spider data map
+	 * 
+	 * @author Tomahawkd
+	 */
+	
+	public void setSpiderIndex(SpiderIndex spiderIndex) {
+		this.spiderIndex = spiderIndex;
+	}
+
+	
+	
+	public int getQueueCounter() {
+		return queueCounter;
+	}
+
+	public void setQueueCounter(int queueCounter) {
+		this.queueCounter = queueCounter;
+	}
+
+	public int getRequestCounter() {
+		return requestCounter;
+	}
+
+	public void setRequestCounter(int requestCounter) {
+		this.requestCounter = requestCounter;
+	}
 	
 	
 }

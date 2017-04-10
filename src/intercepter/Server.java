@@ -1,47 +1,29 @@
-package proxy;
+package intercepter;
 
 import java.io.*;
 import java.net.*;
 
 import data.IntercepterOption;
-import data.RequestData;
 
 /**
- * Intercepter: Intercept http transfer data
+ * Intercepter: Server to intercept the request data
  * 
  * @author Tomahawkd
  */
 
-public class ServerSocketListener {
+public class Server {
 	private Socket socket = null;
 	private boolean suspendFlag;
 	private ServerSocket server;
 	private IntercepterOption option;
-	RequestData request;
+	private RequestData request;
+	private Backend backend;
+	private String host;
 	
-	public static void main(String[] args) {
-		IntercepterOption optionTest = new IntercepterOption();
-		optionTest.setPort(8080);
-		try {
-			while(true){
-				ServerSocketListener s = new ServerSocketListener();
-				s.setOption(optionTest);
-				s.start();
-				if(s.getSuspend()) {
-					for(int i = 0; i < s.getData().getRequest().size(); i++){
-						System.out.println(s.getData().getRequest().get(i));
-					}
-					break;
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public ServerSocketListener() {
+	public Server() {
 		suspendFlag = false;
 		request = new RequestData();
+		backend = new Backend(request);
 	}
 	
 	/**
@@ -49,7 +31,7 @@ public class ServerSocketListener {
 	 * 
 	 * @param option user's preference
 	 * 
-	 * @author Ghost
+	 * @author Tomhawkd
 	 */
 	
 	public void setOption(IntercepterOption option) {
@@ -67,19 +49,21 @@ public class ServerSocketListener {
 	}
 	
 	public void closeSocket() throws IOException {
-		socket.close();
-	}
-	
-	public void setSuspend(boolean suspend) {
-		suspendFlag = suspend;
+		if(socket != null) {
+			socket.close();
+		}
 	}
 	
 	public boolean getSuspend() {
 		return suspendFlag;
 	}
 	
-	public RequestData getData() {
-		return request;
+	public Backend getBackend() {
+		return backend;
+	}
+	
+	public String getHost() {
+		return host;
 	}
 	
 	private void action() throws IOException {
@@ -90,6 +74,11 @@ public class ServerSocketListener {
 			BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 			for (String temp = br.readLine(); temp != null; temp = br.readLine()) {
 				request.addRequestElement(temp);
+				
+				//Get the host while read the data
+				if (temp.startsWith("Host: ")) {
+					host = temp.split(": ")[1];
+				}
 			}
 			br.close();
 			suspendFlag = true;

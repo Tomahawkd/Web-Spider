@@ -51,7 +51,7 @@ class aboutUs extends JFrame {
 		contentPane.add(lblAuthor);
 		
 		JButton btnOk = new JButton("OK");
-		btnOk.addActionListener(new ActionListener()  {
+		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
@@ -59,7 +59,6 @@ class aboutUs extends JFrame {
 		btnOk.setBounds(166, 222, 117, 29);
 		contentPane.add(btnOk);
 	}
-	
 }
 
 

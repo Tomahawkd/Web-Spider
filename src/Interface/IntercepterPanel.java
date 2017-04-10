@@ -11,7 +11,7 @@ import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 
 import data.FileIO;
-import proxy.ServerSocketListener;
+import intercepter.Server;
 
 /**
  * Interface: Intercepter panel
@@ -62,12 +62,12 @@ public class IntercepterPanel extends JPanel {
 //							public void run() {
 //								try {
 //									while(true){
-//										ServerSocketListener ssl = new ServerSocketListener();
-//										ssl.setOption(file.getDataSet().getIntercepterOption());
-//										ssl.start();
-//										if(ssl.getSuspend()) {
+//										Server intercepter = new Server();
+//										intercepter.setOption(file.getDataSet().getIntercepterOption());
+//										intercepter.start();
+//										if(intercepter.getSuspend()) {
 //											String result = "";
-//											for (String text : ssl.getData().getRequest()) {
+//											for (String text : intercepter.getData().getRequest()) {
 //												result += text;
 //											}
 //											httpContent_Intercept.setText(result);

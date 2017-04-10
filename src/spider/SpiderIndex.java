@@ -1,5 +1,6 @@
 package spider;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -9,7 +10,14 @@ import java.util.Map;
  * @author Tomahawkd
  */
 
-public class SpiderIndex {
+public class SpiderIndex implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
+	
 	private Map<String, Boolean> urlMap;
 	
 	public SpiderIndex(String baseURL){
