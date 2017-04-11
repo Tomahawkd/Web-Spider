@@ -38,7 +38,7 @@ public class DataSet implements Serializable {
 	
 	
 	/**
-	 * 
+	 * {@link SpiderIndex}
 	 */
 	
 	private SpiderIndex spiderIndex;
@@ -54,6 +54,8 @@ public class DataSet implements Serializable {
 	 */
 	
 	private int requestCounter;
+	
+	
 	
 	
 	
@@ -143,20 +145,50 @@ public class DataSet implements Serializable {
 		this.spiderIndex = spiderIndex;
 	}
 
-	
+	/**
+	 * Get the queue count number
+	 * 
+	 * @return queue count
+	 * 
+	 * @author Tomahawkd
+	 */
 	
 	public int getQueueCounter() {
 		return queueCounter;
 	}
 
+	/**
+	 * Set a new count number while the spider is operating
+	 * 
+	 * @param queueCounter
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	public void setQueueCounter(int queueCounter) {
 		this.queueCounter = queueCounter;
 	}
 
+	/**
+	 * Get the request count number
+	 * 
+	 * @return sent-request count
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	public int getRequestCounter() {
 		return requestCounter;
 	}
 
+	/**
+	 * Set a new count number while the spider is operating
+	 * 
+	 * @param requestCounter
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	public void setRequestCounter(int requestCounter) {
 		this.requestCounter = requestCounter;
 	}

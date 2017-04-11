@@ -48,7 +48,19 @@ public class SpiderOption implements Serializable {
 	 * Host-only filter activation option
 	 */
 	
-	private String accessOption;
+	private String filter;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 *  Constructor with non-parameter.
@@ -63,7 +75,7 @@ public class SpiderOption implements Serializable {
 		
 		host = "";
 		protocol = "http";
-		accessOption = "Host Only";
+		filter = "Host Only";
 		
 		//Default request headers
 		requestHeader = new DefaultListModel<String>();
@@ -84,24 +96,6 @@ public class SpiderOption implements Serializable {
 				+ "Version/10.0.2 Safari/602.3.12");
 		headers.put("Accept-Language", "zh-cn");
 		headers.put("Accept-Encoding", "gzip");
-	}
-	
-	/**
-	 * Constructor with parameters.
-	 * 
-	 * Using it to load user's preference.
-	 * 
-	 * @param requestHeader Request header using in http transfer.
-	 * @param host			The target server.
-	 * @param protocol		Access the server with the protocol.
-	 * 
-	 * @author Tomahawkd
-	 */
-	
-	public SpiderOption(DefaultListModel<String> requestHeader, String host, String protocol) {
-		this.requestHeader = requestHeader;
-		this.host = host;
-		this.protocol = protocol;
 	}
 
 	/**
@@ -168,9 +162,13 @@ public class SpiderOption implements Serializable {
 	 */
 	
 	public void newHeaderElement(String newHeader) {
-		this.requestHeader.addElement(newHeader);
+		
+		//header in map operation
 		String[] key = newHeader.split(": ");
 		headers.put(key[0], key[1]);
+		
+		//header in listModel operation
+		this.requestHeader.addElement(newHeader);
 	}
 	
 	/**
@@ -188,7 +186,7 @@ public class SpiderOption implements Serializable {
 	
 	public void editHeaderElement(int index, String header) throws ArrayIndexOutOfBoundsException {
 		
-		//header in map
+		//header in map operation
 		String[] oldHeader = requestHeader.getElementAt(index).split(": ");
 		String[] newHeader = header.split(": ");
 		
@@ -196,7 +194,7 @@ public class SpiderOption implements Serializable {
 		headers.remove(oldHeader[0], oldHeader[1]);
 		headers.put(newHeader[0], newHeader[1]);
 		
-		//header in listModel
+		//header in listModel operation
 		this.requestHeader.set(index, header);
 	}
 	
@@ -211,9 +209,13 @@ public class SpiderOption implements Serializable {
 	 */
 	
 	public void removeHeaderElement(int index) throws ArrayIndexOutOfBoundsException {
+		
+		//header in listModel operation
 		String[] oldHeader = requestHeader.getElementAt(index).split(": ");
-		this.requestHeader.remove(index);
 		headers.remove(oldHeader[0], oldHeader[1]);
+		
+		//header in map operation
+		this.requestHeader.remove(index);
 	}
 	
 	/**
@@ -274,7 +276,7 @@ public class SpiderOption implements Serializable {
 	
 	public boolean isHostOnly() {
 		boolean option = true;
-		if (accessOption.equals("All Site")) {
+		if (filter.equals("All Site")) {
 			option = false;
 		}
 		return option;
@@ -288,8 +290,8 @@ public class SpiderOption implements Serializable {
 	 * @author Tomahawkd
 	 */
 	
-	public String getAccessOption() {
-		return accessOption;
+	public String getFilter() {
+		return filter;
 	}
 	
 	/**
@@ -300,8 +302,8 @@ public class SpiderOption implements Serializable {
 	 * @author Tomahawkd
 	 */
 	
-	public void serAccessOption(String accessOption) {
-		this.accessOption = accessOption;
+	public void setFilter(String filter) {
+		this.filter = filter;
 	}
 	
 	

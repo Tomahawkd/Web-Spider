@@ -105,7 +105,7 @@ public class SpiderPanel extends JPanel {
 				//Spider Settings Update		
 						file.getDataSet().getSpiderOption().setHost(site.getText());
 						file.getDataSet().getSpiderOption().setProtocol(protocol.getSelectedItem());
-						file.getDataSet().getSpiderOption().serAccessOption(option.getSelectedItem());
+						file.getDataSet().getSpiderOption().setFilter(option.getSelectedItem());
 						spr.setOption(file.getDataSet().getSpiderOption());
 						
 				//Run Spider
@@ -177,7 +177,7 @@ public class SpiderPanel extends JPanel {
 	void updateData() {
 		this.site.setText(file.getDataSet().getSpiderOption().getHost());
 		this.protocol.select(file.getDataSet().getSpiderOption().getProtocol());
-		this.option.select(file.getDataSet().getSpiderOption().getAccessOption());
+		this.option.select(file.getDataSet().getSpiderOption().getFilter());
 		lblQueue.setText("" + file.getDataSet().getQueueCounter());
 		lblRequest.setText("" + file.getDataSet().getRequestCounter());
 		spr.updateData();

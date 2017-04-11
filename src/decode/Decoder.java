@@ -15,8 +15,12 @@ public class Decoder {
 	 * @author Tomahawkd
 	 */
 	
-	public static String getFromBASE64(String string) throws IllegalArgumentException { 
-		if (string.equals("")) return "Nothing input"; 
+	public static String getFromBASE64(String string) throws IllegalArgumentException {
+		
+		//Notify the user while input nothing
+		if (string.equals("")) return "Nothing input";
+		
+		//BASE64 decode operation
 		Base64.Decoder decoder = Base64.getDecoder();
 		byte[] decryption = decoder.decode(string.getBytes());		
 		return new String(decryption);

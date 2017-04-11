@@ -123,7 +123,11 @@ public class SpiderRun {
 		this.requestCounter = file.getDataSet().getRequestCounter();
 	}
 	
-	
+	/**
+	 * Update all spider data after loading a file.
+	 * 
+	 * @author Tomahawkd
+	 */
 	
 	public void updateData() {
 		this.data = file.getDataSet().getSpiderData();

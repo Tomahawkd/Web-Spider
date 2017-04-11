@@ -110,7 +110,7 @@ class SpiderConnection {
 		//Get headers from connection
 		Map<String, List<String>> headers = connection.getHeaderFields();
 		
-		// Get response message which should comes first
+		// Get response message which should comes the first
 		for(String key : headers.keySet()) {
 			if(key == null) {	
 				for(String value : headers.get(key)){

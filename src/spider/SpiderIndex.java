@@ -22,7 +22,21 @@ public class SpiderIndex implements Serializable {
 	
 	private Map<String, Boolean> accessedURLs;
 	
+	/**
+	 * All URLs in queue
+	 */
+	
 	private Map<String, Boolean> urlMap;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public SpiderIndex(String baseURL){
 		urlMap = new LinkedHashMap<String, Boolean>();
@@ -80,10 +94,27 @@ public class SpiderIndex implements Serializable {
 		return urlMap.size();
 	}
 
+	/**
+	 * Get a map of URLs which has already got its contents
+	 * 
+	 * @return already accessed URLs
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	Map<String, Boolean> getAccessedURLs() {
 		return accessedURLs;
 	}
 
+	/**
+	 * Add a new URL which has already got its contents
+	 * 
+	 * @param key The URL
+	 * @param value A boolean indicates if it has been parsed to get new URLs
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	void addAccessedURL(String key, boolean value) {
 		this.accessedURLs.put(key, value);
 	}

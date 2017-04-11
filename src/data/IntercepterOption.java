@@ -21,6 +21,15 @@ public class IntercepterOption implements Serializable {
 	
 	private int port;
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 *  Constructor with non-parameter.
 	 *  
@@ -32,20 +41,6 @@ public class IntercepterOption implements Serializable {
 	
 	public IntercepterOption() {
 		port = 8080;
-	}
-	
-	/**
-	 * Constructor with parameters.
-	 * 
-	 * Using it to load user's preference.
-	 * 
-	 * @param port Intercepter listener port preference.
-	 * 
-	 * @author Tomahawkd
-	 */
-	
-	public IntercepterOption(int port) {
-		this.port = port;
 	}
 
 	/**

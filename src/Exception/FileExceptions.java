@@ -30,8 +30,22 @@ public class FileExceptions extends Exception {
 
 enum ExceptionType {
 	
+	/**
+	 * File exist exception (New file and save-as operation)
+	 */
+	
 	EXIST("File is already exist."), 
+	
+	/**
+	 * File not exist exception (Load and save operation)
+	 */
+	
 	NULL("File is not exist."),
+	
+	/**
+	 * File name invalid exception (New file and save-as operation)
+	 */
+	
 	INVALID("File name is invalid.");
 	
 	private String errorMessage;
@@ -40,7 +54,13 @@ enum ExceptionType {
 		this.errorMessage = errorMessage;
 	}
 	
-	public String getErrorMessage() {
+	/**
+	 * If needed, using <code>Exception.printStackTrace</code> method in catch block. Using to debug.
+	 * 
+	 * @return error message
+	 */
+	
+	String getErrorMessage() {
 		return errorMessage;
 	}
 }
