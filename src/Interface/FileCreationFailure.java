@@ -11,14 +11,14 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+
 /**
- * Interface: Notify the user the file name is invalid.
+ * Interface: File creation error handled notify to the user.
  * 
  * @author Tomahawkd
- *
  */
 
-class FileNameInvalid extends JDialog {
+class FileCreationFailure extends JDialog {
 
 	/**
 	 * 
@@ -26,20 +26,19 @@ class FileNameInvalid extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	
-	
-	
+
 	/*
-	 * Create the dialog.
+	 * Create the frame.
 	 */
 	
-	FileNameInvalid() {
+	FileCreationFailure() {
 		
 		
 		/*
 		 * Self configuration
 		 */
 		
-		setBounds(100, 100, 450, 139);
+		setBounds(100, 100, 450, 197);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -47,12 +46,12 @@ class FileNameInvalid extends JDialog {
 		
 		
 		/*
-		 * Label
+		 * Labels
 		 */
 		
-		JLabel lblInvalid = new JLabel("File name is invalid");
-		lblInvalid.setBounds(164, 33, 121, 16);
-		contentPanel.add(lblInvalid);
+		JLabel lblWrong = new JLabel("There is something wrong while creating the file.");
+		lblWrong.setBounds(71, 60, 308, 16);
+		contentPanel.add(lblWrong);
 		
 		
 		/*

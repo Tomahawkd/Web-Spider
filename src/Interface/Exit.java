@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
  * @author Tomahawkd
  */
 
-public class Exit extends JFrame {
+class Exit extends JFrame {
 
 	/**
 	 * 
@@ -21,10 +21,20 @@ public class Exit extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
-	/**
+	
+	
+	
+	/*
 	 * Create the frame.
 	 */
-	public Exit() {
+	
+	Exit() {
+		
+		
+		/*
+		 * Self configuration
+		 */
+		
 		setResizable(false);
 		setTitle("Confirm");
 		setBounds(230, 250, 450, 150);
@@ -32,6 +42,11 @@ public class Exit extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		
+		/*
+		 * Labels
+		 */
 		
 		JLabel lblSaveYourProjects = new JLabel("Save your projects before you quit the application.");
 		lblSaveYourProjects.setBounds(66, 22, 317, 16);
@@ -41,7 +56,14 @@ public class Exit extends JFrame {
 		lblDoYouWant.setBounds(66, 50, 317, 16);
 		contentPane.add(lblDoYouWant);
 		
+		
+		/*
+		 * Buttons
+		 */
+		
 		JButton btnOk = new JButton("OK");
+		
+		//Exit the application
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -50,7 +72,10 @@ public class Exit extends JFrame {
 		btnOk.setBounds(76, 78, 117, 29);
 		contentPane.add(btnOk);
 		
+		
 		JButton btnCancel = new JButton("Cancel");
+		
+		//Cancel exiting
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

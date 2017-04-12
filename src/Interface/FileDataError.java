@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
  * @author Tomahawkd
  */
 
-public class FileDataError extends JFrame {
+class FileDataError extends JFrame {
 
 	/**
 	 * 
@@ -22,19 +22,39 @@ public class FileDataError extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
+	
+	
+	
 	/*
 	 * Create the frame.
 	 */
-	public FileDataError() {
+	
+	FileDataError() {
+		
+		
+		/*
+		 * Self configuration
+		 */
+		
 		setBounds(100, 100, 450, 160);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		
+		/*
+		 * Labels
+		 */
+		
 		JLabel lblFileDataWas = new JLabel("File data was destoryed.");
 		lblFileDataWas.setBounds(149, 49, 151, 16);
 		contentPane.add(lblFileDataWas);
+		
+		
+		/*
+		 * Buttons
+		 */
 		
 		JButton btnOk = new JButton("OK");
 		btnOk.addActionListener(new ActionListener() {

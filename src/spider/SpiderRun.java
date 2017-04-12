@@ -281,58 +281,60 @@ public class SpiderRun {
 		
 		if(!suspendFlag) {
 					
-			for (Map.Entry<String, Boolean> mapping : urlMap.entrySet()) {
-				
-				//Check if is already accessed
-				if (!mapping.getValue()) {
-					String url = mapping.getKey();
-				
-					//Set to already accessed
-					urlMap.replace(url, false, true);
-					try {
+			try {
+				for (Map.Entry<String, Boolean> mapping : urlMap.entrySet()) {
 					
-					   /*	Throws exception if the URL isn't support to parse.
-					 	* 	Considerate it as the end of the current index.
-					 	*/
-						Document doc = Jsoup.connect(url).headers(option.getHeaders()).get();
+					//Check if is already accessed
+					if (!mapping.getValue()) {
+						String url = mapping.getKey();
 					
-						//Page source like HTML etc.
-						Elements imports = doc.select("*[href]");
-						for (Element link : imports) {
+						//Set to already accessed
+						urlMap.replace(url, false, true);
+						try {
 						
-							//Filter non-current host URLs
-							if (!isHostOnly || link.attr("abs:href").contains(option.getHost())) {
+						   /*	Throws exception if the URL isn't support to parse.
+						 	* 	Considerate it as the end of the current index.
+						 	*/
+							Document doc = Jsoup.connect(url).headers(option.getHeaders()).get();
+						
+							//Page source like HTML etc.
+							Elements imports = doc.select("*[href]");
+							for (Element link : imports) {
 							
-								//Get the absolute URL
-								String newUrl = link.attr("abs:href");
+								//Filter non-current host URLs
+								if (!isHostOnly || link.attr("abs:href").contains(option.getHost())) {
 								
-								//Filter empty URL and exist URL
-								if (!newUrl.equals("") && !urlMap.containsKey(newUrl) && !newURLMap.containsKey(newUrl)) {
-									newURLMap.put(newUrl, false);
+									//Get the absolute URL
+									String newUrl = link.attr("abs:href");
+									
+									//Filter empty URL and exist URL
+									if (!newUrl.equals("") && !urlMap.containsKey(newUrl) && !newURLMap.containsKey(newUrl)) {
+										newURLMap.put(newUrl, false);
+									}
 								}
 							}
-						}
+							
+							//Media source like image etc.
+							Elements media = doc.select("[src]");
+							for (Element src : media) {
+								
+								//Filter non-current host URLs
+								if (!isHostOnly || src.attr("abs:src").contains(option.getHost())) {
+								
+									//Get the absolute URL
+									String newUrl = src.attr("abs:src");
+								
+									//Filter empty URL and exist URL
+									if (!newUrl.equals("") && !urlMap.containsKey(newUrl) && !newURLMap.containsKey(newUrl)) {
+										newURLMap.put(newUrl, false);
+									}
+								}
+							}
 						
-						//Media source like image etc.
-						Elements media = doc.select("[src]");
-						for (Element src : media) {
-							
-							//Filter non-current host URLs
-							if (!isHostOnly || src.attr("abs:src").contains(option.getHost())) {
-							
-								//Get the absolute URL
-								String newUrl = src.attr("abs:src");
-							
-								//Filter empty URL and exist URL
-								if (!newUrl.equals("") && !urlMap.containsKey(newUrl) && !newURLMap.containsKey(newUrl)) {
-									newURLMap.put(newUrl, false);
-								}
-							}
-						}
-					
-					} catch (IOException e) {}
+						} catch (IOException e) {}
+					}
 				}
-			}
+			} catch (ConcurrentModificationException e) {}
 			
 			//if the new queue map is not empty then rescue
 			if (!newURLMap.isEmpty()) {

@@ -16,18 +16,30 @@ import java.awt.event.WindowEvent;
  *
  */
 
-public class DataInformation extends JFrame {
+class DataInformation extends JFrame {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
-	/*
-	 * Create the frame.
+	
+	
+	/**
+	 * A window displays response data
+	 * 
+	 * @param data response data
+	 * 
+	 * @author Tomahawkd
 	 */
-	public DataInformation(String data) {
+	
+	DataInformation(String data) {
+		
+		
+		/*
+		 * Self configuration
+		 */
+		
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -41,12 +53,24 @@ public class DataInformation extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		
+		/*
+		 * Scroll pane
+		 */
+		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 840, 428);
 		contentPane.add(scrollPane);
 		
+		
+		/*
+		 * Data display panel
+		 */
+		
 		JTextPane dataTextPanel = new JTextPane();
 		dataTextPanel.setEditable(false);
+		
+		//Data contains response headers and body
 		dataTextPanel.setText(data);
 		scrollPane.setViewportView(dataTextPanel);
 	}

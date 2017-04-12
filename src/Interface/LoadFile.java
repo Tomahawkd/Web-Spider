@@ -18,7 +18,7 @@ import Exception.FileNotFoundException;
  *
  */
 
-public class LoadFile extends JFileChooser {
+class LoadFile extends JFileChooser {
 
 	/**
 	 * 
@@ -27,7 +27,7 @@ public class LoadFile extends JFileChooser {
 	private int state;
 	private FileIO file;
 	
-	public LoadFile(FileIO file, MainWindow window) {
+	LoadFile(FileIO file, MainWindow window) {
 		
 		super();
 		

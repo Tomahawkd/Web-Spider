@@ -29,9 +29,10 @@ public class MainWindow {
 	private OptionPanel options;
 	private DecoderPanel decoder;
 	
-	//User data set
+	//User data handler
 	private FileIO file = new FileIO();
 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -49,6 +50,7 @@ public class MainWindow {
 			}
 		});
 	}
+	
 	
 	/**
 	 * Create the application.
@@ -83,6 +85,7 @@ public class MainWindow {
 		frmWebSpider.setBounds(100, 100, 702, 500);
 		frmWebSpider.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
+		
 		/*
 		 *  Menu
 		 */
@@ -90,6 +93,7 @@ public class MainWindow {
 		MenuBar menuBar = new MenuBar(file, this);
 		frmWebSpider.setJMenuBar(menuBar);
 				
+		
 		/*
 		 *  Main Panel
 		 */
@@ -98,12 +102,14 @@ public class MainWindow {
 		tabbedPane.setBounds(6, 6, 690, 444);
 		frmWebSpider.getContentPane().add(tabbedPane);
 		
+		
 		/*
 		 *  Panel: Spider
 		 */
 		
 		spider = new SpiderPanel(file);
 		tabbedPane.addTab("Spider", null, spider, "Web Spider");
+		
 		
 		/*
 		 *  Panel2: Site Map
@@ -113,6 +119,7 @@ public class MainWindow {
 		tabbedPane.addTab("Site Map", null, siteMap, "Site Map");
 		spider.setSiteMap(siteMap);
 		
+		
 		/*
 		 *  Panel3: Intercepter
 		 */
@@ -120,12 +127,14 @@ public class MainWindow {
 		intercepter = new IntercepterPanel(file);
 		tabbedPane.addTab("Intercepter", null, intercepter, "Intercepter Server");
 		
+		
 		/*
 		 *  Panel4: Options
 		 */
 		
 		options = new OptionPanel(file);
 		tabbedPane.addTab("Options", null, options, "User Preference");
+		
 		
 		/*
 		 *  Panel5: Decoder
@@ -135,11 +144,15 @@ public class MainWindow {
 		tabbedPane.addTab("Decoder", null, decoder, "Decodes BASE64");
 	}
 	
+	
+	
+	
 	/**
 	 * Update all data in <code>DataSet</code> class.
 	 * 
 	 * @author Tomahawkd
 	 */
+	
 	public void updateUI() {
 		this.frmWebSpider.setTitle("Web Spider  " + file.getTargetFilePath());
 		this.spider.updateData();

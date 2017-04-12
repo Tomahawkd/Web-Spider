@@ -24,13 +24,29 @@ class aboutUs extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
+	
+	/*
+	 * Create the frame.
+	 */
+	
 	public aboutUs() {
+		
+		
+		/*
+		 * Self configuration
+		 */
+		
 		setResizable(false);
 		setBounds(250, 230, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		
+		/*
+		 * Labels
+		 */
 		
 		JLabel lblAboutUs = new JLabel("About us");
 		lblAboutUs.setFont(new Font("Lucida Grande", Font.PLAIN, 28));
@@ -50,7 +66,14 @@ class aboutUs extends JFrame {
 		lblAuthor.setBounds(25, 116, 400, 16);
 		contentPane.add(lblAuthor);
 		
+		
+		/*
+		 * Buttons
+		 */
+		
 		JButton btnOk = new JButton("OK");
+		
+		//Just close current window
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

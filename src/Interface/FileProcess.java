@@ -20,22 +20,41 @@ import java.awt.event.WindowAdapter;
  *
  */
 
-public class FileProcess extends JFrame {
+class FileProcess extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
+	
+	
 	/**
-	 * Create the frame.
+	 * File process indicator initializer
+	 * 
+	 * @param type File operation type
+	 * 
+	 * @see OperationType
+	 * 
+	 * @author Tomahawkd
 	 */
-	public FileProcess(OperationType type) {
-		setResizable(false);
+	
+	FileProcess(OperationType type) {
 		
+		
+		/*
+		 * Self configuration
+		 */
+		
+		setResizable(false);
 		setBounds(100, 100, 450, 178);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		
+		/*
+		 * Labels 
+		 */
 		
 		JLabel lblSaving = new JLabel(type.getMessage());
 		lblSaving.setBounds(194, 48, 61, 16);
@@ -47,6 +66,11 @@ public class FileProcess extends JFrame {
 		contentPane.add(lblComplete);
 		lblComplete.setVisible(false);
 		
+		
+		/*
+		 * Buttons
+		 */
+		
 		JButton btnOk = new JButton("OK");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -57,10 +81,17 @@ public class FileProcess extends JFrame {
 		contentPane.add(btnOk);
 		btnOk.setVisible(false);
 		
+		
+		/*
+		 * Process bar
+		 */
+		
 		JProgressBar progressBar = new JProgressBar();		
 		progressBar.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				if(progressBar.getValue() == 100){
+				
+				//Process Monitor
+				if(progressBar.getValue() == progressBar.getMaximum()){
 					btnOk.setVisible(true);
 					lblComplete.setVisible(true);
 					lblSaving.setVisible(false);
@@ -71,15 +102,26 @@ public class FileProcess extends JFrame {
 		contentPane.add(progressBar);
 		
 		
+		/*
+		 * Self window listener configuration
+		 */
+		
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
 				new Thread(new Runnable(){
 					public void run(){
+						
+						//Execute process bar processing state
 						for(int i = progressBar.getMinimum(); i <= progressBar.getMaximum(); i++){
+							
+							//Refresh value
 							progressBar.setValue(i);
 							try {
+								
+								//Equals completing time
 								Thread.sleep(type.getSleepTime());
+								
 							} catch (InterruptedException ex) {}
 						} 
 					}
@@ -90,22 +132,60 @@ public class FileProcess extends JFrame {
 	}
 }
 
+
+
+/**
+ * Enumeration of file operation type
+ * 
+ * @author Tomahawkd
+ */
+
 enum OperationType {
+	
+	/**
+	 * File creation exception
+	 */
+	
 	NEW("Creating...", 5), 
+	
+	/**
+	 * File load exception
+	 */
+	
 	LOAD("Loading...", 10),
+	
+	/**
+	 * File save and save-as exception
+	 */
+	
 	SAVE("Saving..." , 10);
 	
 	private String message;
 	private int sleepTime;
+	
+	
+	
 	
 	private OperationType(String message, int sleepTime) {
 		this.message = message;
 		this.sleepTime = sleepTime;
 	}
 	
+	/**
+	 * Get the message of the current operation
+	 * 
+	 * @return Operation indicator message
+	 */
+	
 	String getMessage() {
 		return message;
 	}
+	
+	/**
+	 * Get the thread sleeping time
+	 * 
+	 * @return sleeping time
+	 */
 	
 	int getSleepTime() {
 		return sleepTime;

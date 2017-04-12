@@ -76,18 +76,19 @@ public class SaveFile extends JFileChooser {
 						process.setVisible(true);
 					}
 				}).start();
+			} catch (FileNameInvalidException e) {
+				
+				FileNameInvalid invalid = new FileNameInvalid();
+				invalid.setVisible(true);
+				
 			} catch (ExistFileException e) {
 						
 				ExistFileTip tip = new ExistFileTip(file, Operation.SAVE);
 				tip.setVisible(true);
 						
-			} catch (FileNameInvalidException e) {
-				
-				FileNameInvalid invalid = new FileNameInvalid();
-				invalid.setVisible(true);
 						
 			} catch (IOException e) {
-				Error error = new Error();
+				FileCreationFailure error = new FileCreationFailure();
 				error.setVisible(true);
 			}
 

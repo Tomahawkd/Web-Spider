@@ -19,7 +19,7 @@ import java.awt.event.ActionEvent;
  *
  */
 
-public class OptionNewHeader extends JFrame {
+class OptionNewHeader extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -29,7 +29,8 @@ public class OptionNewHeader extends JFrame {
 	/*
 	 * Create the frame.
 	 */
-	public OptionNewHeader(SpiderOption optionData, OptionPanel panel) {
+	
+	OptionNewHeader(SpiderOption optionData, OptionPanel panel) {
 		setBounds(100, 100, 450, 150);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

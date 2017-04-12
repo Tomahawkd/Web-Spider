@@ -26,13 +26,27 @@ public class IntercepterPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	
+	
+	/**
+	 * Contains intercepter component.
+	 * 
+	 * @param file file operation handler
+	 */
+	
 	IntercepterPanel(FileIO file) {
-				
+			
+		
+		/*
+		 * Self configuration
+		 */
+		
 		setLayout(null);
 		
-		JTextArea httpContent_Intercept = new JTextArea();
-		httpContent_Intercept.setBounds(6, 87, 657, 305);
-		add(httpContent_Intercept);
+		
+		/*
+		 * Label
+		 */
 		
 		JLabel lblHost_InterceptLab = new JLabel("Host:");
 		lblHost_InterceptLab.setBounds(6, 28, 61, 16);
@@ -51,6 +65,20 @@ public class IntercepterPanel extends JPanel {
 		lblError_InterceptLab.setBounds(417, 51, 117, 16);
 		add(lblError_InterceptLab);
 		lblError_InterceptLab.setVisible(false);
+		
+		
+		/*
+		 * Intercepted request container
+		 */
+		
+		JTextArea httpContent_Intercept = new JTextArea();
+		httpContent_Intercept.setBounds(6, 87, 657, 305);
+		add(httpContent_Intercept);
+		
+		
+		/*
+		 * Buttons
+		 */
 		
 		JToggleButton tglbtnIntercept = new JToggleButton("Intercept Off");
 //		tglbtnIntercept.addActionListener(new ActionListener() {

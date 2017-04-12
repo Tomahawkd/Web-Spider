@@ -25,50 +25,83 @@ class DecoderPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	
+	/**
+	 * Contains decode component.
+	 */
+	
 	DecoderPanel() {
+		
+		
+		/*
+		 * Self configuration
+		 */
+		
 		setLayout(null);
 		
-		TextArea textArea_sourse_Decode = new TextArea();
-		textArea_sourse_Decode.setBounds(10, 39, 649, 150);
-		add(textArea_sourse_Decode);
 		
-		JLabel lblBaseDecode = new JLabel("Base64 Decode");
-		lblBaseDecode.setBounds(10, 6, 123, 16);
-		add(lblBaseDecode);
+		/*
+		 * Labels
+		 */
 		
-		JLabel lblResult_Decode = new JLabel("Result");
-		lblResult_Decode.setBounds(6, 210, 61, 16);
-		add(lblResult_Decode);
+		JLabel lblDecode = new JLabel("Base64 Decode");
+		lblDecode.setBounds(10, 6, 123, 16);
+		add(lblDecode);
 		
-		TextArea textArea_result_Decode = new TextArea();
-		textArea_result_Decode.setEditable(false);
-		textArea_result_Decode.setFont(new Font("Arial", Font.PLAIN, 12));
-		textArea_result_Decode.setBounds(10, 236, 649, 152);
-		add(textArea_result_Decode);
+		JLabel lblResult = new JLabel("Result");
+		lblResult.setBounds(6, 210, 61, 16);
+		add(lblResult);
 		
-		JButton btnOk_Decode = new JButton("OK");
-		btnOk_Decode.addActionListener(new ActionListener() {
+		
+		/*
+		 * Text areas
+		 */
+		
+		//Source area
+		TextArea textAreaSourse = new TextArea();
+		textAreaSourse.setBounds(10, 39, 649, 150);
+		add(textAreaSourse);
+		
+		//Result area
+		TextArea textAreaResult = new TextArea();
+		textAreaResult.setEditable(false);
+		textAreaResult.setFont(new Font("Arial", Font.PLAIN, 12));
+		textAreaResult.setBounds(10, 236, 649, 152);
+		add(textAreaResult);
+		
+		
+		/*
+		 * Buttons
+		 */
+		
+		JButton btnOK = new JButton("OK");
+		
+		//Confirm the input and activate the decoder
+		btnOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
-					String base64 = textArea_sourse_Decode.getText();
-					textArea_result_Decode.setText(Decoder.getFromBASE64(base64));
+					String base64 = textAreaSourse.getText();
+					textAreaResult.setText(Decoder.getFromBASE64(base64));
 				} catch (Exception ex){
-					textArea_result_Decode.setText("Decode failed");
+					textAreaResult.setText("Decode failed");
 				}
 			}
 		});
-		btnOk_Decode.setBounds(542, 205, 117, 29);
-		add(btnOk_Decode);
+		btnOK.setBounds(542, 205, 117, 29);
+		add(btnOK);
 		
-		Button btnClear_Decode = new Button("Clear");
-		btnClear_Decode.addActionListener(new ActionListener() {
+		
+		Button btnClear = new Button("Clear");
+		
+		//Clear the input and the result
+		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea_sourse_Decode.setText("");
-				textArea_result_Decode.setText("");
+				textAreaSourse.setText("");
+				textAreaResult.setText("");
 			}
 		});
-		btnClear_Decode.setBounds(419, 205, 117, 29);
-		add(btnClear_Decode);
+		btnClear.setBounds(419, 205, 117, 29);
+		add(btnClear);
 	}
 
 }

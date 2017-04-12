@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
  * @author Tomahawkd
  */
 
-public class Error extends JFrame {
+class Error extends JFrame {
 
 	/**
 	 * 
@@ -26,28 +26,60 @@ public class Error extends JFrame {
 	/*
 	 * Create the frame.
 	 */
-	public Error() {
+	
+	Error() {
+		
+		
+		/*
+		 * Self configuration
+		 */
+		
 		setBounds(100, 100, 450, 150);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblUnconfirmedException = new JLabel("Unconfirmed Exception");
-		lblUnconfirmedException.setBounds(151, 27, 147, 16);
-		contentPane.add(lblUnconfirmedException);
+		
+		/*
+		 * Component settings
+		 */
+		
+		JLabel lblException = new JLabel("Unconfirmed Exception");
+		lblException.setBounds(151, 27, 147, 16);
+		contentPane.add(lblException);
+		
+		JLabel lblContactUs = new JLabel("Please contact us.");
+		lblContactUs.setBounds(166, 55, 117, 16);
+		contentPane.add(lblContactUs);
+		
+		
+		/*
+		 * Buttons
+		 */
 		
 		JButton btnConfirm = new JButton("Confirm");
+		
+		//Fatal exception handled and exit the application
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(1);
 			}
 		});
-		btnConfirm.setBounds(166, 81, 117, 29);
+		btnConfirm.setBounds(71, 83, 117, 29);
 		contentPane.add(btnConfirm);
 		
-		JLabel lblContactUs = new JLabel("Please contact us.");
-		lblContactUs.setBounds(166, 55, 117, 16);
-		contentPane.add(lblContactUs);
+		
+		JButton btnContact = new JButton("Contact");
+		
+		//Display the developer's contact
+		btnContact.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				aboutUs frame = new aboutUs();
+				frame.setVisible(true);	
+			}
+		});
+		btnContact.setBounds(253, 83, 117, 29);
+		contentPane.add(btnContact);
 	}
 }
