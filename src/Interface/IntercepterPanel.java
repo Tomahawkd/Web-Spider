@@ -19,7 +19,7 @@ import intercepter.Server;
  * @author Tomahawkd
  */
 
-public class IntercepterPanel extends JPanel {
+class IntercepterPanel extends JPanel {
 
 	/**
 	 * 

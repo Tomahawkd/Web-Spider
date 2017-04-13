@@ -29,7 +29,7 @@ class aboutUs extends JFrame {
 	 * Create the frame.
 	 */
 	
-	public aboutUs() {
+	aboutUs() {
 		
 		
 		/*

@@ -19,10 +19,10 @@ import java.awt.event.WindowEvent;
 public class MainWindow {
 
 
-	//main frame
+	//Main frame
 	private JFrame frmWebSpider;
 	
-	//tab panel components
+	//Tab panel components
 	private SpiderPanel spider;
 	private SiteMapPanel siteMap;
 	private IntercepterPanel intercepter;
@@ -95,7 +95,7 @@ public class MainWindow {
 				
 		
 		/*
-		 *  Main Panel
+		 *  Main tab Panel
 		 */
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);

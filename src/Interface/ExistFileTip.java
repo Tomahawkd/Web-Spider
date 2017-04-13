@@ -20,7 +20,7 @@ import java.awt.event.ActionEvent;
  * @author Tomahawkd
  */
 
-public class ExistFileTip extends JFrame {
+class ExistFileTip extends JFrame {
 
 	/**
 	 * 
@@ -38,7 +38,7 @@ public class ExistFileTip extends JFrame {
 	 * @author Tomahawkd
 	 */
 	
-	public ExistFileTip(FileIO file, Operation type) {
+	ExistFileTip(FileIO file, Operation type) {
 		
 		
 		/*
@@ -91,7 +91,7 @@ public class ExistFileTip extends JFrame {
 					} catch (IOException e1) {
 						//Exception with file creation failure
 						
-						FileCreationFailure error = new FileCreationFailure();
+						FileFailure error = new FileFailure(ErrorType.CREAT);
 						error.setVisible(true);
 						dispose();
 					}
@@ -114,7 +114,7 @@ public class ExistFileTip extends JFrame {
 					} catch (IOException e1) {
 						//Exception with file creation failure
 						
-						FileCreationFailure error = new FileCreationFailure();
+						FileFailure error = new FileFailure(ErrorType.CREAT);
 						error.setVisible(true);
 						dispose();
 					}

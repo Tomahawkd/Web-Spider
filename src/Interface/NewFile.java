@@ -19,42 +19,77 @@ import Exception.FileNameInvalidException;
  *
  */
 
-public class NewFile extends JFileChooser {
+class NewFile extends JFileChooser {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int state;
-	private FileIO file;
 	
-	public NewFile(FileIO file) {
+	
+	/**
+	 * New file window
+	 * 
+	 * @param file file operation handler
+	 * 
+	 * @see {@link JFileChooser}
+	 * 
+	 * @author Tomahawkd
+	 */
+	
+	NewFile(FileIO file) {
 		
 		super();
 		
-		this.file = file;
+		/*
+		 * JFileChooser configuration
+		 */
 		
+		//Filter
 		FileFilter filter = new FileNameExtensionFilter("Spider Data File", "sdf");
 		setFileFilter(filter);
+		
+		//Other configuration
 		setFileSelectionMode(DIRECTORIES_ONLY);
 		setDialogTitle("New File");
 		setEnabled(true);
 		
-		state = showSaveDialog(null);
+		//Button clicked listener
+		int state = showSaveDialog(null);
 		
-		execute();
+		execute(state, file);
 	}
 	
-	private void execute() {
+	
+	/**
+	 * Execute the creating operation.
+	 * 
+	 * @param state Indicate which button clicked
+	 * @param file file operation handler
+	 * 
+	 * @see {@link JFileChooser}
+	 * 
+	 * @author Tomahawkd
+	 */
+	
+	private void execute(int state, FileIO file) {
+		
+		//Button clicked listener
 		switch (state) {
+		
+		//Confirm button clicked
 		case JFileChooser.APPROVE_OPTION:
 			
+			//Get the path of the file
 			File filePath=this.getSelectedFile();
 			file.setTargetFilePath(filePath.getAbsolutePath());
 			
 			try {
 				
+				//execute load file operation
 				file.createFile(false);
+				
+				//Display the file creation process
 				new Thread(new Runnable() {
 					public void run() {
 						FileProcess process = new FileProcess(OperationType.NEW);
@@ -63,22 +98,30 @@ public class NewFile extends JFileChooser {
 				}).start();
 						
 			} catch (FileNameInvalidException e) {
+				//Notify the user file name is not valid
 				
+				//Display name invalid tip
 				FileNameInvalid invalid = new FileNameInvalid();
 				invalid.setVisible(true);
 						
 			} catch (ExistFileException e) {
+				//Notify the user file is already exist
 				
+				//Display exist file tip
 				ExistFileTip tip = new ExistFileTip(file, Operation.NEW);
 				tip.setVisible(true);
 				
 			} catch (IOException e) {
-				FileCreationFailure error = new FileCreationFailure();
+				//Exception with file creation failure
+				
+				FileFailure error = new FileFailure(ErrorType.CREAT);
 				error.setVisible(true);
 			}
 
 			break;
 
+			
+		//Cancel button clicked or error happened
 		default:
 			break;
 		}

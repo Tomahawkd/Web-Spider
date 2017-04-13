@@ -1,6 +1,5 @@
 package Interface;
 
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -25,12 +24,47 @@ class OptionPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * file operation handler
+	 * 
+	 * @see {@link FileIO}
+	 */
+	
 	private FileIO file;
+	
+	/**
+	 * Request header UI field.
+	 * 
+	 * @see {@link JList}
+	 */
+	
 	private JList<String> list;
+	
+	/**
+	 * Intercepter port.
+	 */
+	
 	private JTextField textFieldPort;
 	
+	
+	/**
+	 * Contains decode component.
+	 * 
+	 * @param file file operation handler
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	OptionPanel(FileIO file) {
+		
+		//Initialize FileIO class
 		this.file = file;
+		
+		
+		/*
+		 * Self configuration
+		 */
 		
 		setLayout(null);
 		
@@ -38,6 +72,10 @@ class OptionPanel extends JPanel {
 		lblSetRequest.setBounds(6, 6, 123, 16);
 		add(lblSetRequest);
 		
+		
+		/*
+		 * Labels
+		 */
 		
 		JLabel lblProxy = new JLabel("Proxy");
 		lblProxy.setBounds(6, 159, 61, 16);
@@ -51,31 +89,58 @@ class OptionPanel extends JPanel {
 		lblPort.setBounds(239, 187, 31, 16);
 		add(lblPort);
 		
-		textFieldPort = new JTextField();
-		textFieldPort.setBounds(282, 182, 130, 26);
-		add(textFieldPort);
-		textFieldPort.setText("" + file.getDataSet().getIntercepterOption().getPort());
-		
 		JLabel lblPortInvalid = new JLabel("Port invalid");
 		lblPortInvalid.setBounds(424, 187, 71, 16);
 		add(lblPortInvalid);
 		lblPortInvalid.setVisible(false);
 		
-		Label labelTip = new Label("Only Localhost Support");
+		JLabel labelTip = new JLabel("Only Localhost Support");
 		labelTip.setBounds(61, 187, 172, 16);
 		add(labelTip);
+		
+		
+		/*
+		 * Text field
+		 */
+		
+		textFieldPort = new JTextField();
+		textFieldPort.setBounds(282, 182, 130, 26);
+		add(textFieldPort);
+		textFieldPort.setText("" + file.getDataSet().getIntercepterOption().getPort());
+		
+		
+		/*
+		 * Scroll pane
+		 */
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(135, 40, 513, 87);
 		add(scrollPane);
 		
+		
+		/*
+		 * List
+		 */
+		
 		list = new JList<String>();
 		scrollPane.setViewportView(list);
 		list.setModel(file.getDataSet().getSpiderOption().getRequestHeader());
 		
+		
+		/*
+		 * Buttons
+		 */
+		
+
+		
+		
+		//Panel used to update data
 		OptionPanel panel = this;
 		
+		
 		JButton btnNew = new JButton("New");
+		
+		//Request header creator
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				OptionNewHeader frame = new OptionNewHeader(file.getDataSet().getSpiderOption(), panel);
@@ -84,36 +149,52 @@ class OptionPanel extends JPanel {
 		});
 		btnNew.setBounds(6, 40, 117, 29);
 		add(btnNew);
+		
+		
 		JButton btnEdit = new JButton("Edit");
+		
+		//Request header editor
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				OptionEditHeader frame;
+				
 				try {
-					frame = new OptionEditHeader(list.getSelectedIndex(), file.getDataSet().getSpiderOption(), panel);
+					
+					OptionEditHeader frame = new OptionEditHeader(list.getSelectedIndex(), file.getDataSet().getSpiderOption(), panel);
 					frame.setVisible(true);
-				} catch (IndexOutOfBoundsException e1) {
+					
+				} catch (ArrayIndexOutOfBoundsException e1) {
+					//Ignore exception
 				}
 			}
 		});
 		btnEdit.setBounds(6, 70, 117, 29);
 		add(btnEdit);
 		
+		
 		JButton btnDelete = new JButton("Delete");
+		
+		//Delete request header
 		btnDelete.setBounds(6, 98, 117, 29);
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					
 					file.getDataSet().getSpiderOption().removeHeaderElement(list.getSelectedIndex());
+					
 				} catch (IndexOutOfBoundsException e1) {
+					//Ignore exception
 				}
 			}
 		});
 		add(btnDelete);
 		
+		
 		JButton btnApply = new JButton("Apply");
-		btnApply.setBounds(6, 248, 117, 29);
+		
+		//Apply save port option
 		btnApply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				String strPort = textFieldPort.getText();
 				lblPortInvalid.setVisible(false);
 				try {
@@ -123,9 +204,15 @@ class OptionPanel extends JPanel {
 				}
 			}
 		});
+		btnApply.setBounds(6, 248, 117, 29);
 		add(btnApply);
 		
 	}
+	
+	
+	/**
+	 * Update data in the panel.
+	 */
 	
 	void updateData() {
 		this.textFieldPort.setText("" + file.getDataSet().getIntercepterOption().getPort());

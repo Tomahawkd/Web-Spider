@@ -18,7 +18,7 @@ import java.awt.event.ActionEvent;
  * @author Tomahawkd
  */
 
-class FileCreationFailure extends JDialog {
+class FileFailure extends JDialog {
 
 	/**
 	 * 
@@ -31,7 +31,7 @@ class FileCreationFailure extends JDialog {
 	 * Create the frame.
 	 */
 	
-	FileCreationFailure() {
+	FileFailure(ErrorType type) {
 		
 		
 		/*
@@ -49,7 +49,7 @@ class FileCreationFailure extends JDialog {
 		 * Labels
 		 */
 		
-		JLabel lblWrong = new JLabel("There is something wrong while creating the file.");
+		JLabel lblWrong = new JLabel(type.getMessage());
 		lblWrong.setBounds(71, 60, 308, 16);
 		contentPanel.add(lblWrong);
 		
@@ -77,3 +77,51 @@ class FileCreationFailure extends JDialog {
 		}
 	}
 }
+
+
+
+/**
+ * Enumeration of IOException handled by creating file operation (New-file and Save-as operation)
+ * and loading file operation
+ * 
+ * @author Tomahawkd
+ */
+
+enum ErrorType {
+	
+	
+	/**
+	 * Creating file operation (New-file and Save-as operation)
+	 */
+	
+	CREAT("There is something wrong while creating the file."),
+	
+	/**
+	 * Loading file operation
+	 */
+	
+	LOAD("There is something wrong while loading the file.");
+	
+	
+	
+	
+	
+	private String message;
+	
+	private ErrorType(String message) {
+		this.message = message;
+	} 
+	
+	/**
+	 * Get informed message.
+	 * 
+	 * @return error message
+	 */
+	
+	String getMessage() {
+		return message;
+	}
+	
+}
+
+

@@ -88,7 +88,7 @@ public class SaveFile extends JFileChooser {
 						
 						
 			} catch (IOException e) {
-				FileCreationFailure error = new FileCreationFailure();
+				FileFailure error = new FileFailure(ErrorType.CREAT);
 				error.setVisible(true);
 			}
 

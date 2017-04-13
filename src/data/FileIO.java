@@ -92,18 +92,6 @@ public class FileIO {
 	}
 	
 	/**
-	 * Get a boolean indicate the date file of the project property.
-	 * 
-	 * @return return true if and only if the project has a file to save
-	 * 
-	 * @author Tomahawkd
-	 */
-	
-	public boolean hasTargetFile() {
-		return target;
-	}
-	
-	/**
 	 * Create file operation
 	 * 
 	 * @param force is tend to force to cover the exist file.
