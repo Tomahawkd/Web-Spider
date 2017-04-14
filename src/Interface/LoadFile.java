@@ -82,7 +82,7 @@ class LoadFile extends JFileChooser {
 		case JFileChooser.APPROVE_OPTION:
 			
 			//Get the path of the file
-			File filePath=this.getSelectedFile();
+			final File filePath=this.getSelectedFile();
 			file.setTargetFilePath(filePath.getAbsolutePath());
 			
 			try {

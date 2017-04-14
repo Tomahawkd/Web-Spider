@@ -265,7 +265,7 @@ public class SpiderRun {
 	}
 	
 	/**
-	 * Rescue to get HTML links. Wide first.
+	 * Rescue to get HTML links. Wide algorithm first.
 	 * 
 	 * @param urlList
 	 * 
@@ -371,6 +371,7 @@ public class SpiderRun {
 	void getContents(Map<String, Boolean> urlMapSet) {
 		
 		try {
+			
 			//Copy URL map to a new map to prevent editing while reading
 			Map<String, Boolean> urlMap = new LinkedHashMap<String, Boolean>();
 			urlMap.putAll(urlMapSet);

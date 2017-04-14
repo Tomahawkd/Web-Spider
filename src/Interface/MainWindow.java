@@ -29,7 +29,10 @@ public class MainWindow {
 	private OptionPanel options;
 	private DecoderPanel decoder;
 	
-	//User data handler
+	/**
+	 * User data handler
+	 */
+	
 	private FileIO file = new FileIO();
 
 	
@@ -148,7 +151,7 @@ public class MainWindow {
 	
 	
 	/**
-	 * Update all data in <code>DataSet</code> class.
+	 * Update all data in <code>DataSet</code> class after loading file.
 	 * 
 	 * @author Tomahawkd
 	 */

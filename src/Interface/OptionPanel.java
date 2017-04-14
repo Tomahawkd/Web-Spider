@@ -49,7 +49,7 @@ class OptionPanel extends JPanel {
 	
 	
 	/**
-	 * Contains decode component.
+	 * Contains option component.
 	 * 
 	 * @param file file operation handler
 	 * 
