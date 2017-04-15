@@ -8,7 +8,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 import data.FileIO;
 
@@ -41,12 +40,6 @@ class OptionPanel extends JPanel {
 	
 	private JList<String> list;
 	
-	/**
-	 * Intercepter port.
-	 */
-	
-	private JTextField textFieldPort;
-	
 	
 	/**
 	 * Contains option component.
@@ -68,45 +61,14 @@ class OptionPanel extends JPanel {
 		
 		setLayout(null);
 		
-		JLabel lblSetRequest = new JLabel("Set Request Head");
-		lblSetRequest.setBounds(6, 6, 123, 16);
-		add(lblSetRequest);
-		
 		
 		/*
 		 * Labels
 		 */
 		
-		JLabel lblProxy = new JLabel("Proxy");
-		lblProxy.setBounds(6, 159, 61, 16);
-		add(lblProxy);
-		
-		JLabel lblHost = new JLabel("Host:");
-		lblHost.setBounds(16, 187, 39, 16);
-		add(lblHost);
-		
-		JLabel lblPort = new JLabel("Port:");
-		lblPort.setBounds(239, 187, 31, 16);
-		add(lblPort);
-		
-		JLabel lblPortInvalid = new JLabel("Port invalid");
-		lblPortInvalid.setBounds(424, 187, 71, 16);
-		add(lblPortInvalid);
-		lblPortInvalid.setVisible(false);
-		
-		JLabel labelTip = new JLabel("Only Localhost Support");
-		labelTip.setBounds(61, 187, 172, 16);
-		add(labelTip);
-		
-		
-		/*
-		 * Text field
-		 */
-		
-		textFieldPort = new JTextField();
-		textFieldPort.setBounds(282, 182, 130, 26);
-		add(textFieldPort);
-		textFieldPort.setText("" + file.getDataSet().getIntercepterOption().getPort());
+		JLabel lblSetRequest = new JLabel("Set Request Head");
+		lblSetRequest.setBounds(6, 6, 123, 16);
+		add(lblSetRequest);
 		
 		
 		/*
@@ -188,25 +150,6 @@ class OptionPanel extends JPanel {
 		});
 		add(btnDelete);
 		
-		
-		JButton btnApply = new JButton("Apply");
-		
-		//Apply save port option
-		btnApply.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				String strPort = textFieldPort.getText();
-				lblPortInvalid.setVisible(false);
-				try {
-					file.getDataSet().getIntercepterOption().setPort(Integer.parseInt(strPort));
-				} catch (NumberFormatException e1) {
-					lblPortInvalid.setVisible(true);
-				}
-			}
-		});
-		btnApply.setBounds(6, 248, 117, 29);
-		add(btnApply);
-		
 	}
 	
 	
@@ -215,7 +158,6 @@ class OptionPanel extends JPanel {
 	 */
 	
 	void updateData() {
-		this.textFieldPort.setText("" + file.getDataSet().getIntercepterOption().getPort());
 		this.list.setModel(file.getDataSet().getSpiderOption().getRequestHeader());
 	}
 }

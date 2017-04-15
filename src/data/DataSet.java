@@ -19,12 +19,6 @@ public class DataSet implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * {@link IntercepterOption}
-	 */
-	
-	private IntercepterOption intercepter;
-	
-	/**
 	 * {@link SpiderData}
 	 */
 	
@@ -67,26 +61,11 @@ public class DataSet implements Serializable {
 	
 	
 	public DataSet() {
-		intercepter = new IntercepterOption();
 		spiderData = new SpiderData();
 		spiderOption = new SpiderOption();
 		spiderIndex = new SpiderIndex("");
 		queueCounter = 0;
 		requestCounter = 0;
-	}
-
-	/**
-	 * Get user's intercepter preference
-	 * 
-	 * @see {@link IntercepterOpiton}
-	 * 
-	 * @return Intercepter option
-	 * 
-	 * @author Tomahawkd
-	 */
-
-	public IntercepterOption getIntercepterOption() {
-		return intercepter;
 	}
 
 	/**
