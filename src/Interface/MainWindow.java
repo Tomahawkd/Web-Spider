@@ -25,7 +25,6 @@ public class MainWindow {
 	//Tab panel components
 	private SpiderPanel spider;
 	private SiteMapPanel siteMap;
-	private IntercepterPanel intercepter;
 	private OptionPanel options;
 	private DecoderPanel decoder;
 	
@@ -124,15 +123,7 @@ public class MainWindow {
 		
 		
 		/*
-		 *  Panel3: Intercepter
-		 */
-		
-		intercepter = new IntercepterPanel(file);
-		tabbedPane.addTab("Intercepter", null, intercepter, "Intercepter Server");
-		
-		
-		/*
-		 *  Panel4: Options
+		 *  Panel3: Options
 		 */
 		
 		options = new OptionPanel(file);
@@ -140,7 +131,7 @@ public class MainWindow {
 		
 		
 		/*
-		 *  Panel5: Decoder
+		 *  Panel4: Decoder
 		 */
 		
 		decoder = new DecoderPanel();
