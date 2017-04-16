@@ -24,10 +24,9 @@ public class Server {
 	public void start() throws IOException {
 		server = new ServerSocket(file.getDataSet().getIntercepterOption().getPort());
 		socket = server.accept();
-		action();
 	}
 	
-	public void closeSocket() throws IOException {
+	public void stop() throws IOException {
 		if(socket != null) {
 			socket.close();
 		}
@@ -54,7 +53,7 @@ public class Server {
 			
 			//Set request method
 			if(lineCount == 0) {
-				data.setHost(temp.split(" ")[0]);
+				data.setMethod((temp.split(" ")[0]));
 			
 			//Headers
 			} else if (temp.contains(": ")) {
