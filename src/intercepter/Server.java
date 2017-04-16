@@ -32,7 +32,7 @@ public class Server {
 		}
 	}
 	
-	private void action() throws IOException {
+	void action() throws IOException {
 		if (this.socket == null) {
 			return;
 		}
