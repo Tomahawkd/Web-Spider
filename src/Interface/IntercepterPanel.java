@@ -11,7 +11,6 @@ import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 
 import data.FileIO;
-import intercepter.Server;
 
 /**
  * Interface: Intercepter panel

@@ -157,7 +157,8 @@ public class MainWindow {
 	 */
 	
 	public void updateUI() {
-		this.frmWebSpider.setTitle("Web Spider  " + file.getTargetFilePath());
+		this.frmWebSpider.setTitle(file.getTargetFilePath().equals("") ? 
+				"Web Spider - " + file.getTargetFilePath() : "Web Spider");
 		this.spider.updateData();
 		this.options.updateData();
 		this.siteMap.updateData();

@@ -2,6 +2,7 @@ package intercepter;
 
 import java.io.*;
 
+import data.FileIO;
 import data.IntercepterOption;
 
 /**
@@ -17,13 +18,9 @@ public class ServerSocketListener {
 		optionTest.setPort(8080);
 		try {
 			while(true){
-				Server s = new Server();
-				s.setOption(optionTest);
+				Server s = new Server(new FileIO());
 				s.start();
-				if(s.getSuspend()) {
-					System.out.print(s.getBackend().getRequestData());
-					break;
-				}
+				break;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

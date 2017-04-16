@@ -3,7 +3,8 @@ package intercepter;
 import java.io.*;
 import java.net.*;
 
-import data.IntercepterOption;
+import data.FileIO;
+
 
 /**
  * Intercepter: Server to intercept the request data
@@ -13,39 +14,17 @@ import data.IntercepterOption;
 
 public class Server {
 	private Socket socket = null;
-	private boolean suspendFlag;
 	private ServerSocket server;
-	private IntercepterOption option;
-	private RequestData request;
-	private Backend backend;
-	private String host;
+	private FileIO file;
 	
-	public Server() {
-		suspendFlag = false;
-		request = new RequestData();
-		backend = new Backend(request);
-	}
-	
-	/**
-	 * Read user's option
-	 * 
-	 * @param option user's preference
-	 * 
-	 * @author Tomhawkd
-	 */
-	
-	public void setOption(IntercepterOption option) {
-		this.option = option;
+	public Server(FileIO file) {
+		this.file = file;
 	}
 	
 	public void start() throws IOException {
-		server = new ServerSocket(option.getPort());
+		server = new ServerSocket(file.getDataSet().getIntercepterOption().getPort());
 		socket = server.accept();
 		action();
-	}
-	
-	public void resume() {
-		suspendFlag = false;
 	}
 	
 	public void closeSocket() throws IOException {
@@ -54,35 +33,44 @@ public class Server {
 		}
 	}
 	
-	public boolean getSuspend() {
-		return suspendFlag;
-	}
-	
-	public Backend getBackend() {
-		return backend;
-	}
-	
-	public String getHost() {
-		return host;
-	}
-	
 	private void action() throws IOException {
-		if (!suspendFlag) {
-			if (this.socket == null) {
-				return;
-			}
-			BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-			for (String temp = br.readLine(); temp != null; temp = br.readLine()) {
-				request.addRequestElement(temp);
-				
-				//Get the host while read the data
-				if (temp.startsWith("Host: ")) {
-					host = temp.split(": ")[1];
-				}
-			}
-			br.close();
-			suspendFlag = true;
+		if (this.socket == null) {
+			return;
 		}
+		
+		InterceptData data = new InterceptData();
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+		
+		int lineCount = 0;
+		String temp;
+		
+		while ((temp = br.readLine()) != null) {
+			
+			//Set host
+			if(temp.contains("Host: ")) {
+				data.setHost(temp.split(": ")[1]);
+			}
+			
+			//Set request method
+			if(lineCount == 0) {
+				data.setHost(temp.split(" ")[0]);
+			
+			//Headers
+			} else if (temp.contains(": ")) {
+				String[] header = temp.split(": ");
+				data.addRequestHeaderElement(header[0], header[1]);
+				
+			//Body	
+			} else {
+				data.addRequestBodyElement(temp);
+			}
+		}
+		br.close();
+		
+		
+		Backend backend = new Backend(data);
+		
 	}
 	
 	
