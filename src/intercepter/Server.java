@@ -29,7 +29,7 @@ public class Server {
 
 	public void start() throws IOException {
 		server = new ServerSocket(file.getDataSet().getIntercepterOption().getPort());
-		isOn = true;
+		isOn = false;
 	}
 
 	public void stop() {
@@ -63,10 +63,14 @@ public class Server {
 				line++;
 			} else {
 				request += ("\r\n\r\n" + temp);
+				break;
 			}
 			
 		}
-		data.setRequest(request);
+		
+		if(!request.equals("")) {
+			data.setRequest(request);
+		}
 		
 		br.close();
 
@@ -99,6 +103,8 @@ public class Server {
 
 	public void response(Backend backend) throws IOException {
 
+		socket = server.accept();
+		
 		backend.getResponse();
 
 		if (this.socket == null) {

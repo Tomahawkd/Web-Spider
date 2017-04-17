@@ -26,8 +26,6 @@ class IntercepterPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private boolean updateListener = false;
-
 
 	/**
 	 * Contains intercepter component.
@@ -80,7 +78,7 @@ class IntercepterPanel extends JPanel {
 		/*
 		 * Intercepter
 		 */
-		
+
 		Server intercepter = new Server(file);
 		new Thread(new Runnable() {
 			public void run() {
@@ -95,35 +93,31 @@ class IntercepterPanel extends JPanel {
 				}
 			}
 		}).start();
-		
+
 		/*
 		 * Buttons
 		 */
-		
+
 		JToggleButton tglbtnIntercept = new JToggleButton("Intercept Off");
 		tglbtnIntercept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				if (tglbtnIntercept.getText().equals("Intercept Off")) {
 					tglbtnIntercept.setText("Intercept On");
-					updateListener = true;
 					new Thread(new Runnable() {
 						public void run() {
-								while (updateListener) {
-									intercepter.resume();
-									try{
-									lblHost.setText(intercepter.current().getData().getURLString());
-									textAreaRequest.setText(intercepter.current().getData().getRequest());
-									} catch (NullPointerException e) {
-										lblHost.setText("");
-										textAreaRequest.setText("");
-									}
-								}
+							intercepter.resume();
+							try {
+								lblHost.setText(intercepter.current().getData().getURLString());
+								textAreaRequest.setText(intercepter.current().getData().getRequest());
+							} catch (NullPointerException e) {
+								lblHost.setText("");
+								textAreaRequest.setText("");
+							}
 						}
 					}, "updateThread").start();
 				} else {
 					tglbtnIntercept.setText("Intercept Off");
-					updateListener = false;
 					intercepter.stop();
 				}
 			}

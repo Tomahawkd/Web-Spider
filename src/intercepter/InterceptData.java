@@ -14,63 +14,69 @@ import java.util.Map.Entry;
 
 public class InterceptData {
 
-	private String host;
-	private String path;
+	private String url;
+	private String method;
 	private LinkedHashMap<String, String> requestHeader;
 	private String requestBody;
 	private String response;
 
 	InterceptData() {
-		this.host = "";
+		this.url = "";
 		requestHeader = new LinkedHashMap<String, String>();
 		requestBody = "";
 		response = "";
 	}
 
 	URL getURL() throws MalformedURLException {
-		String urlStr = host + path;
+		String urlStr = url;
 		return new URL(urlStr);
 	}
-	
+
 	public String getURLString() {
-		return (host + path);
+		return url;
 	}
 
-	private void setHost(String host) {
-		this.host = ("http://" + host);
-	}
-
-	private void setPath(String path) {
-		this.path = path;
+	private void setURL(String url) {
+		this.url = url;
 	}
 
 	public void setRequest(String request) {
+
+		String url = "";
 		String[] requestSet = request.split("\r\n");
 		boolean isFirst = true;
 
 		for (String line : requestSet) {
 			// Set host
-			if (line.contains("Host: ")) {
-				setHost(line.split(": ")[1]);
-			}
-
-			// Set request method and path
 			if (isFirst) {
-				setPath(line.split(" ")[1]);
+				url = line.split(" ")[1];
+				method = line.split(" ")[0];
 				isFirst = false;
 
-			// Headers
+				// Headers
 			} else if (line.contains(": ")) {
 				String[] header = line.split(": ");
 				addRequestHeaderElement(header[0], header[1]);
 
-			// Body
+				// Body
 			} else {
 				addRequestBodyElement(line);
 			}
 		}
 		
-		requestHeader.put("Content-Length", ("" + requestBody.getBytes().length));
+		if(url.startsWith("/")) {
+			url = "http://" + requestHeader.get("Host") + url;
+		}
+		
+		if(!url.startsWith("http://")) {
+			url = "http://" + requestHeader.get("Host");
+		}
+		
+		setURL(url);
+		
+		if (method.equals("POST")) {
+			requestHeader.put("Content-Length", ("" + requestBody.getBytes().length));
+		}
 	}
 
 	public String getRequest() {
@@ -83,9 +89,11 @@ public class InterceptData {
 				request += (mapping.getKey() + ": " + mapping.getValue() + "\r\n");
 			}
 		}
-		request += "\r\n";
 
-		request += requestBody;
+		if (method.equals("POST")) {
+			request += "\r\n";
+			request += requestBody;
+		}
 
 		return request;
 	}
@@ -97,7 +105,7 @@ public class InterceptData {
 	private void addRequestHeaderElement(String key, String value) {
 		requestHeader.put(key, value);
 	}
-	
+
 	private void addRequestBodyElement(String line) {
 		requestBody += line;
 	}
@@ -109,7 +117,7 @@ public class InterceptData {
 	String getResponse() {
 		return response;
 	}
-	
+
 	void setResponse(String response) {
 		this.response = response;
 	}
