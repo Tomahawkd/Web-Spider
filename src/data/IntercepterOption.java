@@ -63,7 +63,8 @@ public class IntercepterOption implements Serializable {
 	 * @author Tomahawkd
 	 */
 	
-	public void setPort(int port) {
+	public void setPort(int port) throws NumberFormatException {
+		if(port < 0 || port > 65535) throw new NumberFormatException("Port Invalid");
 		this.port = port;
 	}
 

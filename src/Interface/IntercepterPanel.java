@@ -11,6 +11,8 @@ import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 
 import data.FileIO;
+import intercepter.Server;
+import javax.swing.JScrollPane;
 
 /**
  * Interface: Intercepter panel
@@ -24,7 +26,6 @@ class IntercepterPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
 	
 	
 	/**
@@ -51,77 +52,92 @@ class IntercepterPanel extends JPanel {
 		lblHost_InterceptLab.setBounds(6, 28, 61, 16);
 		add(lblHost_InterceptLab);
 		
-		JLabel lblHost_Intercept = new JLabel("");
-		lblHost_Intercept.setBounds(79, 28, 421, 16);
-		add(lblHost_Intercept);
+		JLabel lblHost = new JLabel("");
+		lblHost.setBounds(79, 28, 421, 16);
+		add(lblHost);
 		
-		JLabel lblTip_Intercept = new JLabel("Port Invalid");
-		lblTip_Intercept.setBounds(463, 20, 71, 16);
-		add(lblTip_Intercept);
-		lblTip_Intercept.setVisible(false);
+		JLabel lblTip = new JLabel("Port Invalid");
+		lblTip.setBounds(463, 20, 71, 16);
+		add(lblTip);
+		lblTip.setVisible(false);
 		
-		JLabel lblError_InterceptLab = new JLabel("Unconfirmed Error");
-		lblError_InterceptLab.setBounds(417, 51, 117, 16);
-		add(lblError_InterceptLab);
-		lblError_InterceptLab.setVisible(false);
+		JLabel lblError = new JLabel("Unconfirmed Error");
+		lblError.setBounds(417, 51, 117, 16);
+		add(lblError);
+		lblError.setVisible(false);
 		
 		
 		/*
 		 * Intercepted request container
 		 */
 		
-		JTextArea httpContent_Intercept = new JTextArea();
-		httpContent_Intercept.setBounds(6, 87, 657, 305);
-		add(httpContent_Intercept);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(6, 87, 657, 305);
+		add(scrollPane);
+		
+		JTextArea textAreaRequest = new JTextArea();
+		scrollPane.setViewportView(textAreaRequest);
 		
 		
 		/*
 		 * Buttons
 		 */
 		
+		Server intercepter = new Server(file);		
 		JToggleButton tglbtnIntercept = new JToggleButton("Intercept Off");
-//		tglbtnIntercept.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//					if(tglbtnIntercept.getText().equals("Intercept Off")){
-//						tglbtnIntercept.setText("Intercept On");
-//						//TODO
-//						new Thread(new Runnable() {
-//							public void run() {
-//								try {
-//									while(true){
-//										Server intercepter = new Server();
-//										intercepter.setOption(file.getDataSet().getIntercepterOption());
-//										intercepter.start();
-//										if(intercepter.getSuspend()) {
-//											String result = "";
-//											for (String text : intercepter.getData().getRequest()) {
-//												result += text;
-//											}
-//											httpContent_Intercept.setText(result);
-//											break;
-//										}
-//									}
-//								} catch (IOException e) {
-//									lblError_InterceptLab.setVisible(true);
-//								}
-//							}
-//						}).start();
-//					} else {
-//						tglbtnIntercept.setText("Intercept Off");
-//					}
-//			}
-//		});
+		tglbtnIntercept.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					if(tglbtnIntercept.getText().equals("Intercept Off")){
+						tglbtnIntercept.setText("Intercept On");
+						new Thread(new Runnable() {
+							public void run() {
+								try {
+									intercepter.start();
+									while(true){
+										intercepter.action();
+										lblHost.setText(intercepter.current().getData().getHost());
+										textAreaRequest.setText(intercepter.current().getData().getRequest());
+									}
+								} catch (IOException e) {
+									lblError.setVisible(true);
+									e.printStackTrace();
+								}
+							}
+						}).start();
+					} else {
+						tglbtnIntercept.setText("Intercept Off");
+						try {
+							intercepter.stop();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
+			}
+		});
 		tglbtnIntercept.setBounds(546, 15, 117, 29);
 		add(tglbtnIntercept);
 		
-		JButton btnForward_Intercept = new JButton("Forward");
-		btnForward_Intercept.addActionListener(new ActionListener() {
+		JButton btnForward = new JButton("Forward");
+		btnForward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO
+				if (tglbtnIntercept.getText().equals("Intercept On")) {
+					try {
+
+						intercepter.response(intercepter.current());
+						if (intercepter.next() != null) {
+							lblHost.setText(intercepter.current().getData().getHost());
+							textAreaRequest.setText(intercepter.current().getData().getRequest());
+						}
+
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 
+				}
 			}
 		});
-		btnForward_Intercept.setBounds(546, 46, 117, 29);
-		add(btnForward_Intercept);
+		btnForward.setBounds(546, 46, 117, 29);
+		add(btnForward);
 	}
 
 }

@@ -18,16 +18,34 @@ import java.util.Map.Entry;
  * @author Tomahawkd
  */
 
-class Backend {
+public class Backend {
 
-	InterceptData data;
+	private InterceptData data;
+	private Backend next;
 
 	Backend(InterceptData data) {
 		this.data = data;
+		next = null;
 	}
 
-	void getResponse(Method method) {
-		switch (method) {
+	void addNext(Backend next) {
+		this.next = next;
+	}
+	
+	Backend next() {
+		if(next == null) {
+			return null;
+		} else {
+			return next;
+		}
+	}
+	
+	public InterceptData getData() {
+		return data;
+	}
+
+	public void getResponse() {
+		switch (data.getMethod()) {
 		case GET:
 			getGetResponse();
 			break;
@@ -137,11 +155,21 @@ class Backend {
 			while ((line = in.readLine()) != null) {
 				data.addResponseBodyElement(line);
 			}
-
+			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (SocketTimeoutException e) {
 			e.printStackTrace();
+			data.addResponseBodyElement("<!DOCTYPE html>");
+			data.addResponseBodyElement("<html lang=\"en\">");
+			data.addResponseBodyElement("<head>");
+			data.addResponseBodyElement("    <meta charset=\"UTF-8\">");
+			data.addResponseBodyElement("    <title>Time out</title>");
+			data.addResponseBodyElement("</head>");
+			data.addResponseBodyElement("<body>");
+			data.addResponseBodyElement("<p>TIME OUT</p>");
+			data.addResponseBodyElement("</body>");
+			data.addResponseBodyElement("</html>");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -3,6 +3,7 @@ package intercepter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Data: Store intercepter's cache data
@@ -10,7 +11,7 @@ import java.util.Map;
  * @author Tomahawkd
  */
 
-class InterceptData {
+public class InterceptData {
 
 	private String host;
 	private Method method;
@@ -26,16 +27,16 @@ class InterceptData {
 		responseBody = "";
 	}
 
-	String getHost() {
+	public String getHost() {
 		return host;
 	}
 
 	void setHost(String host) {
-		this.host = host;
+		this.host = ("http://" + host);
 	}
 
-	String getMethod() {
-		return method.getMethod();
+	Method getMethod() {
+		return method;
 	}
 
 	void setMethod(String methodMessage) {
@@ -45,13 +46,24 @@ class InterceptData {
 			method = Method.GET;
 	}
 
-	void setRequest(String header) {
-
+	public void setRequest(String header) {
+		
 	}
 
-	String getRequest() {
+	public String getRequest() {
 		String request = "";
-
+		
+		for(Entry<String, String> mapping : requestHeader.entrySet()) {
+			if (mapping.getKey().equals("")) {
+				request += (mapping.getValue() + "\r\n");
+			} else {
+				request += (mapping.getKey() + ": " + mapping.getValue() + "\r\n");
+			}
+		}
+		request += "\r\n";
+		
+		request += requestBody;
+		
 		return request;
 	}
 
@@ -89,24 +101,41 @@ class InterceptData {
 
 		String response = "";
 
-		for (Map.Entry<String, List<String>> mapping : responseHeader.entrySet()) {
-			if (mapping.getKey() == null) {
-				for (String status : mapping.getValue()) {
-					response += status;
+		// Get response message which should comes the first
+				for(String key : responseHeader.keySet()) {
+					if(key == null) {	
+						for(String value : responseHeader.get(key)){
+							response += value;
+						}
+					}
+					
+					//Format the header
+					if(!response.endsWith("\r\n")) {
+						response += "\r\n";
+					}
 				}
-				response += "\n";
-
-			} else {
-				response += mapping.getKey();
-				response += ": ";
-				for (String status : mapping.getValue()) {
-					response += status;
+				
+				for(String key : responseHeader.keySet()) {
+					
+					//Skip response message and get the rest
+					if(key != null) {
+						response += key + ": ";
+						for(String value : responseHeader.get(key)){
+							response += value + "; ";
+						}
+					}
+					
+					//Format the header
+					if(!response.endsWith("\r\n")) {
+						response += "\r\n";
+					}
 				}
-				response += "\n";
-			}
-		}
+				
+				//Format the header
+				if(!response.endsWith("\r\n\r\n")) {
+					response += "\r\n";
+				}
 
-		response += "\n";
 		response += responseBody;
 
 		return response;
