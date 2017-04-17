@@ -114,6 +114,7 @@ public class Server {
 		PrintWriter pw = new PrintWriter(socket.getOutputStream());
 		pw.write(backend.getData().getResponse());
 		pw.flush();
+		pw.close();
 	}
 
 }
