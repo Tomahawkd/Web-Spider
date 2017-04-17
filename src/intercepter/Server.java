@@ -32,8 +32,12 @@ public class Server {
 		isOn = true;
 	}
 
-	public void stop() throws IOException {
+	public void stop() {
 		isOn = false;
+	}
+	
+	public void resume() {
+		isOn = true;
 	}
 
 	public void action() throws IOException {
@@ -48,31 +52,22 @@ public class Server {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 
-		int lineCount = 0;
+		String request = "";
 		String temp;
+		int line = 0;
 
 		while ((temp = br.readLine()) != null) {
-
-			// Set host
-			if (temp.contains("Host: ")) {
-				data.setHost(temp.split(": ")[1]);
-			}
-
-			// Set request method
-			if (lineCount == 0) {
-				data.setMethod((temp.split(" ")[0]));
-				lineCount++;
-
-				// Headers
-			} else if (temp.contains(": ")) {
-				String[] header = temp.split(": ");
-				data.addRequestHeaderElement(header[0], header[1]);
-
-				// Body
+			if(temp.endsWith("\r\n")) temp = temp.substring(0, (temp.length() -2));
+			if(line == 0 || temp.contains(": ")) {
+				request += (temp + "\r\n");
+				line++;
 			} else {
-				data.addRequestBodyElement(temp);
+				request += ("\r\n\r\n" + temp);
 			}
+			
 		}
+		data.setRequest(request);
+		
 		br.close();
 
 		if (isOn) {

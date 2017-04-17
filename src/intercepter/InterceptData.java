@@ -1,7 +1,8 @@
 package intercepter;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -14,46 +15,68 @@ import java.util.Map.Entry;
 public class InterceptData {
 
 	private String host;
-	private Method method;
+	private String path;
 	private LinkedHashMap<String, String> requestHeader;
 	private String requestBody;
-	private Map<String, List<String>> responseHeader;
-	private String responseBody;
+	private String response;
 
 	InterceptData() {
 		this.host = "";
 		requestHeader = new LinkedHashMap<String, String>();
 		requestBody = "";
-		responseBody = "";
+		response = "";
 	}
 
-	public String getHost() {
-		return host;
+	URL getURL() throws MalformedURLException {
+		String urlStr = host + path;
+		return new URL(urlStr);
+	}
+	
+	public String getURLString() {
+		return (host + path);
 	}
 
-	void setHost(String host) {
+	private void setHost(String host) {
 		this.host = ("http://" + host);
 	}
 
-	Method getMethod() {
-		return method;
+	private void setPath(String path) {
+		this.path = path;
 	}
 
-	void setMethod(String methodMessage) {
-		if (methodMessage.equals("POST"))
-			method = Method.POST;
-		else
-			method = Method.GET;
-	}
+	public void setRequest(String request) {
+		String[] requestSet = request.split("\r\n");
+		boolean isFirst = true;
 
-	public void setRequest(String header) {
+		for (String line : requestSet) {
+			// Set host
+			if (line.contains("Host: ")) {
+				setHost(line.split(": ")[1]);
+			}
+
+			// Set request method and path
+			if (isFirst) {
+				setPath(line.split(" ")[1]);
+				isFirst = false;
+
+			// Headers
+			} else if (line.contains(": ")) {
+				String[] header = line.split(": ");
+				addRequestHeaderElement(header[0], header[1]);
+
+			// Body
+			} else {
+				addRequestBodyElement(line);
+			}
+		}
 		
+		requestHeader.put("Content-Length", ("" + requestBody.getBytes().length));
 	}
 
 	public String getRequest() {
 		String request = "";
-		
-		for(Entry<String, String> mapping : requestHeader.entrySet()) {
+
+		for (Entry<String, String> mapping : requestHeader.entrySet()) {
 			if (mapping.getKey().equals("")) {
 				request += (mapping.getValue() + "\r\n");
 			} else {
@@ -61,9 +84,9 @@ public class InterceptData {
 			}
 		}
 		request += "\r\n";
-		
+
 		request += requestBody;
-		
+
 		return request;
 	}
 
@@ -71,74 +94,24 @@ public class InterceptData {
 		return requestHeader;
 	}
 
-	void addRequestHeaderElement(String key, String value) {
+	private void addRequestHeaderElement(String key, String value) {
 		requestHeader.put(key, value);
+	}
+	
+	private void addRequestBodyElement(String line) {
+		requestBody += line;
 	}
 
 	String getRequestBody() {
 		return requestBody;
 	}
 
-	void addRequestBodyElement(String line) {
-		requestBody += line;
-		requestBody += "\n";
-	}
-
-	void setResponseHeader(Map<String, List<String>> headers) {
-		this.responseHeader = headers;
-	}
-
-	String getResponseBody() {
-		return requestBody;
-	}
-
-	void addResponseBodyElement(String line) {
-		requestBody += line;
-		requestBody += "\n";
-	}
-
 	String getResponse() {
-
-		String response = "";
-
-		// Get response message which should comes the first
-				for(String key : responseHeader.keySet()) {
-					if(key == null) {	
-						for(String value : responseHeader.get(key)){
-							response += value;
-						}
-					}
-					
-					//Format the header
-					if(!response.endsWith("\r\n")) {
-						response += "\r\n";
-					}
-				}
-				
-				for(String key : responseHeader.keySet()) {
-					
-					//Skip response message and get the rest
-					if(key != null) {
-						response += key + ": ";
-						for(String value : responseHeader.get(key)){
-							response += value + "; ";
-						}
-					}
-					
-					//Format the header
-					if(!response.endsWith("\r\n")) {
-						response += "\r\n";
-					}
-				}
-				
-				//Format the header
-				if(!response.endsWith("\r\n\r\n")) {
-					response += "\r\n";
-				}
-
-		response += responseBody;
-
 		return response;
+	}
+	
+	void setResponse(String response) {
+		this.response = response;
 	}
 
 }

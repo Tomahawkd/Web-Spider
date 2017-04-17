@@ -203,7 +203,7 @@ public class SpiderPanel extends JPanel {
 							// All operation has done, stop the spider
 							spr.stop();
 						}
-					}).start();
+					}, "SpiderThread").start();
 
 				} else {
 

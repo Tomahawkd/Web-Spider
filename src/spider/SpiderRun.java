@@ -197,7 +197,7 @@ public class SpiderRun {
 					getContents(result.getURLMap());
 				}
 			}
-		}).start();
+		}, "ContentGetterThread").start();
 		
 		//Queuing the URL map
 		result.setURLMap(crawlLinks(result.getURLMap()));

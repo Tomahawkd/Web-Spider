@@ -96,7 +96,7 @@ class SaveFile extends JFileChooser {
 						FileProcess process = new FileProcess(OperationType.SAVE);
 						process.setVisible(true);
 					}
-				}).start();
+				}, "SavingFileThread").start();
 				
 			} catch (FileNameInvalidException e) {
 				//Notify the user file name is not valid
