@@ -124,12 +124,16 @@ public class IntercepterPanel extends JPanel {
 				} else {
 					tglbtnIntercept.setText("Intercept Off");
 					intercepter.stop();
-					try {
-						intercepter.sendAll();
-					} catch (IOException e1) {
-						lblError.setVisible(true);
-						e1.printStackTrace();
-					}
+					new Thread(new Runnable() {
+						public void run() {
+							try {
+								intercepter.sendAll();
+							} catch (IOException e1) {
+								lblError.setVisible(true);
+								e1.printStackTrace();
+							}
+						}
+					}, "SendAllRequestThread").start();
 					lblHost.setText("");
 					textAreaRequest.setText("");
 				}

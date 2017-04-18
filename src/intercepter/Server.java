@@ -49,9 +49,11 @@ public class Server {
 		if (this.socket == null) {
 			return;
 		}
-
+		
+		//Initialize data class for coming session
 		InterceptData data = new InterceptData();
-
+		
+		//Get request from client
 		BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 
 		String request = "";
@@ -76,11 +78,16 @@ public class Server {
 		}
 		br.close();
 
+		//Ignore empty request
 		if (!request.equals("")) {
-
+			
+			//Set request to data
 			data.setRequest(request);
 
+			//Intercepter is on
 			if (isOn) {
+				
+				//Create stack for intercept queue
 				if (head == null) {
 					head = new Backend(data);
 					backend = head;
@@ -89,13 +96,15 @@ public class Server {
 					backend.addNext(new Backend(data));
 					backend = backend.next();
 				}
+				
+				//Intercepter is off
 			} else {
 				response(new Backend(data));
 			}
 		}
 
 	}
-
+	
 	public Backend current() {
 		return head;
 	}
@@ -111,6 +120,7 @@ public class Server {
 
 	public void response(Backend backend) throws IOException {
 
+		
 		socket = server.accept();
 
 		backend.getResponse();
@@ -118,11 +128,12 @@ public class Server {
 		if (this.socket == null) {
 			return;
 		}
-
-		PrintWriter pw = new PrintWriter(socket.getOutputStream());
-		pw.write(backend.getData().getResponse());
-		pw.flush();
-		pw.close();
+		
+		//Return the data to client
+		OutputStream out = socket.getOutputStream();
+		out.write(backend.getData().getResponse());
+		out.flush();
+		out.close();
 	}
 	
 	public void sendAll() throws IOException {
