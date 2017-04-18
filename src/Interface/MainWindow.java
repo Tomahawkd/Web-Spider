@@ -135,7 +135,7 @@ public class MainWindow {
 		 *  Panel4: Options
 		 */
 		
-		options = new OptionPanel(file);
+		options = new OptionPanel(file, intercepter);
 		tabbedPane.addTab("Options", null, options, "User Preference");
 		
 		

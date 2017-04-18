@@ -20,22 +20,29 @@ public class Server {
 	private Backend head;
 	private boolean isFirst;
 	private boolean isOn;
+	private boolean isStart;
 
 	public Server(FileIO file) {
 		this.file = file;
 		isFirst = true;
 		isOn = false;
+		isStart = false;
+	}
+	
+	public boolean isStart() {
+		return isStart;
 	}
 
 	public void start() throws IOException {
 		server = new ServerSocket(file.getDataSet().getIntercepterOption().getPort());
 		isOn = false;
+		isStart = true;
 	}
 
 	public void stop() {
 		isOn = false;
 	}
-	
+
 	public void resume() {
 		isOn = true;
 	}
@@ -57,33 +64,38 @@ public class Server {
 		int line = 0;
 
 		while ((temp = br.readLine()) != null) {
-			if(temp.endsWith("\r\n")) temp = temp.substring(0, (temp.length() -2));
-			if(line == 0 || temp.contains(": ")) {
+			if (temp.endsWith("\r\n"))
+				temp = temp.substring(0, (temp.length() - 2));
+			if (line == 0 || temp.contains(": ")) {
 				request += (temp + "\r\n");
 				line++;
 			} else {
-				request += ("\r\n\r\n" + temp);
+				if (temp.contains(": ")) {
+					request += temp;
+				} else {
+					request += ("\r\n\r\n" + temp);
+				}
 				break;
 			}
-			
+
 		}
-		
-		if(!request.equals("")) {
-			data.setRequest(request);
-		}
-		
 		br.close();
 
-		if (isOn) {
-			if (isFirst) {
-				head = new Backend(data);
-				backend = head;
+		if (!request.equals("")) {
+
+			data.setRequest(request);
+
+			if (isOn) {
+				if (isFirst) {
+					head = new Backend(data);
+					backend = head;
+				} else {
+					backend.addNext(new Backend(data));
+					backend = backend.next();
+				}
 			} else {
-				backend.addNext(new Backend(data));
-				backend = backend.next();
+				response(new Backend(data));
 			}
-		} else {
-			response(new Backend(data));
 		}
 
 	}
@@ -104,7 +116,7 @@ public class Server {
 	public void response(Backend backend) throws IOException {
 
 		socket = server.accept();
-		
+
 		backend.getResponse();
 
 		if (this.socket == null) {

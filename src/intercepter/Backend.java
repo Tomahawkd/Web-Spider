@@ -183,7 +183,7 @@ public class Backend {
 			data.setResponse(bytesOut.toString(respCharset));
 		
 		} catch (SocketTimeoutException e) {
-			String response = "<!DOCTYPE html>"
+			String responseBody = "<!DOCTYPE html>"
 					+ "<html lang=\"en\">"
 					+ "<head>"
 					+ "<meta charset=\"UTF-8\">"
@@ -193,6 +193,15 @@ public class Backend {
 					+ "<p>TIME OUT</p>"
 					+ "</body>"
 					+ "</html>";
+			
+			String responseHeader = "HTTP/1.1 404 Not Found\r\n"
+					+ "Content-Type: text/html; charset=utf-8\r\n"
+					+ "Connection: close\r\n"
+					+ "Vary: Accept-Encoding\r\n"
+					+ "Content-Length: " + responseBody.getBytes().length;
+			
+			
+			String response = responseHeader + "\r\n\r\n" + responseBody;
 			
 			data.setResponse(response);
 		} catch (Exception e) {

@@ -13,7 +13,6 @@ import java.awt.event.ActionEvent;
  * Interface: Detailed information and developer contact.
  * 
  * @author Tomahawkd
- *
  */
 
 class aboutUs extends JFrame {

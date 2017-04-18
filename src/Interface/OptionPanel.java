@@ -52,11 +52,12 @@ class OptionPanel extends JPanel {
 	 * Contains option component.
 	 * 
 	 * @param file file operation handler
+	 * @param intercept the intercepter panel
 	 * 
 	 * @author Tomahawkd
 	 */
 	
-	OptionPanel(FileIO file) {
+	OptionPanel(FileIO file, IntercepterPanel intercept) {
 		
 		//Initialize FileIO class
 		this.file = file;
@@ -206,6 +207,15 @@ class OptionPanel extends JPanel {
 		});
 		btnApply.setBounds(6, 248, 117, 29);
 		add(btnApply);
+		
+		JButton btnRestartServer = new JButton("Restart Server");
+		btnRestartServer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				intercept.restartServer();
+			}
+		});
+		btnRestartServer.setBounds(135, 248, 117, 29);
+		add(btnRestartServer);
 		
 	}
 	

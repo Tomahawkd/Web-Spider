@@ -26,15 +26,24 @@ class IntercepterPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private FileIO file;
+	private Server intercepter;
+	private JLabel lblError;
+	private JToggleButton tglbtnIntercept;
+	private JButton btnForward;
 
+	
 	/**
 	 * Contains intercepter component.
 	 * 
-	 * @param file
-	 *            file operation handler
+	 * @param file file operation handler
 	 */
 
 	IntercepterPanel(FileIO file) {
+		
+		
+		//Initialization
+		this.file = file;
 
 		/*
 		 * Self configuration
@@ -59,7 +68,7 @@ class IntercepterPanel extends JPanel {
 		add(lblTip);
 		lblTip.setVisible(false);
 
-		JLabel lblError = new JLabel("Unconfirmed Error");
+		lblError = new JLabel("Unconfirmed Error");
 		lblError.setBounds(417, 51, 117, 16);
 		add(lblError);
 		lblError.setVisible(false);
@@ -79,26 +88,32 @@ class IntercepterPanel extends JPanel {
 		 * Intercepter
 		 */
 
-		Server intercepter = new Server(file);
+		intercepter = new Server(file);
 		new Thread(new Runnable() {
 			public void run() {
+
 				try {
 					intercepter.start();
 					while (true) {
-						intercepter.action();
+						try {
+							intercepter.action();
+						} catch (IOException e) {
+							lblError.setVisible(true);
+							e.printStackTrace();
+						}
 					}
 				} catch (IOException e) {
-					lblError.setVisible(true);
-					e.printStackTrace();
+					AdressInUse dialog = new AdressInUse();
+					dialog.setVisible(true);
 				}
 			}
-		}).start();
+		}, "IntercepterMainThread").start();
 
 		/*
 		 * Buttons
 		 */
 
-		JToggleButton tglbtnIntercept = new JToggleButton("Intercept Off");
+		tglbtnIntercept = new JToggleButton("Intercept Off");
 		tglbtnIntercept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -123,9 +138,13 @@ class IntercepterPanel extends JPanel {
 			}
 		});
 		tglbtnIntercept.setBounds(546, 15, 117, 29);
+		tglbtnIntercept.setEnabled(true);
 		add(tglbtnIntercept);
+		if (!intercepter.isStart()) {
+			tglbtnIntercept.setEnabled(false);
+		}
 
-		JButton btnForward = new JButton("Forward");
+		btnForward = new JButton("Forward");
 		btnForward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (tglbtnIntercept.getText().equals("Intercept On")) {
@@ -137,6 +156,7 @@ class IntercepterPanel extends JPanel {
 							textAreaRequest.setText(intercepter.current().getData().getRequest());
 						}
 					} catch (IOException e1) {
+						lblError.setVisible(true);
 						e1.printStackTrace();
 					} catch (NullPointerException e1) {
 						lblHost.setText("");
@@ -146,7 +166,53 @@ class IntercepterPanel extends JPanel {
 			}
 		});
 		btnForward.setBounds(546, 46, 117, 29);
+		btnForward.setEnabled(true);
 		add(btnForward);
+		if (!intercepter.isStart()) {
+			btnForward.setEnabled(false);
+		}
+
+	}
+	
+	
+	/**
+	 * Restart server to refresh to the new port.
+	 * 
+	 * @author Tomahawkd
+	 */
+	
+	void restartServer() {
+		
+		intercepter = new Server(file);
+		
+		new Thread(new Runnable() {
+			public void run() {
+
+				try {
+					intercepter.start();
+					while (true) {
+						try {
+							intercepter.action();
+						} catch (IOException e) {
+							lblError.setVisible(true);
+							e.printStackTrace();
+						}
+					}
+				} catch (IOException e) {
+					AdressInUse dialog = new AdressInUse();
+					dialog.setVisible(true);
+				}
+			}
+		}, "IntercepterMainThread").start();
+		
+		//Update the GUI status
+		tglbtnIntercept.setEnabled(true);
+		btnForward.setEnabled(true);
+		if (!intercepter.isStart()) {
+			tglbtnIntercept.setEnabled(false);
+			btnForward.setEnabled(false);
+		}
+		
 	}
 
 }

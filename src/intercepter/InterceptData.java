@@ -3,7 +3,6 @@ package intercepter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 
 /**
@@ -14,12 +13,50 @@ import java.util.Map.Entry;
 
 public class InterceptData {
 
+	
+	/**
+	 * The target URL
+	 */
+	
 	private String url;
+	
+	
+	/**
+	 * HTTP request method
+	 */
+	
 	private String method;
+	
+	
+	/**
+	 * HTTP request header
+	 */
+	
 	private LinkedHashMap<String, String> requestHeader;
+	
+	
+	/**
+	 * HTTP request body
+	 */
+	
 	private String requestBody;
+	
+	
+	/**
+	 * The response from the server
+	 */
+	
 	private String response;
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	InterceptData() {
 		this.url = "";
 		requestHeader = new LinkedHashMap<String, String>();
@@ -27,43 +64,80 @@ public class InterceptData {
 		response = "";
 	}
 
+	
+	/**
+	 * Get the URL
+	 * 
+	 * @return current HTTP request URL
+	 * 
+	 * @throws MalformedURLException
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	URL getURL() throws MalformedURLException {
 		String urlStr = url;
 		return new URL(urlStr);
 	}
 
+	
+	/**
+	 * Get the URL for GUI display
+	 * 
+	 * @return a URL string
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	public String getURLString() {
 		return url;
 	}
 
-	private void setURL(String url) {
-		this.url = url;
-	}
-
+	
+	/**
+	 * HTTP request parser
+	 * 
+	 * @param request
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	public void setRequest(String request) {
 
 		String url = "";
+		
+		//Split into line
 		String[] requestSet = request.split("\r\n");
+		
+		//First line is the method which not contains ": "
 		boolean isFirst = true;
 
 		for (String line : requestSet) {
-			// Set host
+			
 			if (isFirst) {
+				
+				//Set request method
+				requestHeader.put("http request header", line);
+				
+				//Get path
 				url = line.split(" ")[1];
+				
+				//Get method
 				method = line.split(" ")[0];
 				isFirst = false;
 
-				// Headers
+			// Headers
 			} else if (line.contains(": ")) {
 				String[] header = line.split(": ");
-				addRequestHeaderElement(header[0], header[1]);
+				requestHeader.put(header[0], header[1]);
 
-				// Body
+			// Body
 			} else {
-				addRequestBodyElement(line);
+				requestBody += line;
 			}
 		}
 		
+		//Get URL in HTTP request
 		if(url.startsWith("/")) {
 			url = "http://" + requestHeader.get("Host") + url;
 		}
@@ -72,52 +146,80 @@ public class InterceptData {
 			url = "http://" + requestHeader.get("Host");
 		}
 		
-		setURL(url);
+		//Set URL
+		this.url = url;
 		
+		//Update content length
 		if (method.equals("POST")) {
 			requestHeader.put("Content-Length", ("" + requestBody.getBytes().length));
 		}
 	}
 
+	
+	/**
+	 * Get request
+	 * 
+	 * @return HTTP request
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	public String getRequest() {
 		String request = "";
 
 		for (Entry<String, String> mapping : requestHeader.entrySet()) {
-			if (mapping.getKey().equals("")) {
+			
+			//Get the first line
+			if (mapping.getKey().equals("http request header")) {
 				request += (mapping.getValue() + "\r\n");
+				
+			//HTTP request header	
 			} else {
 				request += (mapping.getKey() + ": " + mapping.getValue() + "\r\n");
 			}
 		}
 
+		
 		if (method.equals("POST")) {
+			
+			//Add request body
 			request += "\r\n";
 			request += requestBody;
+		} else {
+			
+			//Delete last "\r\n"
+			request = request.substring(0, request.length() - 2);
 		}
 
 		return request;
 	}
-
-	Map<String, String> getRequestHeader() {
-		return requestHeader;
-	}
-
-	private void addRequestHeaderElement(String key, String value) {
-		requestHeader.put(key, value);
-	}
-
-	private void addRequestBodyElement(String line) {
-		requestBody += line;
-	}
-
-	String getRequestBody() {
-		return requestBody;
-	}
-
+	
+	
+	/**
+	 * Get the response from the server using server.
+	 * 
+	 * @return response
+	 * 
+	 * @see {@link Server}
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	String getResponse() {
 		return response;
 	}
-
+	
+	
+	/**
+	 * Set response using backend.
+	 * 
+	 * @param response
+	 * 
+	 * @see {@link Backend}
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	void setResponse(String response) {
 		this.response = response;
 	}
