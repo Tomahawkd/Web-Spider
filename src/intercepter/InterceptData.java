@@ -200,5 +200,9 @@ public class InterceptData {
 	void setResponse(byte[] response) {
 		this.response = response;
 	}
+	
+	void setRequestBody(String requestBody) {
+		this.requestBody = requestBody;
+	}
 
 }

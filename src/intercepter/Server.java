@@ -27,7 +27,6 @@ public class Server {
 		this.panel = panel;
 		isOn = false;
 	}
-	
 
 	public void start() throws IOException {
 		server = new ServerSocket(file.getDataSet().getIntercepterOption().getPort());
@@ -49,45 +48,57 @@ public class Server {
 		if (this.socket == null) {
 			return;
 		}
-		
-		//Initialize data class for coming session
+
+		// Initialize data class for coming session
 		InterceptData data = new InterceptData();
-		
-		//Get request from client
-		BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+
+		// Get request from client
+		InputStream in = this.socket.getInputStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
 		String request = "";
-		String temp;
-		int line = 0;
+		String line;
+		int lineCount = 0;
+		String contentLength = "";
+		String method = "GET";
 
-		while ((temp = br.readLine()) != null) {
-			if (temp.endsWith("\r\n"))
-				temp = temp.substring(0, (temp.length() - 2));
-			if (line == 0 || temp.contains(": ")) {
-				request += (temp + "\r\n");
-				line++;
-			} else {
-				if (temp.contains(": ")) {
-					request += temp;
-				} else {
-					request += ("\r\n\r\n" + temp);
+		while ((line = br.readLine()) != null) {
+
+			if (lineCount == 0 || line.contains(": ")) {
+				request += (line + "\r\n");
+				lineCount++;
+				if (!line.contains(": ")) {
+					method = line.split(" ")[0];
 				}
+				if (line.startsWith("Content-Length: ")) {
+					contentLength = line.split(": ")[1];
+				}
+			} else {
 				break;
 			}
 
 		}
+
+		if (method.equals("POST")) {
+			int length = Integer.valueOf(contentLength);
+			byte[] buffer = new byte[length];
+			in.read(buffer, 0, length);
+			data.setRequestBody(new String(buffer, 0, buffer.length));
+			System.out.println(new String(buffer, 0, buffer.length));
+		}
+
 		br.close();
 
-		//Ignore empty request
+		// Ignore empty request
 		if (!request.equals("")) {
-			
-			//Set request to data
+
+			// Set request to data
 			data.setRequest(request);
 
-			//Intercepter is on
+			// Intercepter is on
 			if (isOn) {
-				
-				//Create stack for intercept queue
+
+				// Create chain for intercept queue
 				if (head == null) {
 					head = new Backend(data);
 					backend = head;
@@ -96,15 +107,15 @@ public class Server {
 					backend.addNext(new Backend(data));
 					backend = backend.next();
 				}
-				
-				//Intercepter is off
+
+				// Intercepter is off
 			} else {
 				response(new Backend(data));
 			}
 		}
 
 	}
-	
+
 	public Backend current() {
 		return head;
 	}
@@ -120,7 +131,6 @@ public class Server {
 
 	public void response(Backend backend) throws IOException {
 
-		
 		socket = server.accept();
 
 		backend.getResponse();
@@ -128,16 +138,16 @@ public class Server {
 		if (this.socket == null) {
 			return;
 		}
-		
-		//Return the data to client
+
+		// Return the data to client
 		OutputStream out = socket.getOutputStream();
 		out.write(backend.getData().getResponse());
 		out.flush();
 		out.close();
 	}
-	
+
 	public void sendAll() throws IOException {
-		while(head != null) {
+		while (head != null) {
 			response(head);
 			head = head.next();
 		}
