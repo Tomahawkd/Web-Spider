@@ -32,17 +32,16 @@ class IntercepterPanel extends JPanel {
 	private JToggleButton tglbtnIntercept;
 	private JButton btnForward;
 
-	
 	/**
 	 * Contains intercepter component.
 	 * 
-	 * @param file file operation handler
+	 * @param file
+	 *            file operation handler
 	 */
 
 	IntercepterPanel(FileIO file) {
-		
-		
-		//Initialization
+
+		// Initialization
 		this.file = file;
 
 		/*
@@ -138,53 +137,53 @@ class IntercepterPanel extends JPanel {
 			}
 		});
 		tglbtnIntercept.setBounds(546, 15, 117, 29);
-		tglbtnIntercept.setEnabled(true);
 		add(tglbtnIntercept);
-		if (!intercepter.isStart()) {
-			tglbtnIntercept.setEnabled(false);
-		}
 
 		btnForward = new JButton("Forward");
 		btnForward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (tglbtnIntercept.getText().equals("Intercept On")) {
-					try {
-						intercepter.current().getData().setRequest(textAreaRequest.getText());
-						intercepter.response(intercepter.current());
-						if (intercepter.next() != null) {
-							lblHost.setText(intercepter.current().getData().getURLString());
-							textAreaRequest.setText(intercepter.current().getData().getRequest());
+					new Thread(new Runnable() {
+						public void run() {
+							try {
+								if (intercepter.current() != null) {
+									intercepter.current().getData().setRequest(textAreaRequest.getText());
+									intercepter.response(intercepter.current());
+									if (intercepter.next() != null) {
+										lblHost.setText(intercepter.current().getData().getURLString());
+										textAreaRequest.setText(intercepter.current().getData().getRequest());
+									} else {
+										lblHost.setText("");
+										textAreaRequest.setText("");
+									}
+								}
+							} catch (IOException e1) {
+								lblError.setVisible(true);
+								e1.printStackTrace();
+							} catch (NullPointerException e1) {
+								lblHost.setText("");
+								textAreaRequest.setText("");
+							}
 						}
-					} catch (IOException e1) {
-						lblError.setVisible(true);
-						e1.printStackTrace();
-					} catch (NullPointerException e1) {
-						lblHost.setText("");
-						textAreaRequest.setText("");
-					}
+					}, "ForwardThread").start();
 				}
 			}
 		});
 		btnForward.setBounds(546, 46, 117, 29);
-		btnForward.setEnabled(true);
 		add(btnForward);
-		if (!intercepter.isStart()) {
-			btnForward.setEnabled(false);
-		}
 
 	}
-	
-	
+
 	/**
 	 * Restart server to refresh to the new port.
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	void restartServer() {
-		
+
 		intercepter = new Server(file);
-		
+
 		new Thread(new Runnable() {
 			public void run() {
 
@@ -204,15 +203,7 @@ class IntercepterPanel extends JPanel {
 				}
 			}
 		}, "IntercepterMainThread").start();
-		
-		//Update the GUI status
-		tglbtnIntercept.setEnabled(true);
-		btnForward.setEnabled(true);
-		if (!intercepter.isStart()) {
-			tglbtnIntercept.setEnabled(false);
-			btnForward.setEnabled(false);
-		}
-		
+
 	}
 
 }

@@ -20,23 +20,17 @@ public class Server {
 	private Backend head;
 	private boolean isFirst;
 	private boolean isOn;
-	private boolean isStart;
 
 	public Server(FileIO file) {
 		this.file = file;
 		isFirst = true;
 		isOn = false;
-		isStart = false;
 	}
 	
-	public boolean isStart() {
-		return isStart;
-	}
 
 	public void start() throws IOException {
 		server = new ServerSocket(file.getDataSet().getIntercepterOption().getPort());
 		isOn = false;
-		isStart = true;
 	}
 
 	public void stop() {
@@ -107,10 +101,11 @@ public class Server {
 	public Backend next() {
 		if (head.next() != null) {
 			head = head.next();
-			return head;
 		} else {
-			return null;
+			head = null;
+			isFirst = true;
 		}
+		return head;
 	}
 
 	public void response(Backend backend) throws IOException {
@@ -126,7 +121,6 @@ public class Server {
 		PrintWriter pw = new PrintWriter(socket.getOutputStream());
 		pw.write(backend.getData().getResponse());
 		pw.flush();
-		pw.close();
 	}
 
 }
