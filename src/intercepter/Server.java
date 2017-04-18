@@ -3,6 +3,7 @@ package intercepter;
 import java.io.*;
 import java.net.*;
 
+import Interface.IntercepterPanel;
 import data.FileIO;
 
 /**
@@ -15,15 +16,15 @@ public class Server {
 	private Socket socket = null;
 	private ServerSocket server;
 	private FileIO file;
+	private IntercepterPanel panel;
 
 	private Backend backend;
 	private Backend head;
-	private boolean isFirst;
 	private boolean isOn;
 
-	public Server(FileIO file) {
+	public Server(FileIO file, IntercepterPanel panel) {
 		this.file = file;
-		isFirst = true;
+		this.panel = panel;
 		isOn = false;
 	}
 	
@@ -80,9 +81,10 @@ public class Server {
 			data.setRequest(request);
 
 			if (isOn) {
-				if (isFirst) {
+				if (head == null) {
 					head = new Backend(data);
 					backend = head;
+					panel.updateData();
 				} else {
 					backend.addNext(new Backend(data));
 					backend = backend.next();
@@ -103,7 +105,6 @@ public class Server {
 			head = head.next();
 		} else {
 			head = null;
-			isFirst = true;
 		}
 		return head;
 	}
@@ -121,6 +122,14 @@ public class Server {
 		PrintWriter pw = new PrintWriter(socket.getOutputStream());
 		pw.write(backend.getData().getResponse());
 		pw.flush();
+		pw.close();
+	}
+	
+	public void sendAll() throws IOException {
+		while(head != null) {
+			response(head);
+			head = head.next();
+		}
 	}
 
 }

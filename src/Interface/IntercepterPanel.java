@@ -20,7 +20,7 @@ import javax.swing.JScrollPane;
  * @author Tomahawkd
  */
 
-class IntercepterPanel extends JPanel {
+public class IntercepterPanel extends JPanel {
 
 	/**
 	 * 
@@ -31,6 +31,8 @@ class IntercepterPanel extends JPanel {
 	private JLabel lblError;
 	private JToggleButton tglbtnIntercept;
 	private JButton btnForward;
+	private JLabel lblHost;
+	private JTextArea textAreaRequest;
 
 	/**
 	 * Contains intercepter component.
@@ -58,7 +60,7 @@ class IntercepterPanel extends JPanel {
 		lblHost_InterceptLab.setBounds(6, 28, 61, 16);
 		add(lblHost_InterceptLab);
 
-		JLabel lblHost = new JLabel("");
+		lblHost = new JLabel("");
 		lblHost.setBounds(79, 28, 421, 16);
 		add(lblHost);
 
@@ -80,14 +82,14 @@ class IntercepterPanel extends JPanel {
 		scrollPane.setBounds(6, 87, 657, 305);
 		add(scrollPane);
 
-		JTextArea textAreaRequest = new JTextArea();
+		textAreaRequest = new JTextArea();
 		scrollPane.setViewportView(textAreaRequest);
 
 		/*
 		 * Intercepter
 		 */
 
-		intercepter = new Server(file);
+		intercepter = new Server(file, this);
 		new Thread(new Runnable() {
 			public void run() {
 
@@ -118,21 +120,18 @@ class IntercepterPanel extends JPanel {
 
 				if (tglbtnIntercept.getText().equals("Intercept Off")) {
 					tglbtnIntercept.setText("Intercept On");
-					new Thread(new Runnable() {
-						public void run() {
-							intercepter.resume();
-							try {
-								lblHost.setText(intercepter.current().getData().getURLString());
-								textAreaRequest.setText(intercepter.current().getData().getRequest());
-							} catch (NullPointerException e) {
-								lblHost.setText("");
-								textAreaRequest.setText("");
-							}
-						}
-					}, "updateThread").start();
+					intercepter.resume();
 				} else {
 					tglbtnIntercept.setText("Intercept Off");
 					intercepter.stop();
+					try {
+						intercepter.sendAll();
+					} catch (IOException e1) {
+						lblError.setVisible(true);
+						e1.printStackTrace();
+					}
+					lblHost.setText("");
+					textAreaRequest.setText("");
 				}
 			}
 		});
@@ -148,7 +147,6 @@ class IntercepterPanel extends JPanel {
 							try {
 								if (intercepter.current() != null) {
 									intercepter.current().getData().setRequest(textAreaRequest.getText());
-									intercepter.response(intercepter.current());
 									if (intercepter.next() != null) {
 										lblHost.setText(intercepter.current().getData().getURLString());
 										textAreaRequest.setText(intercepter.current().getData().getRequest());
@@ -156,6 +154,7 @@ class IntercepterPanel extends JPanel {
 										lblHost.setText("");
 										textAreaRequest.setText("");
 									}
+									intercepter.response(intercepter.current());
 								}
 							} catch (IOException e1) {
 								lblError.setVisible(true);
@@ -174,6 +173,11 @@ class IntercepterPanel extends JPanel {
 
 	}
 
+	public void updateData() {
+		lblHost.setText(intercepter.current().getData().getURLString());
+		textAreaRequest.setText(intercepter.current().getData().getRequest());
+	}
+	
 	/**
 	 * Restart server to refresh to the new port.
 	 * 
@@ -182,7 +186,7 @@ class IntercepterPanel extends JPanel {
 
 	void restartServer() {
 
-		intercepter = new Server(file);
+		intercepter = new Server(file, this);
 
 		new Thread(new Runnable() {
 			public void run() {
