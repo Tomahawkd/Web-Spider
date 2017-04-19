@@ -125,7 +125,7 @@ class FileProcess extends JFrame {
 							} catch (InterruptedException ex) {}
 						} 
 					}
-				}).start();
+				}, "ProcessBarThread").start();
 			}
 		});
 		

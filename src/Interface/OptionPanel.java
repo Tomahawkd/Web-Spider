@@ -2,6 +2,7 @@ package Interface;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -45,11 +46,12 @@ class OptionPanel extends JPanel {
 	 * Contains option component.
 	 * 
 	 * @param file file operation handler
+	 * @param intercept the intercepter panel
 	 * 
 	 * @author Tomahawkd
 	 */
 	
-	OptionPanel(FileIO file) {
+	OptionPanel(FileIO file, IntercepterPanel intercept) {
 		
 		//Initialize FileIO class
 		this.file = file;
@@ -66,9 +68,47 @@ class OptionPanel extends JPanel {
 		 * Labels
 		 */
 		
+<<<<<<< HEAD
 		JLabel lblSetRequest = new JLabel("Set Request Head");
 		lblSetRequest.setBounds(6, 6, 123, 16);
 		add(lblSetRequest);
+=======
+		JLabel lblProxy = new JLabel("Proxy");
+		lblProxy.setBounds(6, 159, 61, 16);
+		add(lblProxy);
+		
+		JLabel lblHost = new JLabel("Host:");
+		lblHost.setBounds(16, 187, 39, 16);
+		add(lblHost);
+		
+		JLabel lblPort = new JLabel("Port:");
+		lblPort.setBounds(239, 187, 31, 16);
+		add(lblPort);
+		
+		JLabel lblPortInvalid = new JLabel("Port invalid");
+		lblPortInvalid.setBounds(424, 187, 71, 16);
+		add(lblPortInvalid);
+		lblPortInvalid.setVisible(false);
+		
+		JLabel labelTip = new JLabel("Only Localhost Support");
+		labelTip.setBounds(61, 187, 172, 16);
+		add(labelTip);
+		
+		JLabel lblServerStartingFailed = new JLabel("Server Starting Failed");
+		lblServerStartingFailed.setBounds(264, 253, 132, 16);
+		add(lblServerStartingFailed);
+		lblServerStartingFailed.setVisible(false);
+		
+		
+		/*
+		 * Text field
+		 */
+		
+		textFieldPort = new JTextField();
+		textFieldPort.setBounds(282, 182, 130, 26);
+		add(textFieldPort);
+		textFieldPort.setText("" + file.getDataSet().getIntercepterOption().getPort());
+>>>>>>> intercepter
 		
 		
 		/*
@@ -150,6 +190,41 @@ class OptionPanel extends JPanel {
 		});
 		add(btnDelete);
 		
+<<<<<<< HEAD
+=======
+		
+		JButton btnApply = new JButton("Apply");
+		
+		//Apply save port option
+		btnApply.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String strPort = textFieldPort.getText();
+				lblPortInvalid.setVisible(false);
+				try {
+					file.getDataSet().getIntercepterOption().setPort(Integer.parseInt(strPort));
+				} catch (NumberFormatException e1) {
+					lblPortInvalid.setVisible(true);
+				}
+			}
+		});
+		btnApply.setBounds(6, 248, 117, 29);
+		add(btnApply);
+		
+		JButton btnRestartServer = new JButton("Restart Server");
+		btnRestartServer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					intercept.startServer();
+				} catch (IOException e1) {
+					lblServerStartingFailed.setVisible(true);
+				}
+			}
+		});
+		btnRestartServer.setBounds(135, 248, 117, 29);
+		add(btnRestartServer);
+		
+>>>>>>> intercepter
 	}
 	
 	

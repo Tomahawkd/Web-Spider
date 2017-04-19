@@ -95,7 +95,7 @@ class NewFile extends JFileChooser {
 						FileProcess process = new FileProcess(OperationType.NEW);
 						process.setVisible(true);
 					}
-				}).start();
+				}, "CreatingFileThread").start();
 						
 			} catch (FileNameInvalidException e) {
 				//Notify the user file name is not valid

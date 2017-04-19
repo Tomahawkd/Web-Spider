@@ -126,7 +126,7 @@ public class MainWindow {
 		 *  Panel3: Options
 		 */
 		
-		options = new OptionPanel(file);
+		options = new OptionPanel(file, intercepter);
 		tabbedPane.addTab("Options", null, options, "User Preference");
 		
 		
@@ -148,9 +148,11 @@ public class MainWindow {
 	 */
 	
 	public void updateUI() {
-		this.frmWebSpider.setTitle("Web Spider  " + file.getTargetFilePath());
+		this.frmWebSpider.setTitle(file.getTargetFilePath().equals("") ? 
+				"Web Spider - " + file.getTargetFilePath() : "Web Spider");
 		this.spider.updateData();
 		this.options.updateData();
 		this.siteMap.updateData();
+		this.intercepter.updateData();
 	}
 }

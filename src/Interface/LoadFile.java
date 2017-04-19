@@ -97,7 +97,7 @@ class LoadFile extends JFileChooser {
 						FileProcess process = new FileProcess(OperationType.LOAD);
 						process.setVisible(true);
 					}
-				}).start();
+				}, "LoadingThread").start();
 				
 				//Refresh data in GUI
 				window.updateUI();

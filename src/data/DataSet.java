@@ -19,6 +19,15 @@ public class DataSet implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
+<<<<<<< HEAD
+=======
+	 * {@link IntercepterOption}
+	 */
+	
+	private IntercepterOption intercepterOption;
+	
+	/**
+>>>>>>> intercepter
 	 * {@link SpiderData}
 	 */
 	
@@ -30,12 +39,13 @@ public class DataSet implements Serializable {
 	
 	private SpiderOption spiderOption;
 	
-	
 	/**
 	 * {@link SpiderIndex}
 	 */
 	
 	private SpiderIndex spiderIndex;
+	
+	private IntercepterData intercepterData;
 	
 	/**
 	 * URL counter in queue to access content.
@@ -61,6 +71,11 @@ public class DataSet implements Serializable {
 	
 	
 	public DataSet() {
+<<<<<<< HEAD
+=======
+		intercepterOption = new IntercepterOption();
+		intercepterData = new IntercepterData();
+>>>>>>> intercepter
 		spiderData = new SpiderData();
 		spiderOption = new SpiderOption();
 		spiderIndex = new SpiderIndex("");
@@ -69,6 +84,37 @@ public class DataSet implements Serializable {
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	 * Get user's intercepter preference
+	 * 
+	 * @see {@link IntercepterOpiton}
+	 * 
+	 * @return Intercepter option
+	 * 
+	 * @author Tomahawkd
+	 */
+
+	public IntercepterOption getIntercepterOption() {
+		return intercepterOption;
+	}
+	
+	/**
+	 * Get user's intercepter data
+	 * 
+	 * @see {@link IntercepterData}
+	 * 
+	 * @return Intercepter data
+	 * 
+	 * @author Tomahawkd
+	 */
+
+	public IntercepterData getIntercepterData() {
+		return intercepterData;
+	}
+
+	/**
+>>>>>>> intercepter
 	 * Get spider data
 	 * 
 	 * @see {@link SpiderData}

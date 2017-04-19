@@ -119,8 +119,8 @@ class SpiderConnection {
 			}
 			
 			//Format the header
-			if(!headerStr.endsWith("\n")) {
-				headerStr += "\n";
+			if(!headerStr.endsWith("\r\n")) {
+				headerStr += "\r\n";
 			}
 		}
 		
@@ -135,14 +135,14 @@ class SpiderConnection {
 			}
 			
 			//Format the header
-			if(!headerStr.endsWith("\n")) {
-				headerStr += "\n";
+			if(!headerStr.endsWith("\r\n")) {
+				headerStr += "\r\n";
 			}
 		}
 		
 		//Format the header
-		if(!headerStr.endsWith("\n\n")) {
-			headerStr += "\n";
+		if(!headerStr.endsWith("\r\n\r\n")) {
+			headerStr += "\r\n";
 		}
 		return headerStr;
 	}
