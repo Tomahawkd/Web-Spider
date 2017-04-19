@@ -42,6 +42,10 @@ public class DataSet implements Serializable {
 	
 	private SpiderIndex spiderIndex;
 	
+	/**
+	 * {@link IntercepterData}
+	 */
+	
 	private IntercepterData intercepterData;
 	
 	/**
