@@ -162,5 +162,6 @@ public class MainWindow {
 		this.spider.updateData();
 		this.options.updateData();
 		this.siteMap.updateData();
+		this.intercepter.updateData();
 	}
 }

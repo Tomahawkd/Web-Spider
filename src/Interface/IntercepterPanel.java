@@ -1,18 +1,15 @@
 package Interface;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JToggleButton;
+import javax.swing.ListSelectionModel;
 
 import data.FileIO;
-import intercepter.Server;
+import intercepter.Intercepter;
 import javax.swing.JScrollPane;
+import javax.swing.JList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 /**
  * Interface: Intercepter panel
@@ -27,12 +24,8 @@ public class IntercepterPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private FileIO file;
-	private Server intercepter;
-	private JLabel lblError;
-	private JToggleButton tglbtnIntercept;
-	private JButton btnForward;
-	private JLabel lblHost;
-	private JTextArea textAreaRequest;
+	private Intercepter intercepter;
+	private JList<String> list;
 
 	/**
 	 * Contains intercepter component.
@@ -53,160 +46,67 @@ public class IntercepterPanel extends JPanel {
 		setLayout(null);
 
 		/*
-		 * Label
-		 */
-
-		JLabel lblHost_InterceptLab = new JLabel("Host:");
-		lblHost_InterceptLab.setBounds(6, 28, 61, 16);
-		add(lblHost_InterceptLab);
-
-		lblHost = new JLabel("");
-		lblHost.setBounds(79, 28, 421, 16);
-		add(lblHost);
-
-		JLabel lblTip = new JLabel("Port Invalid");
-		lblTip.setBounds(463, 20, 71, 16);
-		add(lblTip);
-		lblTip.setVisible(false);
-
-		lblError = new JLabel("Unconfirmed Error");
-		lblError.setBounds(417, 51, 117, 16);
-		add(lblError);
-		lblError.setVisible(false);
-
-		/*
 		 * Intercepted request container
 		 */
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 87, 657, 305);
+		scrollPane.setBounds(6, 6, 657, 386);
 		add(scrollPane);
 
-		textAreaRequest = new JTextArea();
-		scrollPane.setViewportView(textAreaRequest);
+		list = new JList<String>();
+		list.setModel(file.getDataSet().getIntercepterData().getModel());
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					if (list.getSelectedIndex() != -1) {
+						try {
+							InterceptInformation info = new InterceptInformation(
+									file.getDataSet().getIntercepterData().getURL(list.getSelectedIndex()), 
+									file.getDataSet().getIntercepterData().getRequest(list.getSelectedIndex()), 
+									file.getDataSet().getIntercepterData().getResponse(list.getSelectedIndex()));
+							info.setVisible(true);
+						} catch (IndexOutOfBoundsException e1) {
+						}
+					}
+				}
+			}
+		});
+		scrollPane.setViewportView(list);
 
 		/*
 		 * Intercepter
 		 */
 
-		intercepter = new Server(file, this);
-		new Thread(new Runnable() {
-			public void run() {
-
-				try {
-					intercepter.start();
-					while (true) {
-						try {
-							intercepter.action();
-						} catch (IOException e) {
-							lblError.setVisible(true);
-							e.printStackTrace();
-						}
-					}
-				} catch (IOException e) {
-					AdressInUse dialog = new AdressInUse();
-					dialog.setVisible(true);
-				}
-			}
-		}, "IntercepterMainThread").start();
-
-		/*
-		 * Buttons
-		 */
-
-		tglbtnIntercept = new JToggleButton("Intercept Off");
-		tglbtnIntercept.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				if (tglbtnIntercept.getText().equals("Intercept Off")) {
-					tglbtnIntercept.setText("Intercept On");
-					intercepter.resume();
-				} else {
-					tglbtnIntercept.setText("Intercept Off");
-					intercepter.stop();
-					new Thread(new Runnable() {
-						public void run() {
-							try {
-								intercepter.sendAll();
-							} catch (IOException e1) {
-								lblError.setVisible(true);
-								e1.printStackTrace();
-							}
-						}
-					}, "SendAllRequestThread").start();
-					lblHost.setText("");
-					textAreaRequest.setText("");
-				}
-			}
-		});
-		tglbtnIntercept.setBounds(546, 15, 117, 29);
-		add(tglbtnIntercept);
-
-		btnForward = new JButton("Forward");
-		btnForward.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (tglbtnIntercept.getText().equals("Intercept On")) {
-					try {
-						if (intercepter.current() != null) {
-							intercepter.current().getData().setRequest(textAreaRequest.getText());
-							new Thread(new Runnable() {
-								public void run() {
-									try {
-										intercepter.response(intercepter.current());
-									} catch (IOException e1) {
-										lblError.setVisible(true);
-										e1.printStackTrace();
-									}
-								}
-							}, "ForwardThread").start();
-							if (intercepter.next() != null) {
-								lblHost.setText(intercepter.current().getData().getURLString());
-								textAreaRequest.setText(intercepter.current().getData().getRequest());
-							} else {
-								lblHost.setText("");
-								textAreaRequest.setText("");
-							}
-						}
-					} catch (NullPointerException e1) {
-						lblHost.setText("");
-						textAreaRequest.setText("");
-					}
-				}
-			}
-		});
-		btnForward.setBounds(546, 46, 117, 29);
-		add(btnForward);
+		try {
+			startServer();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 	}
 
 	public void updateData() {
-		lblHost.setText(intercepter.current().getData().getURLString());
-		textAreaRequest.setText(intercepter.current().getData().getRequest());
+		list.setModel(file.getDataSet().getIntercepterData().getModel());
 	}
 
 	/**
 	 * Restart server to refresh to the new port.
 	 * 
 	 * @author Tomahawkd
+	 * @throws IOException
 	 */
 
-	void restartServer() {
+	void startServer() throws IOException {
 
-		intercepter = new Server(file, this);
+		intercepter = new Intercepter(file);
 
 		new Thread(new Runnable() {
 			public void run() {
-
 				try {
 					intercepter.start();
-					while (true) {
-						try {
-							intercepter.action();
-						} catch (IOException e) {
-							lblError.setVisible(true);
-							e.printStackTrace();
-						}
-					}
 				} catch (IOException e) {
 					AdressInUse dialog = new AdressInUse();
 					dialog.setVisible(true);

@@ -201,4 +201,12 @@ public class InterceptData {
 		this.response = response;
 	}
 
+	String getResponseText() {
+		String responseText = "";
+
+		responseText = new String(response);
+
+		return responseText;
+	}
+
 }

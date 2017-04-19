@@ -2,6 +2,7 @@ package Interface;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -98,6 +99,11 @@ class OptionPanel extends JPanel {
 		JLabel labelTip = new JLabel("Only Localhost Support");
 		labelTip.setBounds(61, 187, 172, 16);
 		add(labelTip);
+		
+		JLabel lblServerStartingFailed = new JLabel("Server Starting Failed");
+		lblServerStartingFailed.setBounds(264, 253, 132, 16);
+		add(lblServerStartingFailed);
+		lblServerStartingFailed.setVisible(false);
 		
 		
 		/*
@@ -211,7 +217,11 @@ class OptionPanel extends JPanel {
 		JButton btnRestartServer = new JButton("Restart Server");
 		btnRestartServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				intercept.restartServer();
+				try {
+					intercept.startServer();
+				} catch (IOException e1) {
+					lblServerStartingFailed.setVisible(true);
+				}
 			}
 		});
 		btnRestartServer.setBounds(135, 248, 117, 29);

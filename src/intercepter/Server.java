@@ -3,7 +3,6 @@ package intercepter;
 import java.io.*;
 import java.net.*;
 
-import Interface.IntercepterPanel;
 import data.FileIO;
 
 /**
@@ -12,49 +11,31 @@ import data.FileIO;
  * @author Tomahawkd
  */
 
-public class Server {
-	private Socket socket = null;
+public class Server implements Runnable {
+
 	private ServerSocket server;
 	private FileIO file;
-	private IntercepterPanel panel;
 
-	private Backend backend;
-	private Backend head;
-	private boolean isOn;
-
-	public Server(FileIO file, IntercepterPanel panel) {
+	public Server(ServerSocket server, FileIO file) {
+		this.server = server;
 		this.file = file;
-		this.panel = panel;
-		isOn = false;
 	}
 
-	
-	/**
-	 * Initialize proxy server
-	 * 
-	 * @throws IOException throws when opening the socket
-	 * 
-	 * @author Tomahawkd
-	 */
-	
-	public void start() throws IOException {
-		server = new ServerSocket(file.getDataSet().getIntercepterOption().getPort());
-		isOn = false;
-	}
+	@Override
+	public void run() {
+		try {
+			action();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-	public void stop() {
-		isOn = false;
-	}
-
-	public void resume() {
-		isOn = true;
 	}
 
 	public void action() throws IOException {
 
-		socket = server.accept();
+		Socket socket = server.accept();
 
-		if (this.socket == null) {
+		if (socket == null) {
 			return;
 		}
 
@@ -62,7 +43,7 @@ public class Server {
 		InterceptData data = new InterceptData();
 
 		// Get request from client
-		InputStream in = this.socket.getInputStream();
+		InputStream in = socket.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
 		String request = "";
@@ -79,7 +60,8 @@ public class Server {
 				if (line.startsWith("Content-Length: ")) {
 					try {
 						length = Integer.parseInt(line.split(": ")[1]);
-					} catch (NumberFormatException e) {}
+					} catch (NumberFormatException e) {
+					}
 				}
 			} else {
 				break;
@@ -87,7 +69,7 @@ public class Server {
 
 		}
 
-		//Get POST method request body
+		// Get POST method request body
 		if (length != 0) {
 
 			char[] buffer = new char[length];
@@ -96,59 +78,31 @@ public class Server {
 
 			body += new String(buffer);
 		}
-		
+
 		br.close();
-		
+
 		// Ignore empty request
 		if (!request.equals("")) {
-			
-			//Add request body to the request
+
+			// Add request body to the request
 			request += body;
 
 			// Set request to data
 			data.setRequest(request);
 
-			// Intercepter is on
-			if (isOn) {
-
-				// Create chain for intercept queue
-				if (head == null) {
-					head = new Backend(data);
-					backend = head;
-					panel.updateData();
-				} else {
-					backend.addNext(new Backend(data));
-					backend = backend.next();
-				}
-
-				// Intercepter is off
-			} else {
-				response(new Backend(data));
-			}
+			// Get response
+			response(new Backend(data));
 		}
 
-	}
-
-	public Backend current() {
-		return head;
-	}
-
-	public Backend next() {
-		if (head.next() != null) {
-			head = head.next();
-		} else {
-			head = null;
-		}
-		return head;
 	}
 
 	public void response(Backend backend) throws IOException {
 
 		backend.getResponse();
-		
-		socket = server.accept();
 
-		if (this.socket == null) {
+		Socket socket = server.accept();
+
+		if (socket == null) {
 			return;
 		}
 
@@ -157,13 +111,11 @@ public class Server {
 		out.write(backend.getData().getResponse());
 		out.flush();
 		out.close();
-	}
 
-	public void sendAll() throws IOException {
-		while (head != null) {
-			response(head);
-			head = head.next();
-		}
+		file.getDataSet().getIntercepterData().setNewData(
+				backend.getData().getURLString(), 
+				backend.getData().getRequest(), 
+				backend.getData().getResponseText());
 	}
 
 }
