@@ -28,6 +28,15 @@ public class Server {
 		isOn = false;
 	}
 
+	
+	/**
+	 * Initialize proxy server
+	 * 
+	 * @throws IOException throws when opening the socket
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	public void start() throws IOException {
 		server = new ServerSocket(file.getDataSet().getIntercepterOption().getPort());
 		isOn = false;
@@ -57,21 +66,20 @@ public class Server {
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
 		String request = "";
+		String body = "\r\n";
 		String line;
 		int lineCount = 0;
-		String contentLength = "";
-		String method = "GET";
+		int length = 0;
 
 		while ((line = br.readLine()) != null) {
 
 			if (lineCount == 0 || line.contains(": ")) {
 				request += (line + "\r\n");
 				lineCount++;
-				if (!line.contains(": ")) {
-					method = line.split(" ")[0];
-				}
 				if (line.startsWith("Content-Length: ")) {
-					contentLength = line.split(": ")[1];
+					try {
+						length = Integer.parseInt(line.split(": ")[1]);
+					} catch (NumberFormatException e) {}
 				}
 			} else {
 				break;
@@ -79,18 +87,23 @@ public class Server {
 
 		}
 
-		if (method.equals("POST")) {
-			int length = Integer.valueOf(contentLength);
-			byte[] buffer = new byte[length];
-			in.read(buffer, 0, length);
-			data.setRequestBody(new String(buffer, 0, buffer.length));
-			System.out.println(new String(buffer, 0, buffer.length));
+		//Get POST method request body
+		if (length != 0) {
+
+			char[] buffer = new char[length];
+
+			br.read(buffer);
+
+			body += new String(buffer);
 		}
-
+		
 		br.close();
-
+		
 		// Ignore empty request
 		if (!request.equals("")) {
+			
+			//Add request body to the request
+			request += body;
 
 			// Set request to data
 			data.setRequest(request);
@@ -131,9 +144,9 @@ public class Server {
 
 	public void response(Backend backend) throws IOException {
 
-		socket = server.accept();
-
 		backend.getResponse();
+		
+		socket = server.accept();
 
 		if (this.socket == null) {
 			return;

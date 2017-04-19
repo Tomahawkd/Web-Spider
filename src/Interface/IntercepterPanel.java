@@ -146,29 +146,31 @@ public class IntercepterPanel extends JPanel {
 		btnForward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (tglbtnIntercept.getText().equals("Intercept On")) {
-					new Thread(new Runnable() {
-						public void run() {
-							try {
-								if (intercepter.current() != null) {
-									intercepter.current().getData().setRequest(textAreaRequest.getText());
-									if (intercepter.next() != null) {
-										lblHost.setText(intercepter.current().getData().getURLString());
-										textAreaRequest.setText(intercepter.current().getData().getRequest());
-									} else {
-										lblHost.setText("");
-										textAreaRequest.setText("");
+					try {
+						if (intercepter.current() != null) {
+							intercepter.current().getData().setRequest(textAreaRequest.getText());
+							new Thread(new Runnable() {
+								public void run() {
+									try {
+										intercepter.response(intercepter.current());
+									} catch (IOException e1) {
+										lblError.setVisible(true);
+										e1.printStackTrace();
 									}
-									intercepter.response(intercepter.current());
 								}
-							} catch (IOException e1) {
-								lblError.setVisible(true);
-								e1.printStackTrace();
-							} catch (NullPointerException e1) {
+							}, "ForwardThread").start();
+							if (intercepter.next() != null) {
+								lblHost.setText(intercepter.current().getData().getURLString());
+								textAreaRequest.setText(intercepter.current().getData().getRequest());
+							} else {
 								lblHost.setText("");
 								textAreaRequest.setText("");
 							}
 						}
-					}, "ForwardThread").start();
+					} catch (NullPointerException e1) {
+						lblHost.setText("");
+						textAreaRequest.setText("");
+					}
 				}
 			}
 		});
@@ -181,7 +183,7 @@ public class IntercepterPanel extends JPanel {
 		lblHost.setText(intercepter.current().getData().getURLString());
 		textAreaRequest.setText(intercepter.current().getData().getRequest());
 	}
-	
+
 	/**
 	 * Restart server to refresh to the new port.
 	 * 
