@@ -35,8 +35,10 @@ class Server implements Runnable {
 	
 	
 	
-	Server(ServerSocket server, FileIO file) {
-		this.server = server;
+	Server(FileIO file) throws IOException {
+		
+		server = new ServerSocket(file.getDataSet().getIntercepterOption().getPort());
+		
 		this.file = file;
 	}
 

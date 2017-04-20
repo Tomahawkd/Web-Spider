@@ -108,6 +108,10 @@ public class DataSet implements Serializable {
 	public IntercepterData getIntercepterData() {
 		return intercepterData;
 	}
+	
+	public void refreshIntercepterData() {
+		intercepterData = new IntercepterData();
+	}
 
 	/**
 	 * Get spider data

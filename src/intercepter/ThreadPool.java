@@ -9,7 +9,7 @@ import java.util.LinkedList;
  * @author Ghost
  */
 
-public class ThreadPool extends ThreadGroup {
+class ThreadPool extends ThreadGroup {
 
 	/**
 	 * Indicate the thread pool is closed
@@ -45,7 +45,7 @@ public class ThreadPool extends ThreadGroup {
 	 *            The size of working thread
 	 */
 
-	public ThreadPool(int poolSize) {
+	ThreadPool(int poolSize) {
 		super("ThreadPool-" + (threadPoolID++));
 		setDaemon(true);
 		workQueue = new LinkedList<Runnable>();
@@ -61,7 +61,7 @@ public class ThreadPool extends ThreadGroup {
 	 *            The runnable task
 	 */
 
-	public synchronized void execute(Runnable task) {
+	synchronized void execute(Runnable task) {
 
 		// Check if the thread pool is closed
 		if (isClosed) {
@@ -86,6 +86,22 @@ public class ThreadPool extends ThreadGroup {
 		return workQueue.removeFirst();
 	}
 
+	
+	/* 
+     * Close Thread pool
+     */  
+    synchronized void close() {  
+        if(!isClosed) {  
+            isClosed = true; 
+            
+            //Clear queue
+            workQueue.clear();
+            
+            //Interrupt thread
+            interrupt();
+        }  
+    } 
+	
 	/**
 	 * Stores Threads
 	 */
@@ -103,7 +119,6 @@ public class ThreadPool extends ThreadGroup {
 					// Get a new task
 					task = getTask();
 				} catch (InterruptedException e) {
-
 				}
 
 				// End the thread if the next task is null
@@ -113,7 +128,6 @@ public class ThreadPool extends ThreadGroup {
 				try {
 					task.run();
 				} catch (Throwable t) {
-					t.printStackTrace();
 				}
 			}
 		}

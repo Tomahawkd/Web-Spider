@@ -127,13 +127,7 @@ public class MainWindow {
 		 *  Panel3: Intercepter
 		 */
 		
-		try {
-			intercepter = new IntercepterPanel(file);
-		} catch (Exception e) {
-			Error frame = new Error();
-			frame.setVisible(true);
-			frmWebSpider.dispose();
-		}
+		intercepter = new IntercepterPanel(file);
 		tabbedPane.addTab("Intercepter", null, intercepter, "Intercepter Server");
 		
 		
@@ -141,7 +135,7 @@ public class MainWindow {
 		 *  Panel4: Options
 		 */
 		
-		options = new OptionPanel(file, intercepter);
+		options = new OptionPanel(file);
 		tabbedPane.addTab("Options", null, options, "User Preference");
 		
 		

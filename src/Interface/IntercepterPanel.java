@@ -10,6 +10,9 @@ import javax.swing.JList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import javax.swing.JToggleButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  * Interface: Intercepter panel
@@ -26,6 +29,7 @@ public class IntercepterPanel extends JPanel {
 	private FileIO file;
 	private Intercepter intercepter;
 	private JList<String> list;
+	private JToggleButton tglbtnServerStart;
 
 	/**
 	 * Contains intercepter component.
@@ -36,7 +40,7 @@ public class IntercepterPanel extends JPanel {
 	 * @throws IOException
 	 */
 
-	IntercepterPanel(FileIO file) throws IOException {
+	IntercepterPanel(FileIO file) {
 
 		// Initialization
 		this.file = file;
@@ -52,7 +56,7 @@ public class IntercepterPanel extends JPanel {
 		 */
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 6, 657, 386);
+		scrollPane.setBounds(6, 55, 657, 337);
 		add(scrollPane);
 
 		/*
@@ -87,10 +91,28 @@ public class IntercepterPanel extends JPanel {
 		scrollPane.setViewportView(list);
 
 		/*
-		 * Intercepter
+		 * Toggle button
 		 */
-		startServer();
-		
+
+		tglbtnServerStart = new JToggleButton("Server Start");
+		tglbtnServerStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (tglbtnServerStart.getText().equals("Server Start")) {
+					tglbtnServerStart.setText("Server Stop");
+					file.getDataSet().refreshIntercepterData();
+					startServer();
+				} else {
+					tglbtnServerStart.setText("Server Start");
+					if (intercepter != null) {
+						intercepter.stop();
+					}
+				}
+
+			}
+		});
+		tglbtnServerStart.setBounds(502, 14, 161, 29);
+		add(tglbtnServerStart);
+
 	}
 
 	public void updateData() {
@@ -104,21 +126,26 @@ public class IntercepterPanel extends JPanel {
 	 * @throws IOException
 	 */
 
-	void startServer() throws IOException {
+	private void startServer() {
 
-		intercepter = new Intercepter(file);
+		try {
+			intercepter = new Intercepter(file);
 
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					intercepter.start();
-				} catch (IOException e) {
-					AdressInUse dialog = new AdressInUse();
-					dialog.setVisible(true);
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+						intercepter.start();
+					} catch (IOException e) {
+						intercepter.stop();
+					}
 				}
-			}
-		}, "IntercepterMainThread").start();
+			}, "IntercepterMainThread").start();
 
+		} catch (IOException e) {
+			intercepter.stop();
+			AdressInUse dialog = new AdressInUse();
+			dialog.setVisible(true);
+			tglbtnServerStart.doClick();
+		}
 	}
-
 }

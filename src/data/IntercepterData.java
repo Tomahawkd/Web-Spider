@@ -70,7 +70,7 @@ public class IntercepterData implements Serializable {
 	 * @author Tomahawkd
 	 */
 	
-	public void add(String url, String request, String response) {
+	public synchronized void add(String url, String request, String response) {
 		Data newData = new Data(url, request, response);
 		data.add(newData);
 		model.addElement(url);
