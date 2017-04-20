@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 /**
- * Data: Store intercepter's cache data
+ * Intercepter: Store intercepter's cache data
  * 
  * @author Tomahawkd
  */
@@ -43,6 +43,12 @@ public class InterceptData {
 
 	private byte[] response;
 
+	
+	
+	
+	
+	
+	
 	InterceptData() {
 		this.url = "";
 		requestHeader = new LinkedHashMap<String, String>();
@@ -72,7 +78,7 @@ public class InterceptData {
 	 * @author Tomahawkd
 	 */
 
-	public String getURLString() {
+	String getURLString() {
 		return url;
 	}
 
@@ -84,7 +90,7 @@ public class InterceptData {
 	 * @author Tomahawkd
 	 */
 
-	public void setRequest(String request) {
+	void setRequest(String request) {
 
 		String url = "";
 
@@ -148,7 +154,7 @@ public class InterceptData {
 	 * @author Tomahawkd
 	 */
 
-	public String getRequest() {
+	String getRequest() {
 		String request = "";
 
 		for (Entry<String, String> mapping : requestHeader.entrySet()) {
@@ -201,6 +207,14 @@ public class InterceptData {
 		this.response = response;
 	}
 
+	/**
+	 * Get response in String
+	 * 
+	 * @return Response String
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	String getResponseText() {
 		String responseText = "";
 

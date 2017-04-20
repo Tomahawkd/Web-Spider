@@ -32,9 +32,11 @@ public class IntercepterPanel extends JPanel {
 	 * 
 	 * @param file
 	 *            file operation handler
+	 * 
+	 * @throws IOException
 	 */
 
-	IntercepterPanel(FileIO file) {
+	IntercepterPanel(FileIO file) throws IOException {
 
 		// Initialization
 		this.file = file;
@@ -53,20 +55,29 @@ public class IntercepterPanel extends JPanel {
 		scrollPane.setBounds(6, 6, 657, 386);
 		add(scrollPane);
 
+		/*
+		 * List
+		 */
+
 		list = new JList<String>();
 		list.setModel(file.getDataSet().getIntercepterData().getModel());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+
+				// Listen for double click
 				if (e.getClickCount() == 2) {
 					if (list.getSelectedIndex() != -1) {
 						try {
+
+							// Construct data panel
 							InterceptInformation info = new InterceptInformation(
-									file.getDataSet().getIntercepterData().getURL(list.getSelectedIndex()), 
-									file.getDataSet().getIntercepterData().getRequest(list.getSelectedIndex()), 
+									file.getDataSet().getIntercepterData().getURL(list.getSelectedIndex()),
+									file.getDataSet().getIntercepterData().getRequest(list.getSelectedIndex()),
 									file.getDataSet().getIntercepterData().getResponse(list.getSelectedIndex()));
 							info.setVisible(true);
+
 						} catch (IndexOutOfBoundsException e1) {
 						}
 					}
@@ -78,14 +89,8 @@ public class IntercepterPanel extends JPanel {
 		/*
 		 * Intercepter
 		 */
-
-		try {
-			startServer();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
+		startServer();
+		
 	}
 
 	public void updateData() {

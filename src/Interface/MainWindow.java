@@ -127,7 +127,13 @@ public class MainWindow {
 		 *  Panel3: Intercepter
 		 */
 		
-		intercepter = new IntercepterPanel(file);
+		try {
+			intercepter = new IntercepterPanel(file);
+		} catch (Exception e) {
+			Error frame = new Error();
+			frame.setVisible(true);
+			frmWebSpider.dispose();
+		}
 		tabbedPane.addTab("Intercepter", null, intercepter, "Intercepter Server");
 		
 		

@@ -13,7 +13,7 @@ import java.net.Socket;
  * @author Tomahawkd
  */
 
-public class Backend {
+class Backend {
 
 	
 	/**
@@ -82,7 +82,7 @@ public class Backend {
 	 * @return {@link InterceptData}
 	 */
 	
-	public InterceptData getData() {
+	InterceptData getData() {
 		return data;
 	}
 

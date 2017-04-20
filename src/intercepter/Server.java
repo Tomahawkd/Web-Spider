@@ -11,16 +11,38 @@ import data.FileIO;
  * @author Tomahawkd
  */
 
-public class Server implements Runnable {
+class Server implements Runnable {
 
+	/**
+	 * Server
+	 * 
+	 * @see {@link ServerSocket} 
+	 */
+	
 	private ServerSocket server;
+	
+	/**
+	 * File handler
+	 * 
+	 * @see {@link FileIO}
+	 */
+	
 	private FileIO file;
 
-	public Server(ServerSocket server, FileIO file) {
+	
+	
+	
+	
+	
+	
+	Server(ServerSocket server, FileIO file) {
 		this.server = server;
 		this.file = file;
 	}
 
+	
+	
+	
 	@Override
 	public void run() {
 		try {
@@ -30,8 +52,19 @@ public class Server implements Runnable {
 		}
 
 	}
+	
+	
+	
 
-	public void action() throws IOException {
+	/**
+	 * Listen for request
+	 * 
+	 * @throws IOException
+	 * 
+	 * @author Tomahawkd
+	 */
+	
+	private void action() throws IOException {
 
 		Socket socket = server.accept();
 
@@ -46,22 +79,28 @@ public class Server implements Runnable {
 		InputStream in = socket.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
+		//Request
 		String request = "";
 		String body = "\r\n";
+		
+		//Buffered reader staff
 		String line;
 		int lineCount = 0;
+		
+		//Body Length
 		int length = 0;
 
+		//Read header
 		while ((line = br.readLine()) != null) {
-
 			if (lineCount == 0 || line.contains(": ")) {
 				request += (line + "\r\n");
 				lineCount++;
+				
+				//Get body length
 				if (line.startsWith("Content-Length: ")) {
 					try {
 						length = Integer.parseInt(line.split(": ")[1]);
-					} catch (NumberFormatException e) {
-					}
+					} catch (NumberFormatException e) {}
 				}
 			} else {
 				break;
@@ -96,10 +135,24 @@ public class Server implements Runnable {
 
 	}
 
-	public void response(Backend backend) throws IOException {
+	
+	/**
+	 * Get response and save data
+	 * 
+	 * @param backend request sender
+	 * 
+	 * @throws IOException
+	 * 
+	 * @author Tomahawkd
+	 */
+	
+	private void response(Backend backend) throws IOException {
 
+		//Get response from the server
 		backend.getResponse();
 
+		
+		//Accept request
 		Socket socket = server.accept();
 
 		if (socket == null) {
@@ -112,7 +165,9 @@ public class Server implements Runnable {
 		out.flush();
 		out.close();
 
-		file.getDataSet().getIntercepterData().setNewData(
+		
+		//Save data
+		file.getDataSet().getIntercepterData().add(
 				backend.getData().getURLString(), 
 				backend.getData().getRequest(), 
 				backend.getData().getResponseText());

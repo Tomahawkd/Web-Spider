@@ -8,7 +8,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
-public class InterceptInformation extends JFrame {
+/**
+ * Interface: Display the request and response data
+ * 
+ * @author Tomahawkd
+ */
+
+class InterceptInformation extends JFrame {
 
 	/**
 	 * 
@@ -19,8 +25,12 @@ public class InterceptInformation extends JFrame {
 	/*
 	 * Create the frame.
 	 */
-	public InterceptInformation(String url, String request, String response) {
+	
+	InterceptInformation(String url, String request, String response) {
 		
+		/*
+		 * Self configuration
+		 */
 		
 		setTitle(url);
 		setBounds(100, 100, 800, 500);
@@ -32,21 +42,55 @@ public class InterceptInformation extends JFrame {
 			}
 		});
 		
+		/*
+		 * TabbedPane
+		 */
+		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		getContentPane().add(tabbedPane);
+		
+		
+		/*
+		 * Request Panel
+		 */
+		
+		
+		/*
+		 * Scroll pane 		 
+		 */
 		
 		JScrollPane requestPanel = new JScrollPane();
 		tabbedPane.addTab("Request", null, requestPanel, null);
 		tabbedPane.setEnabledAt(0, true);
+		
+		
+		/*
+		 * Text pane
+		 */
 		
 		JTextPane requestTextPane = new JTextPane();
 		requestTextPane.setEditable(false);
 		requestTextPane.setText(request);
 		requestPanel.setViewportView(requestTextPane);
 		
+		
+		/*
+		 * Response Panel
+		 */
+		
+		
+		/*
+		 * Scroll pane 		 
+		 */
+		
 		JScrollPane responsePanel = new JScrollPane();
 		tabbedPane.addTab("Response", null, responsePanel, null);
 		tabbedPane.setEnabledAt(1, true);
+		
+		
+		/*
+		 * Text pane
+		 */
 		
 		JTextPane responseTextPane = new JTextPane();
 		responseTextPane.setEditable(false);

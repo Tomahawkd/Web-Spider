@@ -2,6 +2,13 @@ package intercepter;
 
 import java.util.LinkedList;
 
+
+/**
+ * Intercepter: Intercepter Thread Pool
+ * 
+ * @author Ghost
+ */
+
 public class ThreadPool extends ThreadGroup {
 
 	/**
@@ -28,6 +35,9 @@ public class ThreadPool extends ThreadGroup {
 
 	private int threadID;
 
+	
+	
+	
 	/**
 	 * Create a new Thread pool
 	 * 
@@ -76,6 +86,10 @@ public class ThreadPool extends ThreadGroup {
 		return workQueue.removeFirst();
 	}
 
+	/**
+	 * Stores Threads
+	 */
+	
 	private class WorkThread extends Thread {
 		public WorkThread() {
 			super(ThreadPool.this, "WorkThread-" + (threadID++));
