@@ -105,6 +105,8 @@ public class SpiderData implements Serializable {
 				currentNode.add(newChild);
 				currentNode = newChild;
 			} else {
+				
+				//Get child node
 				currentNode = (SpiderNode) currentNode.getChildAt(childIndex);
 			}
 		}

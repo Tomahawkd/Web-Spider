@@ -55,6 +55,7 @@ public class Intercepter {
 				proxy.rejectSaveData();
 			}
 			
+			//Create thread
 			threadPool.execute(proxy);
 			threadCount++;
 		}

@@ -30,7 +30,17 @@ class Server implements Runnable {
 	
 	private FileIO file;
 
+	
+	/**
+	 * Intercepter panel to update data
+	 */
+	
 	private IntercepterPanel panel;
+	
+	
+	/**
+	 * Flag
+	 */
 	
 	private boolean save;
 	

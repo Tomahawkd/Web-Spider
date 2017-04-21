@@ -24,17 +24,9 @@ class Backend {
 	
 	private InterceptData data;
 	
-	
-	/**
-	 * The next backend session
-	 */
-	
-	private Backend next;
 
-	
-	
-	
-	
+
+		
 	
 	
 	
@@ -42,37 +34,6 @@ class Backend {
 	
 	Backend(InterceptData data) {
 		this.data = data;
-		next = null;
-	}
-
-	
-	/**
-	 * Set the next backend session
-	 * 
-	 * @param next backend session
-	 * 
-	 * @author Tomahawkd
-	 */
-	
-	void addNext(Backend next) {
-		this.next = next;
-	}
-	
-	
-	/**
-	 * Get the next backend session
-	 * 
-	 * @return next backend session
-	 * 
-	 * @author Tomahawkd
-	 */
-	
-	Backend next() {
-		if(next == null) {
-			return null;
-		} else {
-			return next;
-		}
 	}
 	
 	
@@ -125,15 +86,11 @@ class Backend {
 			socket.connect(new InetSocketAddress(host, port), 60000);
 			
 			
-			/*
-			 * Send HTTP request
-			 */
+			// Send HTTP request
 			out = socket.getOutputStream();
 			out.write(data.getRequest().getBytes());
 			
-			/*
-			 * Accept HTTP response
-			 */
+			// Accept HTTP response
 			in = socket.getInputStream();
 			ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
 			byte[] buffer = new byte[512];

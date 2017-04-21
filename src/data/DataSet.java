@@ -69,7 +69,9 @@ public class DataSet implements Serializable {
 	
 	
 	
-	
+	/**
+	 * Initialize data class
+	 */
 	
 	public DataSet() {
 		intercepterOption = new IntercepterOption();
