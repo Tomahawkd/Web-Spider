@@ -89,7 +89,7 @@ public class SpiderData implements Serializable {
 	 * @author Tomahawkd
 	 */
 	
-	public void add(String[] path, String data) {
+	public synchronized void add(String[] path, String data) {
 		
 		SpiderNode currentNode = root;
 		

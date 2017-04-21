@@ -129,7 +129,7 @@ public class IntercepterPanel extends JPanel {
 	private void startServer() {
 
 		try {
-			intercepter = new Intercepter(file);
+			intercepter = new Intercepter(file, this);
 
 			new Thread(new Runnable() {
 				public void run() {

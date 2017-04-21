@@ -3,6 +3,7 @@ package intercepter;
 import java.io.*;
 import java.net.*;
 
+import Interface.IntercepterPanel;
 import data.FileIO;
 
 /**
@@ -29,17 +30,21 @@ class Server implements Runnable {
 	
 	private FileIO file;
 
+	private IntercepterPanel panel;
+	
+	private boolean save;
 	
 	
 	
-	
-	
-	
-	Server(FileIO file) throws IOException {
+	Server(FileIO file, IntercepterPanel panel) throws IOException {
 		
 		server = new ServerSocket(file.getDataSet().getIntercepterOption().getPort());
 		
 		this.file = file;
+		
+		this.panel = panel;
+		
+		save = true;
 	}
 
 	
@@ -56,6 +61,11 @@ class Server implements Runnable {
 	}
 	
 	
+	
+	
+	void rejectSaveData() {
+		save = false;
+	}
 	
 
 	/**
@@ -169,10 +179,14 @@ class Server implements Runnable {
 
 		
 		//Save data
+		if(save) {
+		
 		file.getDataSet().getIntercepterData().add(
 				backend.getData().getURLString(), 
 				backend.getData().getRequest(), 
 				backend.getData().getResponseText());
+		
+		panel.updateData();
+		}
 	}
-
 }

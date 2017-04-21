@@ -421,7 +421,8 @@ public class SpiderRun {
 								data.add(path, content);
 							}
 						}	
-					} catch (IOException e) {}
+					} catch (IOException e) {
+					} catch (ClassCastException e) {}
 					
 						//insert URL into already accessed URLs map
 						result.addAccessedURL(mapping.getKey(), mapping.getValue());

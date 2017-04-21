@@ -1,6 +1,8 @@
 package intercepter;
 
 import java.io.IOException;
+
+import Interface.IntercepterPanel;
 import data.FileIO;
 
 
@@ -23,9 +25,12 @@ public class Intercepter {
 	
 	private ThreadPool threadPool;
 	
+	private IntercepterPanel panel;
 	
-	public Intercepter(FileIO file) throws IOException {
+	
+	public Intercepter(FileIO file, IntercepterPanel panel) throws IOException {
 		this.file = file;
+		this.panel = panel;
 		this.threadPool = new ThreadPool(3);
 	}
 
@@ -39,14 +44,28 @@ public class Intercepter {
 	
 	public void start() throws IOException {
 		
-		Server proxy = new Server(file);
+		Server proxy = new Server(file, panel);
 		
 		int threadCount = 0;
-		while (threadCount < 20) {
+		
+		while (true) {
+			
+			//Saving properties
+			if(threadCount > 25) {
+				proxy.rejectSaveData();
+			}
+			
 			threadPool.execute(proxy);
 			threadCount++;
 		}
 	}
+	
+	
+	/**
+	 * Stop Server
+	 * 
+	 * @author Tomahawkd
+	 */
 	
 	public void stop() {
 		threadPool.close();

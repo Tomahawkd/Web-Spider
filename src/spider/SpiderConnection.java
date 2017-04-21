@@ -23,9 +23,9 @@ class SpiderConnection {
 		
 	/**
 	 * Connection to get response headers.
+     * Cause Jsoup only support a few mount of <code>MINE</code> type, but I want to get all contents' response headers
 	 */
 	
-	// *Cause Jsoup only support a few mount of <code>MINE</code> type, but I want to get all contents' response headers
 	private HttpURLConnection connection;
 	
 	/**
@@ -55,7 +55,7 @@ class SpiderConnection {
 	 * @author Tomahawkd
 	 */
 	
-	void setUrl(String url) throws IOException {
+	void setUrl(String url) throws IOException, ClassCastException {
 		try {
 			
 			//Set URL

@@ -142,6 +142,9 @@ public class FileIO {
 		
 		//Already has the target file to save
 		target = true;
+		
+		//New dataSet
+		this.data = new DataSet();
 	}
 	
 	/**
