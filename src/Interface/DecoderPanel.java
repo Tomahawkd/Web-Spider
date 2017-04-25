@@ -82,7 +82,7 @@ class DecoderPanel extends JPanel {
 				try{
 					String base64 = textAreaSourse.getText();
 					textAreaResult.setText(Decoder.getFromBASE64(base64));
-				} catch (Exception ex){
+				} catch (IllegalArgumentException ex){
 					textAreaResult.setText("Decode failed");
 				}
 			}

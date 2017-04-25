@@ -42,7 +42,7 @@ class Error extends JFrame {
 		
 		
 		/*
-		 * Component settings
+		 * Labels
 		 */
 		
 		JLabel lblException = new JLabel("Unconfirmed Exception");

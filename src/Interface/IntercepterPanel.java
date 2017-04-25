@@ -26,9 +26,35 @@ public class IntercepterPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * File operation handler
+	 * 
+	 * @see {@link FileIO}
+	 */
+
 	private FileIO file;
+
+	/**
+	 * Intercepter system
+	 * 
+	 * @see {@link IntercepterPanel}
+	 */
+
 	private Intercepter intercepter;
+
+	/**
+	 * Intercepter result list
+	 * 
+	 * @see {@link JList}
+	 */
+
 	private JList<String> list;
+
+	/**
+	 * Button controls server
+	 */
+
 	private JToggleButton tglbtnServerStart;
 
 	/**
@@ -97,11 +123,17 @@ public class IntercepterPanel extends JPanel {
 		tglbtnServerStart = new JToggleButton("Server Start");
 		tglbtnServerStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				// Start Server
 				if (tglbtnServerStart.getText().equals("Server Start")) {
+
 					tglbtnServerStart.setText("Server Stop");
 					file.getDataSet().refreshIntercepterData();
 					startServer();
+
+				// Stop Server
 				} else {
+
 					tglbtnServerStart.setText("Server Start");
 					if (intercepter != null) {
 						intercepter.stop();
@@ -115,15 +147,23 @@ public class IntercepterPanel extends JPanel {
 
 	}
 
+	/**
+	 * Update list data
+	 * 
+	 * @author Tomahawkd
+	 */
+	
 	public void updateData() {
 		list.setModel(file.getDataSet().getIntercepterData().getModel());
 	}
 
+	
 	/**
-	 * Restart server to refresh to the new port.
+	 * Start server.
+	 * 
+	 * @throws IOException
 	 * 
 	 * @author Tomahawkd
-	 * @throws IOException
 	 */
 
 	private void startServer() {
@@ -142,6 +182,8 @@ public class IntercepterPanel extends JPanel {
 			}, "IntercepterMainThread").start();
 
 		} catch (IOException e) {
+			//The server port is already in use.
+			
 			intercepter.stop();
 			AdressInUse dialog = new AdressInUse();
 			dialog.setVisible(true);

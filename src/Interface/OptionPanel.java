@@ -147,6 +147,7 @@ class OptionPanel extends JPanel {
 		btnNew.setBounds(6, 40, 117, 29);
 		add(btnNew);
 
+		
 		JButton btnEdit = new JButton("Edit");
 
 		// Request header editor
@@ -167,6 +168,7 @@ class OptionPanel extends JPanel {
 		btnEdit.setBounds(6, 70, 117, 29);
 		add(btnEdit);
 
+		
 		JButton btnDelete = new JButton("Delete");
 
 		// Delete request header
