@@ -106,7 +106,7 @@ public class FileIO {
 	public void createFile(boolean force) throws ExistFileException, FileNameInvalidException, IOException {
 		
 		//Add identifier if the user does not enter it.
-		if(!targetFilePath.contains(".sdf")) {
+		if(!targetFilePath.endsWith(".sdf")) {
 			targetFilePath += ".sdf";
 		}
 		
@@ -155,7 +155,7 @@ public class FileIO {
 	 * @throws IOException other exceptions.
 	 * @throws ClassNotFoundException the data does not match application's data class.
 	 * 
-	 * @author Tomahawkd
+	 * @author Tomahawkd and Yezipoiny
 	 */
 	
 	public void loadFile() throws FileNotFoundException, ClassCastException, IOException, ClassNotFoundException {
@@ -187,7 +187,7 @@ public class FileIO {
 	 * @throws FileNotFoundException throws if not force to cover and there exist the file.
 	 * @throws IOException other exceptions.
 	 * 
-	 * @author Tomahawkd
+	 * @author Tomahawkd and Yezipoiny
 	 */
 	
 	public void saveFile() throws FileNotFoundException, IOException {
@@ -216,13 +216,13 @@ public class FileIO {
 	 * @throws FileNameInvaildException the file name is not valid cause of the system restriction.
 	 * @throws IOException other exceptions.
 	 * 
-	 * @author Tomahawkd
+	 * @author Tomahawkd and Yezipoiny
 	 */
 	
 	public void saveAsFile(boolean force) throws ExistFileException, FileNameInvalidException, IOException {
 		
 		//Add identifier if the user does not enter it.
-		if(!targetFilePath.contains(".sdf")) {
+		if(!targetFilePath.endsWith(".sdf")) {
 			targetFilePath += ".sdf";
 		}
 		

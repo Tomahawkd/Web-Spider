@@ -97,7 +97,7 @@ public class InterceptData {
 		// Split into line
 		String[] requestSet = request.split("\r\n");
 
-		// First line is the method which not contains ": "
+		// First line is HTTP status which not contains ": "
 		boolean isFirst = true;
 
 		for (String line : requestSet) {

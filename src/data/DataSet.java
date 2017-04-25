@@ -17,62 +17,56 @@ public class DataSet implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * {@link IntercepterOption}
 	 */
-	
+
 	private IntercepterOption intercepterOption;
-	
+
 	/**
 	 * {@link SpiderData}
 	 */
-	
+
 	private SpiderData spiderData;
-	
+
 	/**
 	 * {@link SpiderOption}
 	 */
-	
+
 	private SpiderOption spiderOption;
-	
+
 	/**
 	 * {@link SpiderIndex}
 	 */
-	
+
 	private SpiderIndex spiderIndex;
-	
+
 	/**
 	 * {@link IntercepterData}
 	 */
-	
+
 	private IntercepterData intercepterData;
-	
+
 	/**
 	 * URL counter in queue to access content.
 	 */
-	
+
 	private int queueCounter;
-	
+
 	/**
 	 * Request counter has already sent.
 	 */
-	
+
 	private int requestCounter;
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	
 	/**
 	 * Initialize data class
 	 */
-	
+
 	public DataSet() {
 		intercepterOption = new IntercepterOption();
 		intercepterData = new IntercepterData();
@@ -96,7 +90,7 @@ public class DataSet implements Serializable {
 	public IntercepterOption getIntercepterOption() {
 		return intercepterOption;
 	}
-	
+
 	/**
 	 * Get user's intercepter data
 	 * 
@@ -110,6 +104,14 @@ public class DataSet implements Serializable {
 	public IntercepterData getIntercepterData() {
 		return intercepterData;
 	}
+
+	/**
+	 * Refresh the data after start the server
+	 * 
+	 * @see {@link intercepterData}
+	 * 
+	 * @author Tomahawkd
+	 */
 	
 	public void refreshIntercepterData() {
 		intercepterData = new IntercepterData();
@@ -138,11 +140,11 @@ public class DataSet implements Serializable {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	public SpiderOption getSpiderOption() {
 		return spiderOption;
 	}
-	
+
 	/**
 	 * Get spider queue
 	 * 
@@ -156,7 +158,7 @@ public class DataSet implements Serializable {
 	public SpiderIndex getSpiderIndex() {
 		return spiderIndex;
 	}
-	
+
 	/**
 	 * Set spider queue
 	 * 
@@ -166,7 +168,7 @@ public class DataSet implements Serializable {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	public void setSpiderIndex(SpiderIndex spiderIndex) {
 		this.spiderIndex = spiderIndex;
 	}
@@ -178,7 +180,7 @@ public class DataSet implements Serializable {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	public int getQueueCounter() {
 		return queueCounter;
 	}
@@ -190,7 +192,7 @@ public class DataSet implements Serializable {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	public void setQueueCounter(int queueCounter) {
 		this.queueCounter = queueCounter;
 	}
@@ -202,7 +204,7 @@ public class DataSet implements Serializable {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	public int getRequestCounter() {
 		return requestCounter;
 	}
@@ -214,10 +216,9 @@ public class DataSet implements Serializable {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	public void setRequestCounter(int requestCounter) {
 		this.requestCounter = requestCounter;
 	}
-	
-	
+
 }

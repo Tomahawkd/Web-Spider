@@ -55,10 +55,13 @@ class Backend {
 	 */
 	
 	void getResponse() {
+		
+		Socket socket = null;
 		OutputStream out = null;
 		InputStream in = null;
-		Socket socket = null;
 		try {
+			
+			//Get the server's host and port
 			String host = data.getURL().getHost();
 			int port = data.getURL().getPort() == -1 ? 80 : data.getURL().getPort();
 			
@@ -71,7 +74,7 @@ class Backend {
 			//Properties
 			socket.setTcpNoDelay(true);
 			socket.setReuseAddress(true);
-			socket.setSoTimeout(60000);
+			socket.setSoTimeout(30000);
 			socket.setSoLinger(true, 5);
 			socket.setSendBufferSize(1024);
 			socket.setReceiveBufferSize(1024);
@@ -83,8 +86,8 @@ class Backend {
 			/*
 			 * Connect to server
 			 */
-			socket.connect(new InetSocketAddress(host, port), 60000);
 			
+			socket.connect(new InetSocketAddress(host, port), 30000);
 			
 			// Send HTTP request
 			out = socket.getOutputStream();

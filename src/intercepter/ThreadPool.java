@@ -63,8 +63,9 @@ class ThreadPool extends ThreadGroup {
 
 		// Check if the thread pool is closed
 		if (isClosed) {
-			throw new IllegalStateException();
+			return;
 		}
+		
 		if (task != null) {
 			workQueue.add(task);
 			notify();

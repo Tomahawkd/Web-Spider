@@ -2,6 +2,12 @@ package decode;
 
 import java.util.Base64;
 
+/**
+ * Decoder
+ * 
+ * @author Tomahawkd
+ */
+
 public class Decoder {
 	
 	/**

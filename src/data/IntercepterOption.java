@@ -60,6 +60,8 @@ public class IntercepterOption implements Serializable {
 	 * 
 	 * @param port a port to listen and intercept
 	 * 
+	 * @throws NumberFormatException port is not in bound ( 0 < port < 65535 )
+	 * 
 	 * @author Tomahawkd
 	 */
 	

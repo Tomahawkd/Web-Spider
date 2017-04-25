@@ -104,6 +104,7 @@ public class SpiderData implements Serializable {
 				SpiderNode newChild = new SpiderNode(path[index], "");
 				currentNode.add(newChild);
 				currentNode = newChild;
+				
 			} else {
 				
 				//Get child node
@@ -163,6 +164,7 @@ public class SpiderData implements Serializable {
 		 * Check and return the child's index of parent node's children array.
 		 * 
 		 * @param name node's name
+		 * 
 		 * @return index the node in parent node's children array. return -1 if not exist.
 		 * 
 		 * @author Tomahawkd

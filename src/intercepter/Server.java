@@ -3,6 +3,8 @@ package intercepter;
 import java.io.*;
 import java.net.*;
 
+import javax.swing.JOptionPane;
+
 import Interface.IntercepterPanel;
 import data.FileIO;
 
@@ -15,15 +17,7 @@ import data.FileIO;
 class Server implements Runnable {
 
 	/**
-	 * Server
-	 * 
-	 * @see {@link ServerSocket}
-	 */
-
-	private ServerSocket server;
-
-	/**
-	 * Socket
+	 * Socket connection
 	 * 
 	 * @see {@link Socket}
 	 */
@@ -53,25 +47,22 @@ class Server implements Runnable {
 	
 	
 	
-	Server(FileIO file, IntercepterPanel panel) throws IOException {
+	Server(FileIO file, IntercepterPanel panel, Socket socket) throws IOException {
 
-		server = new ServerSocket(file.getDataSet().getIntercepterOption().getPort());
-
+		//Initialization
 		this.file = file;
-
 		this.panel = panel;
+		this.socket = socket;
 
+		
 		save = true;
+		
 	}
 
+	
 	@Override
 	public void run() {
-		try {
-			action();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		action();
 	}
 
 	
@@ -85,17 +76,6 @@ class Server implements Runnable {
 	}
 
 	/**
-	 * Accept the connection
-	 * 
-	 * @throws IOException
-	 * 
-	 */
-
-	void accept() throws IOException {
-		socket = server.accept();
-	}
-
-	/**
 	 * Listen for request
 	 * 
 	 * @throws IOException
@@ -103,73 +83,92 @@ class Server implements Runnable {
 	 * @author Tomahawkd
 	 */
 
-	private void action() throws IOException {
+	private void action() {
 
-		if (socket == null) {
-			return;
-		}
-
-		// Initialize data class for coming session
-		InterceptData data = new InterceptData();
-
-		// Get request from client
-		InputStream in = socket.getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-		// Request
-		String request = "";
-		String body = "\r\n";
-
-		// Buffered reader staff
-		String line;
-		int lineCount = 0;
-
-		// Body Length
-		int length = 0;
-
-		// Read header
-		while ((line = br.readLine()) != null) {
-			if (lineCount == 0 || line.contains(": ")) {
-				request += (line + "\r\n");
-				lineCount++;
-
-				// Get body length
-				if (line.startsWith("Content-Length: ")) {
-					try {
-						length = Integer.parseInt(line.split(": ")[1]);
-					} catch (NumberFormatException e) {
-					}
-				}
-			} else {
-				break;
+		try {
+			if (socket == null) {
+				return;
 			}
 
+			// Initialize data class for coming session
+			InterceptData data = new InterceptData();
+
+			// Get request from client
+			InputStream in = socket.getInputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+			// Request
+			String request = "";
+			String body = "\r\n";
+
+			// Buffered reader staff
+			String line;
+			int lineCount = 0;
+
+			// Body Length
+			int length = 0;
+
+			// Read header
+			while ((line = br.readLine()) != null) {
+				if (lineCount == 0 || line.contains(": ")) {
+					request += (line + "\r\n");
+					lineCount++;
+
+					// Get body length
+					if (line.startsWith("Content-Length: ")) {
+						try {
+							length = Integer.parseInt(line.split(": ")[1]);
+						} catch (NumberFormatException e) {
+						}
+					}
+				} else {
+					break;
+				}
+
+			}
+
+			// Get POST method request body
+			if (length != 0) {
+
+				char[] buffer = new char[length];
+
+				br.read(buffer);
+
+				body += new String(buffer);
+			}
+
+			// Ignore empty request
+			if (!request.equals("")) {
+
+				// Add request body to the request
+				request += body;
+
+				// Set request to data
+				data.setRequest(request);
+
+				// Get response
+				response(new Backend(data));
+			}
+			
+		} catch (IOException e) {
+			
+			//Notify the user after caught a IOException
+			JOptionPane.showMessageDialog(null, 
+					"Error occurs while running proxy server, please shutdown and contact the developer.", 
+					"Error", JOptionPane.ERROR_MESSAGE);
+			
+		} finally {
+			if(socket != null && socket.isConnected() && !socket.isClosed()) {
+				try {
+					
+					//Close socket
+					socket.close();
+					
+					//Ignore Exception
+				} catch (IOException e) {}
+			}
 		}
-
-		// Get POST method request body
-		if (length != 0) {
-
-			char[] buffer = new char[length];
-
-			br.read(buffer);
-
-			body += new String(buffer);
-		}
-
-		br.close();
-
-		// Ignore empty request
-		if (!request.equals("")) {
-
-			// Add request body to the request
-			request += body;
-
-			// Set request to data
-			data.setRequest(request);
-
-			// Get response
-			response(new Backend(data));
-		}
+		
 
 	}
 
@@ -189,9 +188,6 @@ class Server implements Runnable {
 		// Get response from the server
 		backend.getResponse();
 
-		// Accept request
-		socket = server.accept();
-
 		if (socket == null) {
 			return;
 		}
@@ -208,6 +204,7 @@ class Server implements Runnable {
 			file.getDataSet().getIntercepterData().add(backend.getData().getURLString(), backend.getData().getRequest(),
 					backend.getData().getResponseText());
 
+			//Update panel data
 			panel.updateData();
 		}
 	}
