@@ -2,7 +2,6 @@ package intercepter;
 
 import java.util.LinkedList;
 
-
 /**
  * Intercepter: Intercepter Thread Pool
  * 
@@ -35,9 +34,6 @@ class ThreadPool extends ThreadGroup {
 
 	private int threadID;
 
-	
-	
-	
 	/**
 	 * Create a new Thread pool
 	 * 
@@ -49,6 +45,8 @@ class ThreadPool extends ThreadGroup {
 		super("ThreadPool-" + (threadPoolID++));
 		setDaemon(true);
 		workQueue = new LinkedList<Runnable>();
+
+		// Initialize active thread
 		for (int i = 0; i < poolSize; i++) {
 			new WorkThread().start();
 		}
@@ -86,26 +84,26 @@ class ThreadPool extends ThreadGroup {
 		return workQueue.removeFirst();
 	}
 
-	
-	/* 
-     * Close Thread pool
-     */  
-    synchronized void close() {  
-        if(!isClosed) {  
-            isClosed = true; 
-            
-            //Clear queue
-            workQueue.clear();
-            
-            //Interrupt thread
-            interrupt();
-        }  
-    } 
-	
+	/**
+	 * Close Thread pool
+	 */
+
+	synchronized void close() {
+		if (!isClosed) {
+			isClosed = true;
+
+			// Clear queue
+			workQueue.clear();
+
+			// Interrupt thread
+			interrupt();
+		}
+	}
+
 	/**
 	 * Stores Threads
 	 */
-	
+
 	private class WorkThread extends Thread {
 		public WorkThread() {
 			super(ThreadPool.this, "WorkThread-" + (threadID++));

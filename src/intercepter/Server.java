@@ -17,49 +17,53 @@ class Server implements Runnable {
 	/**
 	 * Server
 	 * 
-	 * @see {@link ServerSocket} 
+	 * @see {@link ServerSocket}
 	 */
-	
+
 	private ServerSocket server;
-	
+
+	/**
+	 * Socket
+	 * 
+	 * @see {@link Socket}
+	 */
+
+	private Socket socket;
+
 	/**
 	 * File handler
 	 * 
 	 * @see {@link FileIO}
 	 */
-	
+
 	private FileIO file;
 
-	
 	/**
 	 * Intercepter panel to update data
 	 */
-	
+
 	private IntercepterPanel panel;
-	
-	
+
 	/**
-	 * Flag
+	 * Flag indicate the save-data operation
 	 */
-	
+
 	private boolean save;
+
 	
 	
 	
 	Server(FileIO file, IntercepterPanel panel) throws IOException {
-		
+
 		server = new ServerSocket(file.getDataSet().getIntercepterOption().getPort());
-		
+
 		this.file = file;
-		
+
 		this.panel = panel;
-		
+
 		save = true;
 	}
 
-	
-	
-	
 	@Override
 	public void run() {
 		try {
@@ -69,14 +73,27 @@ class Server implements Runnable {
 		}
 
 	}
+
 	
 	
-	
+	/**
+	 * Cache-only data flag
+	 */
 	
 	void rejectSaveData() {
 		save = false;
 	}
-	
+
+	/**
+	 * Accept the connection
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+
+	void accept() throws IOException {
+		socket = server.accept();
+	}
 
 	/**
 	 * Listen for request
@@ -85,10 +102,8 @@ class Server implements Runnable {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
-	private void action() throws IOException {
 
-		Socket socket = server.accept();
+	private void action() throws IOException {
 
 		if (socket == null) {
 			return;
@@ -101,28 +116,29 @@ class Server implements Runnable {
 		InputStream in = socket.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
-		//Request
+		// Request
 		String request = "";
 		String body = "\r\n";
-		
-		//Buffered reader staff
+
+		// Buffered reader staff
 		String line;
 		int lineCount = 0;
-		
-		//Body Length
+
+		// Body Length
 		int length = 0;
 
-		//Read header
+		// Read header
 		while ((line = br.readLine()) != null) {
 			if (lineCount == 0 || line.contains(": ")) {
 				request += (line + "\r\n");
 				lineCount++;
-				
-				//Get body length
+
+				// Get body length
 				if (line.startsWith("Content-Length: ")) {
 					try {
 						length = Integer.parseInt(line.split(": ")[1]);
-					} catch (NumberFormatException e) {}
+					} catch (NumberFormatException e) {
+					}
 				}
 			} else {
 				break;
@@ -157,25 +173,24 @@ class Server implements Runnable {
 
 	}
 
-	
 	/**
 	 * Get response and save data
 	 * 
-	 * @param backend request sender
+	 * @param backend
+	 *            request sender
 	 * 
 	 * @throws IOException
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	private void response(Backend backend) throws IOException {
 
-		//Get response from the server
+		// Get response from the server
 		backend.getResponse();
 
-		
-		//Accept request
-		Socket socket = server.accept();
+		// Accept request
+		socket = server.accept();
 
 		if (socket == null) {
 			return;
@@ -187,16 +202,13 @@ class Server implements Runnable {
 		out.flush();
 		out.close();
 
-		
-		//Save data
-		if(save) {
-		
-		file.getDataSet().getIntercepterData().add(
-				backend.getData().getURLString(), 
-				backend.getData().getRequest(), 
-				backend.getData().getResponseText());
-		
-		panel.updateData();
+		// Save data
+		if (save) {
+
+			file.getDataSet().getIntercepterData().add(backend.getData().getURLString(), backend.getData().getRequest(),
+					backend.getData().getResponseText());
+
+			panel.updateData();
 		}
 	}
 }
