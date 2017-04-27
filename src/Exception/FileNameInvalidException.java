@@ -16,6 +16,5 @@ public class FileNameInvalidException extends FileExceptions {
 	public FileNameInvalidException() {
 		super(ExceptionType.INVALID.getErrorMessage());
 	}
-	
-}
 
+}

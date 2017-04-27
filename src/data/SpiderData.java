@@ -21,32 +21,22 @@ public class SpiderData implements Serializable {
 	/**
 	 * Root nodes
 	 */
-	
+
 	private SpiderNode root;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	/**
-	 * Constructor using to initialize data class in <code>DataSet</code>> class.
+	 * Constructor using to initialize data class in <code>DataSet</code>>
+	 * class.
 	 * 
 	 * @see {@link DataSet}
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	public SpiderData() {
 		root = new SpiderNode("", "");
 	}
-	
+
 	/**
 	 * Get the root node.
 	 * 
@@ -56,15 +46,16 @@ public class SpiderData implements Serializable {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	public SpiderNode getRoot() {
 		return root;
 	}
-	
+
 	/**
 	 * Get the selected node data
 	 * 
-	 * @param node selected node
+	 * @param node
+	 *            selected node
 	 * 
 	 * @return Data in the node
 	 * 
@@ -74,45 +65,48 @@ public class SpiderData implements Serializable {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	public String getData(Object node) throws ClassCastException {
 		return ((SpiderNode) node).getData();
 	}
-	
+
 	/**
 	 * Add a new site node to the site map.
 	 * 
-	 * @param path A string array contains path sequence.
-	 * @param name The site node's name.
-	 * @param data THe site node's data.
+	 * @param path
+	 *            A string array contains path sequence.
+	 * @param name
+	 *            The site node's name.
+	 * @param data
+	 *            THe site node's data.
 	 * 
 	 * @author Tomahawkd
 	 */
-	
-	public synchronized void add(String[] path, String data) {
-		
+
+	public void add(String[] path, String data) {
+
 		SpiderNode currentNode = root;
-		
-		//Loop path array to locate the file 
-		for(int index = 0; index < path.length; index++) {
-			
-			//Check if the node is already exist
-			int childIndex = currentNode.isChildExist(path[index]);
+
+		// Loop path array to locate the file
+		for (int index = 0; index < path.length; index++) {
+
+			// Check if the node is already exist
+			int childIndex = currentNode.getChildIndex(path[index]);
 			if (childIndex == -1) {
-				
-				//Create new node
+
+				// Create new node
 				SpiderNode newChild = new SpiderNode(path[index], "");
 				currentNode.add(newChild);
 				currentNode = newChild;
-				
+
 			} else {
-				
-				//Get child node
+
+				// Get child node
 				currentNode = (SpiderNode) currentNode.getChildAt(childIndex);
 			}
 		}
-		
-		//Add data
+
+		// Add data
 		currentNode.data = data;
 	}
 
@@ -123,7 +117,7 @@ public class SpiderData implements Serializable {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	private class SpiderNode extends DefaultMutableTreeNode implements Serializable {
 
 		/**
@@ -132,16 +126,18 @@ public class SpiderData implements Serializable {
 		private static final long serialVersionUID = 1L;
 		private String name;
 		private String data;
-		
+
 		/**
 		 * Constructor
 		 * 
-		 * @param name node's name.
-		 * @param data node's data.
+		 * @param name
+		 *            node's name.
+		 * @param data
+		 *            node's data.
 		 * 
 		 * @author Tomahawkd
 		 */
-		
+
 		public SpiderNode(String name, String data) {
 			super(name);
 			this.name = name;
@@ -155,57 +151,58 @@ public class SpiderData implements Serializable {
 		 * 
 		 * @author Tomahawkd
 		 */
-		
+
 		String getData() {
 			return data;
 		}
-		
+
 		/**
 		 * Check and return the child's index of parent node's children array.
 		 * 
-		 * @param name node's name
+		 * @param name
+		 *            node's name
 		 * 
-		 * @return index the node in parent node's children array. return -1 if not exist.
+		 * @return index the node in parent node's children array. return -1 if
+		 *         not exist.
 		 * 
 		 * @author Tomahawkd
 		 */
-		
-		int isChildExist(String name) {
-			
-			//Initialize the index pointer
-			int exist = -1;
-			
+
+		int getChildIndex(String name) {
+
+			// Initialize the index pointer
+			int index = -1;
+
 			//
-			if(this.children != null) {
-				
-				//Point to the first child
-				exist = 0;
-				for(Object child : this.children) {
-					try{
-						
+			if (this.children != null) {
+
+				// Point to the first child
+				index = 0;
+				for (Object child : this.children) {
+					try {
+
 						SpiderNode childNode = (SpiderNode) child;
-						
-						//Check the child name
+
+						// Check the child name
 						if (childNode.name.equals(name)) {
 							break;
 						}
-						
-						//Point to next child
-						exist++;
-						
-					} catch(ClassCastException e) {}
+
+						// Point to next child
+						index++;
+
+					} catch (ClassCastException e) {
+					}
 				}
-				
-				//Out of index equal not exist
-				if(exist == this.children.size()) {
-					exist = -1;
+
+				// Out of index equal not exist
+				if (index == this.children.size()) {
+					index = -1;
 				}
 			}
-			return exist;
+			return index;
 		}
-		
-		
 
 	}
-	
+
 }

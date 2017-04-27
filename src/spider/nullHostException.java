@@ -16,6 +16,5 @@ public class nullHostException extends Exception {
 	public nullHostException() {
 		super("Host parameter is not correctly set.");
 	}
-		
-	
+
 }

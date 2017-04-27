@@ -15,7 +15,8 @@ import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 /**
- * Interface: Notify the user if tend to overwrite the file. (In create-file and save-as operation)
+ * Interface: Notify the user if tend to overwrite the file. (In create-file and
+ * save-as operation)
  * 
  * @author Tomahawkd
  */
@@ -28,109 +29,108 @@ class ExistFileTip extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
-
 	/**
-	 *  Notify the user if they want to overwrite when a file exist already.
+	 * Notify the user if they want to overwrite when a file exist already.
 	 * 
-	 * @param file file operation handler
-	 * @param type file operation type
+	 * @param file
+	 *            file operation handler
+	 * @param type
+	 *            file operation type
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	ExistFileTip(FileIO file, Operation type) {
-		
-		
+
 		/*
 		 * Self configuration
 		 */
-		
+
 		setBounds(100, 100, 450, 155);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		
+
 		/*
 		 * Label
 		 */
-		
+
 		JLabel lblTheFileIs = new JLabel("The file is exist, do you want to cover it?");
 		lblTheFileIs.setBounds(97, 33, 255, 16);
 		contentPane.add(lblTheFileIs);
-		
-		
+
 		/*
 		 * Buttons
 		 */
-		
+
 		JButton btnOk = new JButton("OK");
-		
-		//Confirm to overwrite to the selected file
+
+		// Confirm to overwrite to the selected file
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				//Judge operation type
-				switch(type) {
-				
-				//Overwrite without data (New file)
+
+				// Judge operation type
+				switch (type) {
+
+				// Overwrite without data (New file)
 				case NEW:
 					try {
-						
-						//File create operation
+
+						// File create operation
 						file.createFile(true);
-						
-						//Display the file creation process
+
+						// Display the file creation process
 						FileProcess process = new FileProcess(type.getOperationType());
 						process.setVisible(true);
-						
+
 					} catch (ExistFileException | FileNameInvalidException e1) {
-						//Logically the exception will never happens, ignore them
-						
+						// Logically the exception will never happens, ignore
+						// them
+
 					} catch (IOException e1) {
-						//Exception with file creation failure
-						
+						// Exception with file creation failure
+
 						FileFailure error = new FileFailure(ErrorType.CREAT);
 						error.setVisible(true);
 						dispose();
 					}
-				break;
-				
-				//Overwrite with data (Save file)
+					break;
+
+				// Overwrite with data (Save file)
 				case SAVE:
 					try {
-						
-						//File save-as operation
+
+						// File save-as operation
 						file.saveAsFile(true);
-						
-						//Display the file creation process
+
+						// Display the file creation process
 						FileProcess process = new FileProcess(type.getOperationType());
 						process.setVisible(true);
-						
+
 					} catch (ExistFileException | FileNameInvalidException e1) {
-						//Logically the exception will never happens, ignore them
-						
+						// Logically the exception will never happens, ignore
+						// them
+
 					} catch (IOException e1) {
-						//Exception with file creation failure
-						
+						// Exception with file creation failure
+
 						FileFailure error = new FileFailure(ErrorType.CREAT);
 						error.setVisible(true);
 						dispose();
 					}
-				break;
+					break;
 				}
-				
+
 				dispose();
 			}
 		});
 		btnOk.setBounds(68, 86, 117, 29);
 		contentPane.add(btnOk);
-		
-		
+
 		JButton btnCancel = new JButton("Cancel");
-		
-		//Cancel overwrite operation
+
+		// Cancel overwrite operation
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -141,10 +141,6 @@ class ExistFileTip extends JFrame {
 	}
 }
 
-
-
-
-
 /**
  * Enumeration of data written operation type
  * 
@@ -152,38 +148,35 @@ class ExistFileTip extends JFrame {
  */
 
 enum Operation {
-	
+
 	/**
 	 * File creation exception
 	 * 
 	 * @see OperationType
 	 */
-	
-	NEW(OperationType.NEW), 
-	
+
+	NEW(OperationType.NEW),
+
 	/**
 	 * File creation exception
 	 * 
 	 * @see OperationType
 	 */
-	
+
 	SAVE(OperationType.SAVE);
-	
-	
-	
-	
+
 	private OperationType type;
-	
+
 	private Operation(OperationType type) {
 		this.type = type;
 	}
-	
+
 	/**
 	 * Get the type for process to judge type.
 	 * 
 	 * @return
 	 */
-	
+
 	OperationType getOperationType() {
 		return type;
 	}

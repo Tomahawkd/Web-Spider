@@ -65,7 +65,7 @@ class ThreadPool extends ThreadGroup {
 		if (isClosed) {
 			return;
 		}
-		
+
 		if (task != null) {
 			workQueue.add(task);
 			notify();

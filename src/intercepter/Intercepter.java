@@ -45,12 +45,9 @@ public class Intercepter {
 
 	private ServerSocket server;
 
-	
-	
-	
 	public Intercepter(FileIO file, IntercepterPanel panel) throws IOException {
 
-		//Initialization
+		// Initialization
 		this.file = file;
 		this.panel = panel;
 
@@ -77,7 +74,7 @@ public class Intercepter {
 			// Accept the connection and block until a connection established
 			Socket socket = server.accept();
 
-			//Initialize Server connection
+			// Initialize Server connection
 			Server proxy = new Server(file, panel, socket);
 
 			// Saving properties

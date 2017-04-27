@@ -44,33 +44,26 @@ class Server implements Runnable {
 
 	private boolean save;
 
-	
-	
-	
 	Server(FileIO file, IntercepterPanel panel, Socket socket) throws IOException {
 
-		//Initialization
+		// Initialization
 		this.file = file;
 		this.panel = panel;
 		this.socket = socket;
 
-		
 		save = true;
-		
+
 	}
 
-	
 	@Override
 	public void run() {
 		action();
 	}
 
-	
-	
 	/**
 	 * Cache-only data flag
 	 */
-	
+
 	void rejectSaveData() {
 		save = false;
 	}
@@ -149,26 +142,26 @@ class Server implements Runnable {
 				// Get response
 				response(new Backend(data));
 			}
-			
+
 		} catch (IOException e) {
-			
-			//Notify the user after caught a IOException
-			JOptionPane.showMessageDialog(null, 
-					"Error occurs while running proxy server, please shutdown and contact the developer.", 
-					"Error", JOptionPane.ERROR_MESSAGE);
-			
+
+			// Notify the user after caught a IOException
+			JOptionPane.showMessageDialog(null,
+					"Error occurs while running proxy server, please shutdown and contact the developer.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+
 		} finally {
-			if(socket != null && socket.isConnected() && !socket.isClosed()) {
+			if (socket != null && socket.isConnected() && !socket.isClosed()) {
 				try {
-					
-					//Close socket
+
+					// Close socket
 					socket.close();
-					
-					//Ignore Exception
-				} catch (IOException e) {}
+
+					// Ignore Exception
+				} catch (IOException e) {
+				}
 			}
 		}
-		
 
 	}
 
@@ -204,7 +197,7 @@ class Server implements Runnable {
 			file.getDataSet().getIntercepterData().add(backend.getData().getURLString(), backend.getData().getRequest(),
 					backend.getData().getResponseText());
 
-			//Update panel data
+			// Update panel data
 			panel.updateData();
 		}
 	}

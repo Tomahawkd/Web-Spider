@@ -60,9 +60,6 @@ public class DataSet implements Serializable {
 
 	private int requestCounter;
 
-	
-	
-	
 	/**
 	 * Initialize data class
 	 */
@@ -112,7 +109,7 @@ public class DataSet implements Serializable {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	public void refreshIntercepterData() {
 		intercepterData = new IntercepterData();
 	}

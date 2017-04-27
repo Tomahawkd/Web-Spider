@@ -27,15 +27,16 @@ class OptionEditHeader extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	
-	
-	
+
 	/**
 	 * Request header editor
 	 * 
-	 * @param index The index in JList
-	 * @param optionData Data content
-	 * @param panel Option panel to update data
+	 * @param index
+	 *            The index in JList
+	 * @param optionData
+	 *            Data content
+	 * @param panel
+	 *            Option panel to update data
 	 * 
 	 * @see {@link JList}
 	 * 
@@ -45,74 +46,69 @@ class OptionEditHeader extends JFrame {
 	 */
 
 	OptionEditHeader(int index, SpiderOption optionData, OptionPanel panel) throws ArrayIndexOutOfBoundsException {
-		
-		
-		
+
 		/*
 		 * Self configuration
 		 */
-		
+
 		setBounds(100, 100, 450, 150);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		
+
 		/*
 		 * Labels
 		 */
-		
+
 		JLabel lblEditHeader = new JLabel("Write your header string here");
 		lblEditHeader.setBounds(6, 18, 438, 16);
 		contentPane.add(lblEditHeader);
-		
+
 		JLabel lblTip = new JLabel("Please input valid string");
 		lblTip.setBounds(149, 75, 151, 16);
 		lblTip.setVisible(false);
 		contentPane.add(lblTip);
-		
-		
+
 		/*
-		 * Text field	
+		 * Text field
 		 */
-		
+
 		JTextField Content = new JTextField();
 		Content.setBounds(6, 46, 438, 26);
 		contentPane.add(Content);
 		Content.setText(optionData.getHeaderElement(index));
-		
-		
+
 		/*
 		 * Button
 		 */
-		
+
 		JButton btnConfirm = new JButton("Confirm");
-		
-		//Confirm edition
+
+		// Confirm edition
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				//Validation check
-				if(!Content.getText().equals("") && Content.getText().contains(": ")){
-					
-					//Content valid, tip need not to be shown
+
+				// Validation check
+				if (!Content.getText().equals("") && Content.getText().contains(": ")) {
+
+					// Content valid, tip need not to be shown
 					lblTip.setVisible(false);
-					
-					//Get header
+
+					// Get header
 					String newHeader = Content.getText();
-					
-					//Save it to the data class
+
+					// Save it to the data class
 					optionData.editHeaderElement(index, newHeader);
-					
-					//Update panel's data
+
+					// Update panel's data
 					panel.updateData();
-					
-					//Close the dialog
+
+					// Close the dialog
 					dispose();
 				} else {
-					
-					//Content invalid, show the tip
+
+					// Content invalid, show the tip
 					lblTip.setVisible(true);
 				}
 			}
@@ -121,4 +117,3 @@ class OptionEditHeader extends JFrame {
 		contentPane.add(btnConfirm);
 	}
 }
-

@@ -23,23 +23,22 @@ class DataInformation extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	
-	
+
 	/**
 	 * A window displays response data
 	 * 
-	 * @param data response data
+	 * @param data
+	 *            response data
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	DataInformation(String data) {
-		
-		
+
 		/*
 		 * Self configuration
 		 */
-		
+
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -52,25 +51,23 @@ class DataInformation extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		
+
 		/*
 		 * Scroll pane
 		 */
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 840, 428);
 		contentPane.add(scrollPane);
-		
-		
+
 		/*
 		 * Data display panel
 		 */
-		
+
 		JTextPane dataTextPanel = new JTextPane();
 		dataTextPanel.setEditable(false);
-		
-		//Data contains response headers and body
+
+		// Data contains response headers and body
 		dataTextPanel.setText(data);
 		scrollPane.setViewportView(dataTextPanel);
 	}

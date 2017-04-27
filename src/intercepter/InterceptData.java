@@ -43,12 +43,6 @@ public class InterceptData {
 
 	private byte[] response;
 
-	
-	
-	
-	
-	
-	
 	InterceptData() {
 		this.url = "";
 		requestHeader = new LinkedHashMap<String, String>();
@@ -214,7 +208,7 @@ public class InterceptData {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	String getResponseText() {
 		String responseText = "";
 

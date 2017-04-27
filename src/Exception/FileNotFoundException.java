@@ -16,5 +16,5 @@ public class FileNotFoundException extends FileExceptions {
 	public FileNotFoundException() {
 		super(ExceptionType.NULL.getErrorMessage());
 	}
-	
+
 }

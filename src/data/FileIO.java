@@ -19,39 +19,31 @@ import Exception.FileNotFoundException;
  */
 
 public class FileIO {
-	
+
 	/**
 	 * File path in system
 	 */
-	
+
 	private String targetFilePath;
-	
+
 	/**
 	 * Has a target file to save.
 	 */
-	
+
 	private boolean target;
-	
+
 	/**
 	 * DataSet class to load and save all of the data
 	 */
-	
+
 	private DataSet data;
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public FileIO() {
 		this.targetFilePath = "";
 		this.target = false;
 		this.data = new DataSet();
 	}
-	
+
 	/**
 	 * Get all of the data.
 	 * 
@@ -59,7 +51,7 @@ public class FileIO {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	public DataSet getDataSet() {
 		return data;
 	}
@@ -71,7 +63,7 @@ public class FileIO {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	public String getTargetFilePath() {
 		return targetFilePath;
 	}
@@ -79,7 +71,7 @@ public class FileIO {
 	/**
 	 * Set the target file path while creating loading or saving file.
 	 * 
-	 * @param targetFilePath 
+	 * @param targetFilePath
 	 * 
 	 * @see {@link JFileChooser}
 	 * 
@@ -88,177 +80,191 @@ public class FileIO {
 
 	public void setTargetFilePath(String targetFilePath) {
 		this.targetFilePath = targetFilePath;
-		
+
 	}
-	
+
 	/**
 	 * Create file operation
 	 * 
-	 * @param force is tend to force to cover the exist file.
+	 * @param force
+	 *            is tend to force to cover the exist file.
 	 * 
-	 * @throws ExistFileException throws if not force to cover and there exist the file.
-	 * @throws FileNameInvaildException the file name is not valid cause of the system restriction.
-	 * @throws IOException other exceptions
+	 * @throws ExistFileException
+	 *             throws if not force to cover and there exist the file.
+	 * @throws FileNameInvaildException
+	 *             the file name is not valid cause of the system restriction.
+	 * @throws IOException
+	 *             other exceptions
 	 * 
 	 * @author Tomahawkd and Yezipoiny
 	 */
-	
+
 	public void createFile(boolean force) throws ExistFileException, FileNameInvalidException, IOException {
-		
-		//Add identifier if the user does not enter it.
-		if(!targetFilePath.endsWith(".sdf")) {
+
+		// Add identifier if the user does not enter it.
+		if (!targetFilePath.endsWith(".sdf")) {
 			targetFilePath += ".sdf";
 		}
-		
-		//Get the file name
+
+		// Get the file name
 		String targetFileName = targetFilePath.substring(targetFilePath.lastIndexOf(File.separator) + 1);
-		
-	//Check the validation of the file name
-		
-		//Contains illegal pattern in WINDOWS system
+
+		// Check the validation of the file name
+
+		// Contains illegal pattern in WINDOWS system
 		Matcher invalid = Pattern.compile("[\\\\/:\"*?<>|]").matcher(targetFileName);
-		
-		//Start with dot which indicate a hidden file in UNIX/LINUX system.
+
+		// Start with dot which indicate a hidden file in UNIX/LINUX system.
 		Matcher rejectHide = Pattern.compile("^[.]").matcher(targetFileName);
-		
-		//throws invalid file name exception
+
+		// throws invalid file name exception
 		if (invalid.find() | rejectHide.find()) {
 			throw new FileNameInvalidException();
 		}
-		
-		//Get the file in file system
+
+		// Get the file in file system
 		File newFile = new File(targetFilePath);
-		
-		//throws exist file exception
+
+		// throws exist file exception
 		if (!force && newFile.exists()) {
 			throw new ExistFileException();
 		}
-		
-		//Create a new file
+
+		// Create a new file
 		ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(targetFilePath));
-		
-		//Close stream
+
+		// Close stream
 		output.close();
-		
-		//Already has the target file to save
+
+		// Already has the target file to save
 		target = true;
-		
-		//New dataSet
+
+		// New dataSet
 		this.data = new DataSet();
 	}
-	
+
 	/**
 	 * Load user's file
 	 * 
-	 * @throws FileNotFoundException throws if not force to cover and there exist the file.
-	 * @throws ClassCastException the data does not match application's data class.
-	 * @throws IOException other exceptions.
-	 * @throws ClassNotFoundException the data does not match application's data class.
+	 * @throws FileNotFoundException
+	 *             throws if not force to cover and there exist the file.
+	 * @throws ClassCastException
+	 *             the data does not match application's data class.
+	 * @throws IOException
+	 *             other exceptions.
+	 * @throws ClassNotFoundException
+	 *             the data does not match application's data class.
 	 * 
 	 * @author Tomahawkd and Yezipoiny
 	 */
-	
+
 	public void loadFile() throws FileNotFoundException, ClassCastException, IOException, ClassNotFoundException {
-		
-		//Get the file in file system
+
+		// Get the file in file system
 		File newFile = new File(targetFilePath);
-		
-		//Check file existence
+
+		// Check file existence
 		if (!newFile.exists()) {
 			throw new FileNotFoundException();
 		}
-		
-		//Load file
+
+		// Load file
 		ObjectInputStream input = new ObjectInputStream(new FileInputStream(targetFilePath));
-		
-		//Cast the target object to DataSet class
+
+		// Cast the target object to DataSet class
 		this.data = (DataSet) input.readObject();
-		
-		//Close stream
+
+		// Close stream
 		input.close();
-		
-		//Already has the target file to save
+
+		// Already has the target file to save
 		target = true;
 	}
-	
+
 	/**
 	 * Save data to exist file.
 	 * 
-	 * @throws FileNotFoundException throws if not force to cover and there exist the file.
-	 * @throws IOException other exceptions.
+	 * @throws FileNotFoundException
+	 *             throws if not force to cover and there exist the file.
+	 * @throws IOException
+	 *             other exceptions.
 	 * 
 	 * @author Tomahawkd and Yezipoiny
 	 */
-	
+
 	public void saveFile() throws FileNotFoundException, IOException {
-		
-		//Check the target file existence
+
+		// Check the target file existence
 		if (!target) {
 			throw new FileNotFoundException();
 		}
-		
-		//Save data to exist file
+
+		// Save data to exist file
 		ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(targetFilePath));
-		
-		//Write the data to the file
+
+		// Write the data to the file
 		output.writeObject(data);
-		
-		//Close stream
+
+		// Close stream
 		output.close();
-		
+
 	}
-	
+
 	/**
 	 * Save data to a new file.
 	 * 
-	 * @param force is tend to force to cover the exist file
-	 * @throws ExistFileException throws if not force to cover and there exist the file.
-	 * @throws FileNameInvaildException the file name is not valid cause of the system restriction.
-	 * @throws IOException other exceptions.
+	 * @param force
+	 *            is tend to force to cover the exist file
+	 * @throws ExistFileException
+	 *             throws if not force to cover and there exist the file.
+	 * @throws FileNameInvaildException
+	 *             the file name is not valid cause of the system restriction.
+	 * @throws IOException
+	 *             other exceptions.
 	 * 
 	 * @author Tomahawkd and Yezipoiny
 	 */
-	
+
 	public void saveAsFile(boolean force) throws ExistFileException, FileNameInvalidException, IOException {
-		
-		//Add identifier if the user does not enter it.
-		if(!targetFilePath.endsWith(".sdf")) {
+
+		// Add identifier if the user does not enter it.
+		if (!targetFilePath.endsWith(".sdf")) {
 			targetFilePath += ".sdf";
 		}
-		
-		//Get the file name
+
+		// Get the file name
 		String targetFileName = targetFilePath.substring(targetFilePath.lastIndexOf(File.separator) + 1);
-		
-	//Check the validation of the file name
-		
-		//Contains illegal pattern in WINDOWS system
+
+		// Check the validation of the file name
+
+		// Contains illegal pattern in WINDOWS system
 		Matcher invalid = Pattern.compile("[\\\\/:\"*?<>|]").matcher(targetFileName);
-		
-		//Start with dot which indicate a hidden file in UNIX/LINUX system.
+
+		// Start with dot which indicate a hidden file in UNIX/LINUX system.
 		Matcher rejectHide = Pattern.compile("^[.]").matcher(targetFileName);
-		
-		//throws invalid file name exception
+
+		// throws invalid file name exception
 		if (invalid.find() | rejectHide.find()) {
 			throw new FileNameInvalidException();
 		}
-		
-		//Get the file in file system
+
+		// Get the file in file system
 		File saveFile = new File(targetFilePath);
-		
-		//throws exist file exception
+
+		// throws exist file exception
 		if (!force && saveFile.exists()) {
 			throw new ExistFileException();
 		}
-			
-		//Create a new file
+
+		// Create a new file
 		ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(targetFilePath));
-		
-		//Write the data to the file
+
+		// Write the data to the file
 		output.writeObject(data);
-		
-		//Close stream
+
+		// Close stream
 		output.close();
-		
+
 	}
-	
+
 }

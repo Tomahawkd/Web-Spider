@@ -131,7 +131,7 @@ public class IntercepterPanel extends JPanel {
 					file.getDataSet().refreshIntercepterData();
 					startServer();
 
-				// Stop Server
+					// Stop Server
 				} else {
 
 					tglbtnServerStart.setText("Server Start");
@@ -152,12 +152,11 @@ public class IntercepterPanel extends JPanel {
 	 * 
 	 * @author Tomahawkd
 	 */
-	
+
 	public void updateData() {
 		list.setModel(file.getDataSet().getIntercepterData().getModel());
 	}
 
-	
 	/**
 	 * Start server.
 	 * 
@@ -182,8 +181,8 @@ public class IntercepterPanel extends JPanel {
 			}, "IntercepterMainThread").start();
 
 		} catch (IOException e) {
-			//The server port is already in use.
-			
+			// The server port is already in use.
+
 			intercepter.stop();
 			AdressInUse dialog = new AdressInUse();
 			dialog.setVisible(true);
