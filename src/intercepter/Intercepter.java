@@ -16,6 +16,12 @@ import data.FileIO;
 public class Intercepter {
 
 	/**
+	 * The server status
+	 */
+
+	private boolean status;
+
+	/**
 	 * File handler
 	 * 
 	 * @see {@link FileIO}
@@ -67,9 +73,12 @@ public class Intercepter {
 
 	public void start() throws IOException {
 
+		// Server start
+		status = true;
+
 		int threadCount = 0;
 
-		while (true) {
+		while (status) {
 
 			// Accept the connection and block until a connection established
 			Socket socket = server.accept();
@@ -95,6 +104,7 @@ public class Intercepter {
 	 */
 
 	public void stop() {
+		status = false;
 		threadPool.close();
 	}
 

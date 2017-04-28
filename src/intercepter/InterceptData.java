@@ -235,11 +235,13 @@ public class InterceptData {
 					&& (response[i + 10] == 112 || response[i + 10] == 80)
 					&& (response[i + 11] == 101 || response[i + 11] == 69)) {
 
-				// Start of the
+				// Start of the range
 				from = i;
 				continue;
 			}
 			if (from > 0 && to == 0 && response[i] == 13 && response[i + 1] == 10) {
+
+				// End of the range
 				to = i;
 				break;
 			}
@@ -275,7 +277,7 @@ public class InterceptData {
 
 				// Get response
 				responseText = new String(output.toByteArray());
-				
+
 				input.close();
 				output.close();
 
