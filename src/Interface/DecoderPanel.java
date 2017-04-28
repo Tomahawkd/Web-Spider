@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import decode.Decoder;
+import java.awt.Choice;
 
 /**
  * Interface: Decoder panel
@@ -41,8 +42,8 @@ class DecoderPanel extends JPanel {
 		 * Labels
 		 */
 
-		JLabel lblDecode = new JLabel("Base64 Decode");
-		lblDecode.setBounds(10, 6, 123, 16);
+		JLabel lblDecode = new JLabel("Decoder");
+		lblDecode.setBounds(10, 6, 95, 16);
 		add(lblDecode);
 
 		JLabel lblResult = new JLabel("Result");
@@ -66,6 +67,16 @@ class DecoderPanel extends JPanel {
 		add(textAreaResult);
 
 		/*
+		 * Choice
+		 */
+
+		Choice choice = new Choice();
+		choice.setBounds(533, 6, 126, 27);
+		choice.add("BASE64");
+		choice.add("Gzip");
+		add(choice);
+
+		/*
 		 * Buttons
 		 */
 
@@ -74,11 +85,15 @@ class DecoderPanel extends JPanel {
 		// Confirm the input and activate the decoder
 		btnOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					String base64 = textAreaSourse.getText();
-					textAreaResult.setText(Decoder.getFromBASE64(base64));
-				} catch (IllegalArgumentException ex) {
-					textAreaResult.setText("Decode failed");
+				String code = textAreaSourse.getText();
+				if (choice.getSelectedItem().equals("Gzip")) {
+					textAreaResult.setText(Decoder.getFromGzip(code));
+				} else {
+					try {
+						textAreaResult.setText(Decoder.getFromBASE64(code));
+					} catch (IllegalArgumentException ex) {
+						textAreaResult.setText("Decode failed");
+					}
 				}
 			}
 		});
@@ -97,5 +112,4 @@ class DecoderPanel extends JPanel {
 		btnClear.setBounds(419, 205, 117, 29);
 		add(btnClear);
 	}
-
 }
