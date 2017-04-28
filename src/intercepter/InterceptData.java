@@ -3,7 +3,6 @@ package intercepter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -255,7 +254,7 @@ public class InterceptData {
 		if (contentType.toLowerCase().contains("charset")) {
 			charset = contentType.substring(contentType.lastIndexOf("=") + 1);
 		}
-		
+
 		/*
 		 * Decode response body
 		 */
@@ -273,14 +272,14 @@ public class InterceptData {
 					output.write(data, 0, count);
 					output.flush();
 				}
-				
-				output.close();
-				input.close();
 
 				// Get response
 				responseText = new String(output.toByteArray());
+				
+				input.close();
+				output.close();
 
-			// Other decode
+				// Other decode
 			} else {
 				responseText = new String(response, charset);
 			}
