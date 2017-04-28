@@ -1,9 +1,15 @@
 package intercepter;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Intercepter: Store intercepter's cache data
@@ -211,8 +217,79 @@ public class InterceptData {
 
 	String getResponseText() {
 		String responseText = "";
+		String charset = "utf-8";
 
-		responseText = new String(response);
+		// Range of Content-Type
+		int from = 0;
+		int to = 0;
+		for (int i = 0; i < response.length; i++) {
+
+			// Search for content-type
+			if ((response[i] == 99 || response[i] == 67) && (response[i + 1] == 111 || response[i + 1] == 79)
+					&& (response[i + 2] == 110 || response[i + 2] == 78)
+					&& (response[i + 3] == 116 || response[i + 3] == 84)
+					&& (response[i + 4] == 101 || response[i + 4] == 69)
+					&& (response[i + 5] == 110 || response[i + 5] == 78)
+					&& (response[i + 6] == 116 || response[i + 6] == 84) && response[i + 7] == 45
+					&& (response[i + 8] == 84 || response[i + 8] == 116)
+					&& (response[i + 9] == 121 || response[i + 9] == 89)
+					&& (response[i + 10] == 112 || response[i + 10] == 80)
+					&& (response[i + 11] == 101 || response[i + 11] == 69)) {
+
+				// Start of the
+				from = i;
+				continue;
+			}
+			if (from > 0 && to == 0 && response[i] == 13 && response[i + 1] == 10) {
+				to = i;
+				break;
+			}
+		}
+		// Get Content-Type position
+		byte[] headerByte = Arrays.copyOfRange(response, from, to);
+
+		// decode header
+		String contentType = new String(headerByte);
+
+		// get charset
+		if (contentType.toLowerCase().contains("charset")) {
+			charset = contentType.substring(contentType.lastIndexOf("=") + 1);
+		}
+		
+		/*
+		 * Decode response body
+		 */
+
+		try {
+
+			// Decode Gzip
+			if (charset.contains("gzip")) {
+				GZIPInputStream input = new GZIPInputStream(new ByteArrayInputStream(response));
+				ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+				int count;
+				byte data[] = new byte[1024];
+				while ((count = input.read(data, 0, 1024)) != -1) {
+					output.write(data, 0, count);
+					output.flush();
+				}
+				
+				output.close();
+				input.close();
+
+				// Get response
+				responseText = new String(output.toByteArray());
+
+			// Other decode
+			} else {
+				responseText = new String(response, charset);
+			}
+
+		} catch (IOException e) {
+
+			// Charset isn't support
+			responseText = "Unknown Encode Charset";
+		}
 
 		return responseText;
 	}

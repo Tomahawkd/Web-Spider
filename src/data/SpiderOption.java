@@ -137,12 +137,12 @@ public class SpiderOption implements Serializable {
 
 	public void newHeaderElement(String newHeader) {
 
-		// header in listModel operation
-		this.requestHeader.addElement(newHeader);
-
 		// header in map operation
 		String[] key = newHeader.split(": ");
 		headers.put(key[0], key[1]);
+		
+		// header in listModel operation
+		this.requestHeader.addElement(newHeader);
 	}
 
 	/**
