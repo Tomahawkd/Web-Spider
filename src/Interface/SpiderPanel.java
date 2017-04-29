@@ -11,7 +11,7 @@ import javax.swing.JToggleButton;
 
 import data.FileIO;
 import spider.SpiderRun;
-import spider.nullHostException;
+import spider.NullHostException;
 
 /**
  * Interface: Spider panel
@@ -194,7 +194,7 @@ public class SpiderPanel extends JPanel {
 									// resume the operation
 									spr.resume();
 								}
-							} catch (nullHostException e) {
+							} catch (NullHostException e) {
 								// Validate the host
 
 								lblTipInvalid.setVisible(true);

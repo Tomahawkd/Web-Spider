@@ -158,17 +158,17 @@ public class SpiderRun {
 	/**
 	 * Start web spider operation.
 	 * 
-	 * @throws nullHostException
+	 * @throws NullHostException
 	 *             throws while the host has no parameters
 	 * 
 	 * @author Tomahawkd
 	 */
 
-	public void start() throws nullHostException {
+	public void start() throws NullHostException {
 
 		// Check if the host is empty
 		if (option.getHost().equals(""))
-			throw new nullHostException();
+			throw new NullHostException();
 
 		// Set up monitor
 		suspendFlag = false;

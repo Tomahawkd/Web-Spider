@@ -6,14 +6,14 @@ package spider;
  * @author Tomahawkd
  */
 
-public class nullHostException extends Exception {
+public class NullHostException extends Exception {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public nullHostException() {
+	public NullHostException() {
 		super("Host parameter is not correctly set.");
 	}
 
