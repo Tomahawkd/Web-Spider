@@ -102,7 +102,7 @@ class LoadFile extends JFileChooser {
 				}, "LoadingThread").start();
 
 				// Refresh data in GUI
-				window.updateUI();
+				window.updateData();
 
 			} catch (FileNotFoundException e) {
 				// File is not exist, notify the user to create a new file

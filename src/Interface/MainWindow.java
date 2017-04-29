@@ -140,7 +140,7 @@ public class MainWindow {
 	 * @author Tomahawkd
 	 */
 
-	public void updateUI() {
+	public void updateData() {
 		this.frmWebSpider.setTitle(
 				file.getTargetFilePath().equals("") ? "Web Spider - " + file.getTargetFilePath() : "Web Spider");
 		this.spider.updateData();
