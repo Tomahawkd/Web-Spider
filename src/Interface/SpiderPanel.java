@@ -198,10 +198,11 @@ public class SpiderPanel extends JPanel {
 								// Validate the host
 
 								lblTipInvalid.setVisible(true);
-							}
+							} finally {
 
 							// All operation has done, stop the spider
 							spr.stop();
+							}
 						}
 					}, "SpiderThread").start();
 
