@@ -118,6 +118,9 @@ class MenuBar extends JMenuBar {
 		});
 		mnProject.add(mntmSaveAs);
 
+		// Add separator
+		mnProject.addSeparator();
+		
 		JMenuItem mntmExit = new JMenuItem("Exit");
 
 		// Exit the application
