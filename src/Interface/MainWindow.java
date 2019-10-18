@@ -70,7 +70,6 @@ public class MainWindow {
 		 */
 
 		frmWebSpider = new JFrame();
-		frmWebSpider.setResizable(false);
 		frmWebSpider.setTitle("Web Spider");
 		frmWebSpider.addWindowListener(new WindowAdapter() {
 			@Override
